@@ -1,4 +1,4 @@
-# Team 27: Project Charte
+# Team 27: Project Charter
 
 ## Team Members:
 * Elijah Smith
