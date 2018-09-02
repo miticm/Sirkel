@@ -1,9 +1,10 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/App.js',
   output: {
-    path: path.join(__dirname, 'public', 'dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
   module: {
@@ -12,10 +13,7 @@ module.exports = {
       { test: /\.css$/, use: ['style-loader', 'css-loader'] }
     ]
   },
+  plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
   mode: 'development',
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: path.join(__dirname, 'public'),
-    historyApiFallback: true,
-  },
+  devtool: 'inline-source-map'
 }

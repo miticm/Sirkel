@@ -5,7 +5,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        CS 307 starting point
+        CS 307 project
       </div>
     )
   }
