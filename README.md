@@ -1,10 +1,10 @@
-<h1 align="center">Team 27</h1>
 <div align="center"><img src='./sirkelLogo.png' width="300px"/></div>
 
-  Content |
+  Content 
   ------------ 
-  [Project Charter](#project-charter)|
-  [Project Backlog](#product-backlog)|
+  [Project Charter](#project-charter)
+
+  [Project Backlog](#product-backlog)
 
 # Project Charter
 
