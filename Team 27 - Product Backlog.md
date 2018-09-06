@@ -1,6 +1,6 @@
 ![image alt text](image_0.png)
 
-Team 27 - Product Backlog
+# Team 27 - Product Backlog
 
 Dan Hipskind, Eli Smith, Trevor Neidlinger, Tianchi Xu, Adam Lula
 
