@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import PrimarySearchAppBar from "./PrimarySearchAppBar";
+import Navbar from "./Appbar";
+import LandingPage from "./LandingPage";
 export default class Homepage extends Component {
   render() {
     return (
       <div>
-        <PrimarySearchAppBar />
+        <Navbar />
+        <LandingPage />
       </div>
     );
   }
