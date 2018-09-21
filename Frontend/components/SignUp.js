@@ -70,6 +70,15 @@ function SignUp(props) {
                 autoComplete="current-password"
               />
             </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+            </FormControl>
             <Button
               type="submit"
               fullWidth
