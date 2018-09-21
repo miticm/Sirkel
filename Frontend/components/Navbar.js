@@ -9,7 +9,7 @@ import "./Navbar.css";
 export default function NavBar(props) {
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="static" style={{ backgroundColor: '#60b0f4' }}>
         <Toolbar>
           <IconButton color="inherit" aria-label="Menu">
             <MenuIcon />
