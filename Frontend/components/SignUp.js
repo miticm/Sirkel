@@ -52,8 +52,8 @@ function SignUp(props) {
       <CssBaseline />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockIcon />
+          <Avatar className={classes.avatar} style={{backgroundColor: '#60b0f4' }}>
+            <LockIcon style={{backgroundColor: '#60b0f4' }}/>
           </Avatar>
           <Typography variant="headline">New User</Typography>
           <form className={classes.form}>
@@ -71,6 +71,7 @@ function SignUp(props) {
               />
             </FormControl>
             <Button
+              style={{ backgroundColor: '#60b0f4' }}
               type="submit"
               fullWidth
               variant="raised"
