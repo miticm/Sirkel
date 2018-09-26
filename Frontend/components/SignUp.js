@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -44,50 +44,91 @@ const styles = theme => ({
   }
 });
 
-function SignUp(props) {
-  const { classes } = props;
+class SignUp extends Component {
+  state = {
+    username: "",
+    email: "",
+    password: "",
+    password2: ""
+  };
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+  onSubmit = e => {
+    e.preventDefault();
+    let newUser = {
+      name: this.state.username,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+  };
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar} style={{backgroundColor: '#60b0f4' }}>
-            <LockIcon style={{backgroundColor: '#60b0f4' }}/>
-          </Avatar>
-          <Typography variant="headline">New User</Typography>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input/>
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Username</InputLabel>
-              <Input/>
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input/>
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Confirm Password</InputLabel>
-              <Input/>
-            </FormControl>
-            <Button
-              style={{ backgroundColor: '#60b0f4' }}
-              type="submit"
-              fullWidth
-              variant="raised"
-              color="primary"
-              className={classes.submit}
+  render() {
+    const { classes } = this.props;
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Avatar
+              className={classes.avatar}
+              style={{ backgroundColor: "#60b0f4" }}
             >
-              Sign Up
-            </Button>
-          </form>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
+              <LockIcon style={{ backgroundColor: "#60b0f4" }} />
+            </Avatar>
+            <Typography variant="headline">New User</Typography>
+            <form className={classes.form} onSubmit={this.onSubmit}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="email">Email Address</InputLabel>
+                <Input
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.onChange}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel>Username</InputLabel>
+                <Input
+                  name="username"
+                  value={this.state.username}
+                  onChange={this.onChange}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.onChange}
+                  type="password"
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Confirm Password</InputLabel>
+                <Input
+                  name="password2"
+                  value={this.state.password2}
+                  onChange={this.onChange}
+                  type="password"
+                />
+              </FormControl>
+              <Button
+                style={{ backgroundColor: "#60b0f4" }}
+                type="submit"
+                fullWidth
+                variant="raised"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign Up
+              </Button>
+            </form>
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
 SignUp.propTypes = {

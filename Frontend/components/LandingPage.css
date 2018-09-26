@@ -1,6 +1,6 @@
 .LandingPage {
   box-sizing: border-box;
-  height: 90vh;
+  height: 100vh;
   overflow: auto;
   background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/cliff.jpg');
   background-attachment: fixed;
