@@ -10,6 +10,7 @@ import LockIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
+import axios from "axios";
 
 const styles = theme => ({
   layout: {
@@ -56,12 +57,20 @@ class SignUp extends Component {
   };
   onSubmit = e => {
     e.preventDefault();
-    let newUser = {
-      name: this.state.username,
-      email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2
-    };
+
+    axios
+      .post("http://127.0.0.1:5000/users/register", {
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password
+      })
+      .then(res => {
+        console.log(res.data);
+        if (res.data.success) {
+          this.props.history.push("/login");
+        }
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
