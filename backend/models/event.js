@@ -7,8 +7,8 @@ const EventSchema = new Schema({
     required: true
   },
   desc: {
-      type: String,
-      required: false
+    type: String,
+    required: false
   },
   date: {
     type: String,
@@ -17,16 +17,22 @@ const EventSchema = new Schema({
   attendees: {
     type: "array",
     required: true
+  }, 
+  poster: {
+    type: String,
+    required: true
+  },
+  byOrg: {
+    type: Boolean,
+    required: true
   }
 });
-
 
 const Event = module.exports = mongoose.model("Event", EventSchema);
 
 module.exports.getEventById = function(id, callback) {
   User.findById(id, callback);
 };
-
 
 module.exports.addEvent = function(newEvent, callback) {
     newEvent.save(callback);
