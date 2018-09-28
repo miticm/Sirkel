@@ -5,6 +5,9 @@ import NavBar from "../components/Navbar";
 import Homepage from "../components/Homepage";
 import SignUp from "../components/SignUp";
 import Login from "../components/Login";
+import MainPage from "../components/MainPage";
+import UserPost from "../components/UserPost"
+
 require("../node_modules/normalize.css/normalize.css");
 
 export default class App extends Component {
@@ -15,8 +18,10 @@ export default class App extends Component {
           <NavBar />
           <Switch>
             <Route exact path="/" component={Homepage} />
+            <Route exact path="/mainpage" component={MainPage} />
+            <Route exact path="/userpost" component={UserPost} />
             <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/login" component={Login} />
+            <Route exact path="/login" component={Login} />       
           </Switch>
         </div>
       </BrowserRouter>
