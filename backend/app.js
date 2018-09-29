@@ -11,6 +11,7 @@ const User = require("./models/user");
 
 // Import routes
 const users = require("./routes/users");
+const orgs = require("./routes/orgs");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use("/users", users);
+app.use("/orgs", orgs);
 
 app.use(passport.initialize());
 app.use(passport.session());
