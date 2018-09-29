@@ -16,7 +16,21 @@ router.post("/register", (req, res, next) => {
 
   User.addUser(newUser, (err, user) => {
     if (err) res.json({ success: false, msg: "Failed to register user" });
-    else res.json({ success: true, msg: "User registered" });
+    else {
+      const token = jwt.sign(user.toJSON(), config.secret, {
+        expiresIn: "1d"
+      });
+
+      res.json({
+        success: true,
+        token: "JWT " + token,
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email
+        }
+      });
+    }
   });
 });
 
@@ -54,7 +68,14 @@ router.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    res.json("profile authenticated route works");
+    res.json({
+      success: true,
+      user: {
+        id: req.user._id,
+        username: req.user.username,
+        email: req.user.email
+      }
+    });
   }
 );
 
