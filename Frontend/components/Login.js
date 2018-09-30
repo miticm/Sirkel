@@ -63,11 +63,13 @@ class Login extends Component {
       })
       .then(res => {
         if (res.data.success) {
-          // Save to localStorage
+          // Get the token
           const token = res.data.token;
           // Set token to localstorage
           localStorage.setItem("jwtToken", token);
           setAuthToken(token);
+          this.props.login();
+          this.props.history.push("/dashboard");
         }
       })
       .catch(err => console.log(err));

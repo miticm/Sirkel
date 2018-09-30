@@ -78,5 +78,14 @@ router.get(
     });
   }
 );
+router.get(
+  "/checkToken",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({
+      success: true
+    });
+  }
+);
 
 module.exports = router;
