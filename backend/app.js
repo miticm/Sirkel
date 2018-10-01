@@ -8,7 +8,7 @@ const config = require("./config/database");
 
 // Import models
 const User = require("./models/user");
-
+const Event = require("./models/event");
 // Import routes
 const users = require("./routes/users");
 const orgs = require("./routes/orgs");
