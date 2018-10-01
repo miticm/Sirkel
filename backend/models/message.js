@@ -1,33 +1,19 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const EventSchema = new Schema({
-  name: {
+const MessageSchema = new Schema({
+  content: {
     type: String,
     required: true
-  },
-  desc: {
-    type: String,
-    required: false
   },
   date: {
     type: String,
     required: true
   },
-  attendees: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    },
-  ],
-  poster: {
+  sender: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
-  },
-  byOrg: {
-    type: Boolean,
-    required: true
+    required: false
   }
 });
 
