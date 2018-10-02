@@ -12,6 +12,7 @@ const Event = require("./models/event");
 // Import routes
 const users = require("./routes/users");
 const orgs = require("./routes/orgs");
+const events = require("./routes/events");
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 
 app.use("/users", users);
 app.use("/orgs", orgs);
+app.use("/events", events);
 
 app.use(passport.initialize());
 app.use(passport.session());
