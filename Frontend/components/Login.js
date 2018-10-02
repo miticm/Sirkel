@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -10,6 +10,8 @@ import LockIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
+import axios from "axios";
+import setAuthToken from "../utils/setAuthToken";
 
 const styles = theme => ({
   layout: {
@@ -44,47 +46,82 @@ const styles = theme => ({
   }
 });
 
-function Login(props) {
-  const { classes } = props;
-
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar} style={{ backgroundColor: '#60b0f4' }}>
-            <LockIcon style={{backgroundColor: '#60b0f4' }}/>
-          </Avatar>
-          <Typography variant="headline">Welcome back</Typography>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </FormControl>
-            <Button
-              style={{ backgroundColor: '#60b0f4' }}
-              type="submit"
-              fullWidth
-              variant="raised"
-              color="primary"
-              className={classes.submit}
+class Login extends Component {
+  state = {
+    username: "",
+    password: ""
+  };
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+  onSubmit = e => {
+    e.preventDefault();
+    axios
+      .post("http://127.0.0.1:5000/users/authenticate", {
+        username: this.state.username,
+        password: this.state.password
+      })
+      .then(res => {
+        if (res.data.success) {
+          // Get the token
+          const token = res.data.token;
+          // Set token to localstorage
+          localStorage.setItem("jwtToken", token);
+          setAuthToken(token);
+          this.props.login();
+          this.props.history.push("/dashboard");
+        }
+      })
+      .catch(err => console.log(err));
+  };
+  render() {
+    const { classes } = this.props;
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Avatar
+              className={classes.avatar}
+              style={{ backgroundColor: "#60b0f4" }}
             >
-              Login
-            </Button>
-          </form>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
+              <LockIcon style={{ backgroundColor: "#60b0f4" }} />
+            </Avatar>
+            <Typography variant="headline">Welcome</Typography>
+            <form className={classes.form} onSubmit={this.onSubmit}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="username">Username</InputLabel>
+                <Input
+                  name="username"
+                  onChange={this.onChange}
+                  value={this.state.username}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  onChange={this.onChange}
+                  value={this.state.password}
+                  type="password"
+                />
+              </FormControl>
+              <Button
+                style={{ backgroundColor: "#60b0f4" }}
+                type="submit"
+                fullWidth
+                variant="raised"
+                color="primary"
+                className={classes.submit}
+              >
+                Login
+              </Button>
+            </form>
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
 Login.propTypes = {
