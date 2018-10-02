@@ -10,30 +10,34 @@ import SendIcon from "@material-ui/icons/Send";
 import MailIcon from "@material-ui/icons/Mail";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ReportIcon from "@material-ui/icons/Report";
+import { Link } from "react-router-dom";
 
 export const firstDividerSideBarItems = (
   <div>
-    <ListItem button>
-      <ListItemIcon>
-        <InboxIcon />
-      </ListItemIcon>
-      <ListItemText primary="Connections" />
-    </ListItem>
-    <ListItem button>
+    <ListItem component={Link} to="/dashboard" button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
-      <ListItemText primary="Clubs" />
+      <ListItemText primary="Connections" />
     </ListItem>
-    <ListItem button>
+
+    <ListItem component={Link} to="/dashboard" button>
       <ListItemIcon>
-        <SendIcon />
+        <StarIcon />
+      </ListItemIcon>
+      <ListItemText primary="Organizations" />
+    </ListItem>
+
+    <ListItem component={Link} to="/dashboard" button>
+      <ListItemIcon>
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="Chats" />
     </ListItem>
-    <ListItem button>
+
+    <ListItem component={Link} to="/events" button>
       <ListItemIcon>
-        <DraftsIcon />
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="Events" />
     </ListItem>
@@ -44,19 +48,19 @@ export const secondDividerSideBarItems = (
   <div>
     <ListItem button>
       <ListItemIcon>
-        <MailIcon />
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="My profile" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <DeleteIcon />
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="Recommandation" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <ReportIcon />
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="Setting" />
     </ListItem>
