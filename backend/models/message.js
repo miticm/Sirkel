@@ -17,4 +17,4 @@ const MessageSchema = new Schema({
   }
 });
 
-const Event = module.exports = mongoose.model("Event", EventSchema);
+const Message = module.exports = mongoose.model("Message", MessageSchema);
