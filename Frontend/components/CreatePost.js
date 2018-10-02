@@ -12,30 +12,34 @@ const styles = theme => ({
   layout: {
     width: "auto",
     display: "flex",
+    flexDirection: "column",
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 950,
       marginLeft: "auto",
-      marginRight: "auto"
+      marginRight: 10
     }
   },
+
   paper: {
     marginTop: theme.spacing.unit * 8,
     display: "fixed",
     flexDirection: "column",
     alignItems: "center",
     marginTop: 10,
-    width: 584,
+    marginLeft: 0,
+    width: 320,
+    height: 120,
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px ${theme
       .spacing.unit * 2}px`
   },
 
-  replyField: {
+  postField: {
     marginTop: 0,
     marginRight: 10,
     display: "fixed",
     flexDirection: "column",
     alignItems: "left",
-    width: 460,
+    width: 200,
   },
 
   submit: {
@@ -50,12 +54,9 @@ const styles = theme => ({
     padding: theme.spacing.unit * (1/2),
     marginBottom: 0,
   },
-  post: {
-
-  }
 });
 
-function UserPost(props) {
+function CreatePost(props) {
   const { classes } = props;
 
   return (
@@ -63,22 +64,15 @@ function UserPost(props) {
       <CssBaseline />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-          <Typography className={classes.title} variant="subheading"> John Doe posted on 9/27/18 at 8:58 PM </Typography>
-          <Divider/>
-          <Typography className={classes.post} variant="body1"> 
-          The Turkish football champions are the annual winners of the highest association football competition in Turkey. 
-          The first competition to name a national champion was the Turkish Football Championship (Turkish: Türkiye Futbol Şampiyonası), which began in 1924 and continued until 1951. 
-          The championship format was based on a knockout competition, contested between the winners of each of the country's top regional leagues. 
-          At the end of the 1924 season, Harbiye were the first club to be crowned champions after completing their fixtures unbeaten. 
-          </Typography>
+          <Typography className={classes.title} variant="subheading"> Make a Post </Typography>
           <Divider/>
             <TextField
               id="standard-textarea"
-              label="Reply.."
+              label="Write your post.."
               placeholder=""
               multiline
-              className={classes.replyField}
-            margin="normal"
+              className={classes.postField}
+              margin="normal"
             />
             <Button
               style={{ backgroundColor: '#60b0f4' }}
@@ -88,7 +82,7 @@ function UserPost(props) {
               color="primary"
               className={classes.submit}
             >
-              Reply
+              Post
             </Button>
         </Paper>
       </main>
@@ -96,8 +90,8 @@ function UserPost(props) {
   );
 }
 
-UserPost.propTypes = {
+CreatePost.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(UserPost);
+export default withStyles(styles)(CreatePost);
