@@ -17,7 +17,13 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res, ne
     }
 
     const newOrg = req.body.org;
-    newOrg.leader = req.user;
+    newOrg.leader = {};
+    newOrg.leader.id = req.user._id;
+    newOrg.leader.username = req.user.username;
+    newOrg.admins = [];
+    newOrg.admins.push(newOrg.leader);
+    newOrg.members = [];
+    newOrg.members.push(newOrg.leader);
     new Org(newOrg).save((err, org) => {
         if (err) {
             res.json({
@@ -35,20 +41,70 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res, ne
     });
 });
 
+router.get("/", (req, res, next) => {
+    Org.find({}, (err, orgs) => {
+        if (err) {
+            res.json({
+                success: false,
+                msg: err,
+            });
+        }
+
+        if (orgs) {
+            res.json({
+                success: true,
+                orgs
+            });
+        }
+    });
+});
+
 router.get("/:id", (req, res, next) => {
     Org.findById(req.params.id, (err, org) => {
         if (err) {
-            console.log(err);
-            res.json({errror: err});
+            res.json({
+                success: false,
+                msg: err,
+            });
         }
         
         if (!org) {
-            res.json({error: 'Organization not found'});
+            res.json({
+                success: false,
+                msg: 'Organization not found.',
+            });
         }
         else {
-            res.json(org);
+            res.json({
+                success: true,
+                org
+            });
         }
-    })
+    });
+});
+
+router.put(
+    "/:id",
+    passport.authenticate("jwt", { session: false }),
+    (req, res, next) => {
+        Org.findById(req.params.id, (err, org) => {
+            if (org.leader.id === req.user._id) {
+                const newOrg = req.body.org;
+                Org.findByIdAndUpdate(req.params.id, newOrg, (err, updatedOrg) => {
+                    if (err) {
+                        res.json({
+                            success: false,
+                            msg: err,
+                        });
+                    } else {
+                        res.json({
+                            success: true,
+                            org: updatedOrg
+                        });
+                    }
+                });
+            }
+        });
 });
 
 module.exports = router;
