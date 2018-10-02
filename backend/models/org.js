@@ -7,20 +7,29 @@ const OrgSchema = new Schema({
         required: true
     },
     leader: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        username: String
     },
     admins: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            },
+            username: String
         },
     ],
     members: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            },
+            username: String
         }
     ],
     description: {
@@ -33,8 +42,12 @@ const OrgSchema = new Schema({
     },
     events: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Event'
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Event'
+            },
+            name: String,
+            desc: String
         }
     ]
 });

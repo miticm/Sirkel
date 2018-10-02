@@ -78,6 +78,7 @@ router.get(
     });
   }
 );
+
 router.get(
   "/checkToken",
   passport.authenticate("jwt", { session: false }),
