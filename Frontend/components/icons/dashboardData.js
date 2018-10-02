@@ -10,6 +10,9 @@ import SendIcon from "@material-ui/icons/Send";
 import MailIcon from "@material-ui/icons/Mail";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ReportIcon from "@material-ui/icons/Report";
+import "../Dashboard.css";
+import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 
 export const firstDividerSideBarItems = (
   <div>
@@ -17,13 +20,21 @@ export const firstDividerSideBarItems = (
       <ListItemIcon>
         <InboxIcon />
       </ListItemIcon>
-      <ListItemText primary="Connections" />
+        <ListItemText primary="Connections" className="dashButton" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
       <ListItemText primary="Clubs" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <StarIcon />
+      </ListItemIcon>
+      <Link to="/createclub" >
+        <ListItemText primary="Create a Club" />
+      </Link>
     </ListItem>
     <ListItem button>
       <ListItemIcon>

@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import NavBar from "../components/Navbar";
 import Homepage from "../components/Homepage";
 import DashBoard from "../components/DashBoard";
+import CreateClub from "../components/CreateClub";
 import SignUp from "../components/SignUp";
 import Login from "../components/Login";
 require("../node_modules/normalize.css/normalize.css");
@@ -58,6 +59,7 @@ export default class App extends Component {
               path="/dashboard"
               render={() => (this.state.isAuth ? <DashBoard /> : <Login />)}
             />
+            <Route exact path="/createclub" component={CreateClub} />
           </Switch>
         </div>
       </BrowserRouter>
