@@ -50,13 +50,13 @@ export const secondDividerSideBarItems = (
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
-      <ListItemText primary="Recommandation" />
+      <ListItemText primary="Recommendation" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
-      <ListItemText primary="Setting" />
+      <ListItemText primary="Settings" />
     </ListItem>
   </div>
 );
