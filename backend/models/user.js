@@ -15,6 +15,11 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  creationDate: {
+    type : Date, 
+    default: Date.now,
+    required: true
+  },
   orgsAdmin: [
     {
         id: {
