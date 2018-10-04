@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import CreatePost from "./CreatePost";
-import UserPost from "./UserPost";
+import CreateEvent from "./CreateEvent";
+import EventPost from "./EventPost";
 export default class Eventpage extends Component {
   render() {
     return (
       <div>
-        <CreatePost />
-        <UserPost />
+        <CreateEvent />
+        <EventPost />
       </div>
     );
   }

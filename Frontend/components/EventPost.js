@@ -11,22 +11,24 @@ import Divider from "@material-ui/core/Divider";
 const styles = theme => ({
   layout: {
     width: "auto",
-    display: "flex",
+    display: "block", // Fix IE11 issue.
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    marginTop: "75px",
+    marginBottom: "75px",
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 950,
+      width: "90%",
       marginLeft: "auto",
       marginRight: "auto"
     }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
-    display: "fixed",
+    marginTop: theme.spacing.unit * 4,
+    display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginTop: 10,
-    width: 584,
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px ${theme
-      .spacing.unit * 2}px`
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`
   },
 
   replyField: {
@@ -48,12 +50,12 @@ const styles = theme => ({
   title: {
     backgroundColor: "#60b0f4",
     padding: theme.spacing.unit * (1 / 2),
-    marginBottom: 0
-  },
-  post: {}
+    marginBottom: 0,
+    width: "100%"
+  }
 });
 
-function UserPost(props) {
+function EventPost(props) {
   const { classes } = props;
 
   return (
@@ -61,11 +63,10 @@ function UserPost(props) {
       <CssBaseline />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-          <Typography className={classes.title} variant="subheading">
-            {" "}
-            John Doe posted on 9/27/18 at 8:58 PM{" "}
+          <Typography variant="headline" className={classes.title}>
+            Name of the event
           </Typography>
-          <Divider />
+
           <Typography className={classes.post} variant="body1">
             Events here Events hereEvents hereEvents hereEvents hereEvents
             hereEvents hereEvents hereEvents hereEvents hereEvents hereEvents
@@ -75,32 +76,14 @@ function UserPost(props) {
             hereEvents hereEvents hereEvents hereEvents hereEvents here
           </Typography>
           <Divider />
-          <TextField
-            id="standard-textarea"
-            label="Reply.."
-            placeholder=""
-            multiline
-            className={classes.replyField}
-            margin="normal"
-          />
-          <Button
-            style={{ backgroundColor: "#60b0f4" }}
-            type="submit"
-            multiple
-            variant="raised"
-            color="primary"
-            className={classes.submit}
-          >
-            Reply
-          </Button>
         </Paper>
       </main>
     </React.Fragment>
   );
 }
 
-UserPost.propTypes = {
+EventPost.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(UserPost);
+export default withStyles(styles)(EventPost);
