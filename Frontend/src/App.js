@@ -6,8 +6,6 @@ import Homepage from "../components/Homepage";
 import Dashboard from "../components/Dashboard";
 import SignUp from "../components/SignUp";
 import Login from "../components/Login";
-import CreatePost from "../components/CreatePost";
-import UserPost from "../components/UserPost"
 import ProfilePage from "../components/ProfilePage"
 
 require("../node_modules/normalize.css/normalize.css");
@@ -51,11 +49,7 @@ export default class App extends Component {
           <NavBar isAuth={this.state.isAuth} signOut={this.signOut} />
           <Switch>
             <Route exact path="/" component={Homepage} />
-            <Route exact path="/createpost" component={CreatePost} />
-            <Route exact path="/userpost" component={UserPost} />
             <Route exact path="/signup" component={SignUp} />
-
-            <Route exact path="/login" component={Login} />       
             <Route exact path="/profile" component={ProfilePage} />
 
             <Route
