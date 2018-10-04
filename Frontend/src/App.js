@@ -54,10 +54,10 @@ export default class App extends Component {
             <Route exact path="/createpost" component={CreatePost} />
             <Route exact path="/userpost" component={UserPost} />
             <Route exact path="/signup" component={SignUp} />
-<<<<<<< HEAD
+
             <Route exact path="/login" component={Login} />       
             <Route exact path="/profile" component={ProfilePage} />
-=======
+
             <Route
               exact
               path="/login"
@@ -68,7 +68,6 @@ export default class App extends Component {
               path="/dashboard"
               render={() => (this.state.isAuth ? <DashBoard /> : <Login />)}
             />
->>>>>>> origin/master
           </Switch>
         </div>
       </BrowserRouter>
