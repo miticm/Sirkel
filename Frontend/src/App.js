@@ -6,7 +6,6 @@ import Homepage from "../components/Homepage";
 import Dashboard from "../components/Dashboard";
 import SignUp from "../components/SignUp";
 import Login from "../components/Login";
-import ProfilePage from "../components/ProfilePage"
 
 require("../node_modules/normalize.css/normalize.css");
 import axios from "axios";
@@ -50,7 +49,6 @@ export default class App extends Component {
           <Switch>
             <Route exact path="/" component={Homepage} />
             <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/profile" component={ProfilePage} />
 
             <Route
               exact
@@ -75,12 +73,24 @@ export default class App extends Component {
                 )
               }
             />
-                        <Route
+             <Route
               exact
               path="/organizations"
               render={props =>
                 this.state.isAuth ? (
                   <Dashboard {...props} show="organizations" />
+                ) : (
+                  <Login />
+                )
+              }
+            />
+
+            <Route
+              exact
+              path="/profile"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="profile" />
                 ) : (
                   <Login />
                 )

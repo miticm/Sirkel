@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Sidebar from "./Sidebar";
 import Eventpage from "./Eventpage";
 import OrganizationPage from "./OrganizationPage"
+import ProfilePage from "./ProfilePage"
 import "./Dashboard.css";
 
 export default class Dashboard extends Component {
@@ -16,6 +17,8 @@ export default class Dashboard extends Component {
                 return <Eventpage />;
               case "organizations":
                 return <OrganizationPage />;
+              case "profile":
+                return <ProfilePage />;
               default:
                 return <p>Dashboard</p>;
             }
