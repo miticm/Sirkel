@@ -14,7 +14,16 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  orgsAdmin: [
+    {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Org',
+        },
+        orgname: String
+    },
+  ]
 });
 
 
