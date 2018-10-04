@@ -4,6 +4,7 @@ import Eventpage from "./Eventpage";
 import "./Dashboard.css";
 import Settings from "./Settings";
 import ProfilePage from "./ProfilePage";
+import OrgPage from "./OrgPage";
 
 export default class Dashboard extends Component {
   render() {
@@ -19,6 +20,8 @@ export default class Dashboard extends Component {
                 return <Settings />;
               case "profile":
                 return <ProfilePage />;
+              case "org":
+                return <OrgPage />;
               default:
                 return <p>ToDo</p>;
             }
