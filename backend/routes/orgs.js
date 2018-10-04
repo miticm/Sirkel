@@ -107,4 +107,29 @@ router.put(
         });
 });
 
+router.post(
+    "/:id/join",
+    passport.authenticate("jwt", { session: false }),
+    (req, res, next) => {
+        Org.findById(req.params.id, (err, org) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    msg: err,
+                });
+            }
+            org.members.push({
+                id: req.user._id,
+                username: req.user.username
+            });
+            org.save();
+
+            if (org) {
+                res.json({
+                    success: true,
+                });
+            }
+        });
+});
+
 module.exports = router;
