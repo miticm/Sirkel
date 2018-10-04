@@ -106,4 +106,29 @@ router.put(
         });
 });
 
+router.post(
+    "/:id/attend",
+    passport.authenticate("jwt", { session: false }),
+    (req, res, next) => {
+        Event.findById(req.params.id, (err, org) => {
+            if (err) {
+                res.json({
+                    success: false,
+                    msg: err,
+                });
+            }
+            event.attendees.push({
+                id: req.user._id,
+                username: req.user.username
+            });
+            event.save();
+
+            if (event) {
+                res.json({
+                    success: true,
+                });
+            }
+        });
+});
+
 module.exports = router;
