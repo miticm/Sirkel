@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
+import Axios from "axios";
 
 const styles = theme => ({
   layout: {
@@ -55,26 +56,47 @@ const styles = theme => ({
   }
 });
 
-function EventPost(props) {
-  const { classes } = props;
-
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography variant="headline" className={classes.title}>
-            {props.name}
-          </Typography>
-          <p>{props.desc}</p>
-          <p>
-            Date:
-            {props.date}
-          </p>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
+class EventPost extends Component {
+  onClick = e => {
+    Axios.post(`http://127.0.0.1:5000/events/${this.props.id}/attend`)
+      .then(res => {
+        if (res.data.success) {
+          this.props.getEventsList();
+        }
+      })
+      .catch(err => console.log(err));
+  };
+  render() {
+    const { classes } = this.props;
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography variant="headline" className={classes.title}>
+              {this.props.name}
+            </Typography>
+            <p>{this.props.desc}</p>
+            <p>
+              Date:
+              {this.props.date}
+            </p>
+            <ul>
+              {this.props.attendees.map(att => {
+                return <li key={att.id}>{att.username}</li>;
+              })}
+            </ul>
+            <Button
+              style={{ backgroundColor: "#60b0f4", color: "white" }}
+              onClick={this.onClick}
+            >
+              Join
+            </Button>
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
 EventPost.propTypes = {

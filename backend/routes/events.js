@@ -9,12 +9,15 @@ const Event = require("../models/event");
 
 const router = express.Router();
 
-router.post("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
     if (!req.user) {
-        res.json({
-            success: false,
-            msg: "Must be signed in to create an event",
-        });
+      res.json({
+        success: false,
+        msg: "Must be signed in to create an event"
+      });
     }
 
     const newEvent = req.body.event;
@@ -24,111 +27,117 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res, ne
     newEvent.attendees = [];
     newEvent.attendees.push(newEvent.poster);
     new Event(newEvent).save((err, event) => {
-        if (err) {
-            res.json({
-                success: false,
-                msg: err,
-            });
-        }
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
+        });
+      }
 
-        if (event) {
-            res.json({
-                success: true,
-                event
-            });
-        }
+      if (event) {
+        res.json({
+          success: true,
+          event
+        });
+      }
     });
-});
+  }
+);
 
 router.get("/", (req, res, next) => {
-    Event.find({}, (err, events) => {
-        if (err) {
-            res.json({
-                success: false,
-                msg: err,
-            });
-        }
+  Event.find({}, (err, events) => {
+    if (err) {
+      res.json({
+        success: false,
+        msg: err
+      });
+    }
 
-        if (events) {
-            res.json({
-                success: true,
-                events
-            });
-        }
-    });
+    if (events) {
+      res.json({
+        success: true,
+        events
+      });
+    }
+  });
 });
 
 router.get("/:id", (req, res, next) => {
-    Event.findById(req.params.id, (err, event) => {
-        if (err) {
-            res.json({
-                success: false,
-                msg: err,
-            });
-        }
-        
-        if (!event) {
-            res.json({
-                success: false,
-                msg: 'Event not found.',
-            });
-        }
-        else {
-            res.json({
-                success: true,
-                event
-            });
-        }
-    })
+  Event.findById(req.params.id, (err, event) => {
+    if (err) {
+      res.json({
+        success: false,
+        msg: err
+      });
+    }
+
+    if (!event) {
+      res.json({
+        success: false,
+        msg: "Event not found."
+      });
+    } else {
+      res.json({
+        success: true,
+        event
+      });
+    }
+  });
 });
 
 router.put(
-    "/:id",
-    passport.authenticate("jwt", { session: false }),
-    (req, res, next) => {
-        Event.findById(req.params.id, (err, event) => {
-            if (event.poster.id === req.user._id) {
-                const newEvent = req.body.event;
-                Event.findByIdAndUpdate(req.params.id, newEvent, (err, updatedEvent) => {
-                    if (err) {
-                        res.json({
-                            success: false,
-                            msg: err,
-                        });
-                    } else {
-                        res.json({
-                            success: true,
-                            event: updatedEvent
-                        });
-                    }
-                });
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Event.findById(req.params.id, (err, event) => {
+      if (event.poster.id === req.user._id) {
+        const newEvent = req.body.event;
+        Event.findByIdAndUpdate(
+          req.params.id,
+          newEvent,
+          (err, updatedEvent) => {
+            if (err) {
+              res.json({
+                success: false,
+                msg: err
+              });
+            } else {
+              res.json({
+                success: true,
+                event: updatedEvent
+              });
             }
-        });
-});
+          }
+        );
+      }
+    });
+  }
+);
 
 router.post(
-    "/:id/attend",
-    passport.authenticate("jwt", { session: false }),
-    (req, res, next) => {
-        Event.findById(req.params.id, (err, org) => {
-            if (err) {
-                res.json({
-                    success: false,
-                    msg: err,
-                });
-            }
-            event.attendees.push({
-                id: req.user._id,
-                username: req.user.username
-            });
-            event.save();
-
-            if (event) {
-                res.json({
-                    success: true,
-                });
-            }
+  "/:id/attend",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Event.findById(req.params.id, (err, event) => {
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
         });
-});
+      }
+      event.attendees.push({
+        id: req.user._id,
+        username: req.user.username
+      });
+      event.save();
+
+      if (event) {
+        res.json({
+          success: true
+        });
+      }
+    });
+  }
+);
 
 module.exports = router;
