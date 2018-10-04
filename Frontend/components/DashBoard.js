@@ -1,47 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import { firstDividerSideBarItems, secondDividerSideBarItems } from './icons/dashboardData';
+import React, { Component } from "react";
+import Sidebar from "./Sidebar";
+import Eventpage from "./Eventpage";
+import "./Dashboard.css";
 
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    zIndex: 1,
-    overflow: 'hidden',
-    position: 'relative',
-    display: 'flex',
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  toolbar: theme.mixins.toolbar,
-});
-
-function ClippedDrawer(props) {
-  const { classes } = props;
-        return (
-            <div className={classes.root}>
-            <Drawer
-                variant="permanent"
-                classes={{
-                paper: classes.drawerPaper,
-                }}
-            >
-                <div className={classes.toolbar}/>
-                <List>{firstDividerSideBarItems}</List>
-                <Divider />
-                <List>{secondDividerSideBarItems}</List>
-                </Drawer>
-            </div>
-        );
+export default class Dashboard extends Component {
+  render() {
+    return (
+      <div className="dashboard">
+        <Sidebar className="dashboard-sidebar" />
+        <div className="dashboard-content">
+          {(() => {
+            switch (this.props.show) {
+              case "events":
+                return <Eventpage />;
+              default:
+                return <p>Dashboard</p>;
+            }
+          })()}
+        </div>
+      </div>
+    );
+  }
 }
-
-ClippedDrawer.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(ClippedDrawer);

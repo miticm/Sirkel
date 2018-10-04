@@ -3,48 +3,35 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
 import StarIcon from "@material-ui/icons/Star";
-import SendIcon from "@material-ui/icons/Send";
-import MailIcon from "@material-ui/icons/Mail";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ReportIcon from "@material-ui/icons/Report";
-import "../Dashboard.css";
 import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
 
 export const firstDividerSideBarItems = (
   <div>
-    <ListItem button>
+    <ListItem component={Link} to="/dashboard" button>
       <ListItemIcon>
-        <InboxIcon />
+        <StarIcon />
       </ListItemIcon>
         <ListItemText primary="Connections" className="dashButton" />
     </ListItem>
-    <ListItem button>
+
+    <ListItem component={Link} to="/dashboard" button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
-      <ListItemText primary="Clubs" />
+      <ListItemText primary="Organizations" />
     </ListItem>
-    <ListItem button>
+
+    <ListItem component={Link} to="/dashboard" button>
       <ListItemIcon>
         <StarIcon />
-      </ListItemIcon>
-      <Link to="/createclub" >
-        <ListItemText primary="Create a Club" />
-      </Link>
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <SendIcon />
       </ListItemIcon>
       <ListItemText primary="Chats" />
     </ListItem>
-    <ListItem button>
+
+    <ListItem component={Link} to="/events" button>
       <ListItemIcon>
-        <DraftsIcon />
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="Events" />
     </ListItem>
@@ -55,19 +42,19 @@ export const secondDividerSideBarItems = (
   <div>
     <ListItem button>
       <ListItemIcon>
-        <MailIcon />
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="My profile" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <DeleteIcon />
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="Recommandation" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <ReportIcon />
+        <StarIcon />
       </ListItemIcon>
       <ListItemText primary="Setting" />
     </ListItem>

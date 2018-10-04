@@ -7,8 +7,8 @@ import "./Navbar.css";
 
 export default function NavBar(props) {
   return (
-    <div>
-      <AppBar position="sticky" style={{ backgroundColor: "#60b0f4" }}>
+    <div className="navbar">
+      <AppBar style={{ backgroundColor: "#60b0f4" }}>
         <Toolbar>
           <Button color="inherit" className="navButton">
             <Link to="/">Home</Link>

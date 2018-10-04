@@ -3,8 +3,12 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import NavBar from "../components/Navbar";
 import Homepage from "../components/Homepage";
+<<<<<<< HEAD
 import DashBoard from "../components/DashBoard";
 import CreateClub from "../components/CreateClub";
+=======
+import Dashboard from "../components/Dashboard";
+>>>>>>> origin/master
 import SignUp from "../components/SignUp";
 import Login from "../components/Login";
 require("../node_modules/normalize.css/normalize.css");
@@ -57,9 +61,27 @@ export default class App extends Component {
             <Route
               exact
               path="/dashboard"
-              render={() => (this.state.isAuth ? <DashBoard /> : <Login />)}
+              render={props =>
+                this.state.isAuth ? <Dashboard {...props} /> : <Login />
+              }
             />
+<<<<<<< HEAD
             <Route exact path="/createclub" component={CreateClub} />
+=======
+            <Route
+              exact
+              path="/events"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="events" />
+                ) : (
+                  <Login />
+                )
+              }
+            />
+
+            <Route render={() => <p>Page Not Found</p>} />
+>>>>>>> origin/master
           </Switch>
         </div>
       </BrowserRouter>

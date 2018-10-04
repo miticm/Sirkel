@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 .dashButton a {
     text-decoration: none !important;
     color: inherit !important;
   }
+=======
+.dashboard-content {
+  margin-left: 246px;
+}
+>>>>>>> origin/master
