@@ -64,18 +64,13 @@ function EventPost(props) {
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography variant="headline" className={classes.title}>
-            Name of the event
+            {props.name}
           </Typography>
-
-          <Typography className={classes.post} variant="body1">
-            Events here Events hereEvents hereEvents hereEvents hereEvents
-            hereEvents hereEvents hereEvents hereEvents hereEvents hereEvents
-            hereEvents hereEvents hereEvents hereEvents hereEvents hereEvents
-            hereEvents hereEvents hereEvents hereEvents hereEvents hereEvents
-            hereEvents hereEvents hereEvents hereEvents hereEvents hereEvents
-            hereEvents hereEvents hereEvents hereEvents hereEvents here
-          </Typography>
-          <Divider />
+          <p>{props.desc}</p>
+          <p>
+            Date:
+            {props.date}
+          </p>
         </Paper>
       </main>
     </React.Fragment>

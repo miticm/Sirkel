@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,7 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
-import DTpicker from "./DTpicker";
+import axios from "axios";
 
 const styles = theme => ({
   layout: {
@@ -49,57 +49,103 @@ const styles = theme => ({
   }
 });
 
-function CreatePost(props) {
-  const { classes } = props;
+class CreateEvent extends Component {
+  state = {
+    name: "",
+    desc: "",
+    date: "2018-10-01T00:00"
+  };
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+  onSubmit = e => {
+    e.preventDefault();
+    const event = {
+      name: this.state.name,
+      desc: this.state.desc,
+      date: this.state.date
+    };
+    axios
+      .post("http://127.0.0.1:5000/events", {
+        event
+      })
+      .then(res => {
+        if (res.status === 200) {
+          this.props.getEventsList();
+          console.log(this);
+          this.setState({
+            name: "",
+            desc: "",
+            date: "2018-10-01T00:00"
+          });
+        }
+      })
+      .catch(err => console.log(err));
+  };
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography variant="headline" className={classes.title}>
-            Create a new event
-          </Typography>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel>Name of the event</InputLabel>
-              <Input
-                name="event"
-                // value={this.state.event}
-                // onChange={this.onChange}
+  render() {
+    const { classes } = this.props;
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography variant="headline" className={classes.title}>
+              Create a new event
+            </Typography>
+            <form className={classes.form} onSubmit={this.onSubmit}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel>Name of the event</InputLabel>
+                <Input
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.onChange}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel>Description</InputLabel>
+                <Input
+                  name="desc"
+                  multiline
+                  value={this.state.desc}
+                  onChange={this.onChange}
+                />
+              </FormControl>
+
+              <TextField
+                fullWidth
+                style={{ marginTop: "16px" }}
+                id="datetime-local"
+                label="Choose date and time for the event"
+                type="datetime-local"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                name="date"
+                value={this.state.date}
+                onChange={this.onChange}
               />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel>Description</InputLabel>
-              <Input
-                name="Description"
-                multiline
-                // value={this.state.event}
-                // onChange={this.onChange}
-              />
-            </FormControl>
 
-            <DTpicker />
-
-            <Button
-              style={{ backgroundColor: "#60b0f4" }}
-              type="submit"
-              multiple
-              variant="raised"
-              color="primary"
-              className={classes.submit}
-            >
-              Post
-            </Button>
-          </form>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
+              <Button
+                style={{ backgroundColor: "#60b0f4" }}
+                type="submit"
+                multiple
+                variant="raised"
+                color="primary"
+                className={classes.submit}
+              >
+                Post
+              </Button>
+            </form>
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
-CreatePost.propTypes = {
+CreateEvent.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(CreatePost);
+export default withStyles(styles)(CreateEvent);

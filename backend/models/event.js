@@ -18,7 +18,7 @@ const EventSchema = new Schema({
     {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: "User"
       },
       username: String
     }
@@ -26,15 +26,15 @@ const EventSchema = new Schema({
   poster: {
     id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true
     },
     username: String
   },
   byOrg: {
     type: Boolean,
-    required: true
+    default: false
   }
 });
 
-const Event = module.exports = mongoose.model("Event", EventSchema);
+const Event = (module.exports = mongoose.model("Event", EventSchema));
