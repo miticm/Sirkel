@@ -71,8 +71,34 @@ export default class App extends Component {
                 )
               }
             />
+            <Route
+              exact
+              path="/settings"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="settings" />
+                ) : (
+                  <Login />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/profile"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="profile" />
+                ) : (
+                  <Login />
+                )
+              }
+            />
 
-            <Route render={() => <p>Page Not Found</p>} />
+            <Route
+              render={() => (
+                <p style={{ marginTop: "100px" }}>Page Not Found</p>
+              )}
+            />
           </Switch>
         </div>
       </BrowserRouter>

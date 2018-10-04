@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Sidebar from "./Sidebar";
 import Eventpage from "./Eventpage";
 import "./Dashboard.css";
+import Settings from "./Settings";
+import ProfilePage from "./ProfilePage";
 
 export default class Dashboard extends Component {
   render() {
@@ -13,8 +15,12 @@ export default class Dashboard extends Component {
             switch (this.props.show) {
               case "events":
                 return <Eventpage />;
+              case "settings":
+                return <Settings />;
+              case "profile":
+                return <ProfilePage />;
               default:
-                return <p>Dashboard</p>;
+                return <p>ToDo</p>;
             }
           })()}
         </div>

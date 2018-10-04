@@ -70,6 +70,8 @@ class Login extends Component {
           setAuthToken(token);
           this.props.login();
           this.props.history.push("/dashboard");
+        } else {
+          console.log(res.data.msg);
         }
       })
       .catch(err => console.log(err));

@@ -40,23 +40,18 @@ export const firstDividerSideBarItems = (
 
 export const secondDividerSideBarItems = (
   <div>
-    <ListItem button>
+    <ListItem component={Link} to="/profile" button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
       <ListItemText primary="My profile" />
     </ListItem>
-    <ListItem button>
+
+    <ListItem component={Link} to="/settings" button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
-      <ListItemText primary="Recommandation" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <StarIcon />
-      </ListItemIcon>
-      <ListItemText primary="Setting" />
+      <ListItemText primary="Settings" />
     </ListItem>
   </div>
 );
