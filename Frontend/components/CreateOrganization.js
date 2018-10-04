@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,6 +15,7 @@ const styles = theme => ({
     display: "block", // Fix IE11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
+    marginTop: "75px",
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 600,
       marginLeft: "auto",
@@ -22,7 +23,7 @@ const styles = theme => ({
     }
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit * 4,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -42,59 +43,55 @@ const styles = theme => ({
   }
 });
 
-class CreateClub extends Component {
-    state = {
-        organizationname: "",
-        description: ""
-    };
-
-    render() {
-        const { classes } = this.props;
-        
+function CreateOrganization(props) {
+    const { classes } = props;
+    
         return (
-        <React.Fragment>
-            <CssBaseline />
-            <main className={classes.layout}>
+          <React.Fragment>
+          <CssBaseline />
+          <main className={classes.layout}>
             <Paper className={classes.paper}>
-                <Typography variant="headline">Create an Organization</Typography>
-                <form className={classes.form} onSubmit={this.onSubmit}>
+              <Typography variant="headline" className={classes.title}>
+                Create a New Organization
+              </Typography>
+              <form className={classes.form}>
                 <FormControl margin="normal" required fullWidth>
-                    <InputLabel htmlFor="organizationname">Organization Name</InputLabel>
-                    <Input
-                    name="organizationname"
-                    onChange={this.onChange}
-                    value={this.state.username}
-                    />
+                  <InputLabel>Oranization Name</InputLabel>
+                  <Input
+                    name="organizationName"
+                    // value={this.state.event}
+                    // onChange={this.onChange}
+                  />
                 </FormControl>
                 <FormControl margin="normal" required fullWidth>
-                    <InputLabel htmlFor="description">Description</InputLabel>
-                    <Input
-                    name="description"
-                    onChange={this.onChange}
-                    value={this.state.password}
-                    type="description"
-                    />
+                  <InputLabel>Description</InputLabel>
+                  <Input
+                    name="Description"
+                    multiline
+                    // value={this.state.event}
+                    // onChange={this.onChange}
+                  />
                 </FormControl>
+    
                 <Button
-                    style={{ backgroundColor: "#60b0f4" }}
-                    type="submit"
-                    fullWidth
-                    variant="raised"
-                    color="primary"
-                    className={classes.submit}
+                  style={{ backgroundColor: "#60b0f4" }}
+                  type="submit"
+                  multiple
+                  variant="raised"
+                  color="primary"
+                  className={classes.submit}
                 >
-                    Create
+                  Create
                 </Button>
-                </form>
+              </form>
             </Paper>
-            </main>
+          </main>
         </React.Fragment>
         );
-    }
 }
 
-CreateClub.propTypes = {
+CreateOrganization.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(CreateClub);
+export default withStyles(styles)(CreateOrganization);
