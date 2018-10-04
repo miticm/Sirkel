@@ -16,19 +16,25 @@ const EventSchema = new Schema({
   },
   attendees: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    },
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      },
+      username: String
+    }
   ],
   poster: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
+    username: String
   },
   byOrg: {
     type: Boolean,
-    required: true
+    default: false
   }
 });
 
-const Event = module.exports = mongoose.model("Event", EventSchema);
+const Event = (module.exports = mongoose.model("Event", EventSchema));
