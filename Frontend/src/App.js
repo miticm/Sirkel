@@ -75,6 +75,17 @@ export default class App extends Component {
                 )
               }
             />
+                        <Route
+              exact
+              path="/organizations"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="organizations" />
+                ) : (
+                  <Login />
+                )
+              }
+            />
 
             <Route render={() => <p>Page Not Found</p>} />
           </Switch>
