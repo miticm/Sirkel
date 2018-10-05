@@ -11,6 +11,9 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import axios from "axios";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
 
 const styles = theme => ({
   layout: {
@@ -54,17 +57,20 @@ class CreateEvent extends Component {
   state = {
     name: "",
     desc: "",
-    date: "2018-10-01T00:00"
+    date: "2018-10-01T00:00",
+    byOrg: false
   };
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit = e => {
     e.preventDefault();
+
     const event = {
       name: this.state.name,
       desc: this.state.desc,
-      date: this.state.date
+      date: this.state.date,
+      byOrg: this.state.byOrg
     };
     axios
       .post("http://127.0.0.1:5000/events", {
@@ -77,11 +83,15 @@ class CreateEvent extends Component {
           this.setState({
             name: "",
             desc: "",
-            date: "2018-10-01T00:00"
+            date: "2018-10-01T00:00",
+            byOrg: false
           });
         }
       })
       .catch(err => console.log(err));
+  };
+  handleChange = e => {
+    this.setState({ byOrg: !this.state.byOrg });
   };
 
   render() {
@@ -119,13 +129,23 @@ class CreateEvent extends Component {
                 id="datetime-local"
                 label="Choose date and time for the event"
                 type="datetime-local"
-                InputLabelProps={{
-                  shrink: true
-                }}
+                InputLabelProps={{ shrink: true }}
                 name="date"
                 value={this.state.date}
                 onChange={this.onChange}
               />
+
+              <FormGroup row>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={this.state.byOrg}
+                      onChange={this.handleChange}
+                    />
+                  }
+                  label="Organzation event"
+                />
+              </FormGroup>
 
               <Button
                 style={{ backgroundColor: "#60b0f4" }}

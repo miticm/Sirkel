@@ -78,11 +78,13 @@ class EventPost extends Component {
             <Typography variant="headline" className={classes.title}>
               {this.props.name}
             </Typography>
-            <p>{this.props.desc}</p>
+            <h3>Host by: {this.props.byOrg ? "Organization" : "person"}</h3>
+            <p>Description: {this.props.desc}</p>
             <p>
               Date:
               {this.props.date}
             </p>
+            <h3>Attendee:</h3>
             <ul>
               {this.props.attendees.map(att => {
                 return (

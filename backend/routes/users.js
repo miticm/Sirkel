@@ -134,23 +134,13 @@ router.post(
         User.findById(req.params.id, (err, addeeUser) => {
           if (err) {
             res.json({
-<<<<<<< HEAD
               success: false,
               msg: err
-=======
-                success: false,
-                msg: err,
->>>>>>> a0be5e790da3a50788b64ea24d75e1852aa8ffa1
             });
           }
 
           let isConnection = false;
           addingUser.connections.forEach(connection => {
-<<<<<<< HEAD
-            if (connection.id === addeeUser._id) isConnection = true;
-          });
-
-=======
             console.log(connection.id);
             console.log(addeeUser._id);
             if (connection.id.equals(addeeUser._id)) isConnection = true;
@@ -158,7 +148,6 @@ router.post(
 
           console.log(isConnection);
 
->>>>>>> a0be5e790da3a50788b64ea24d75e1852aa8ffa1
           if (!isConnection) {
             addingUser.connections.push({
               id: addeeUser._id,
@@ -168,7 +157,6 @@ router.post(
 
             if (addingUser && addeeUser) {
               res.json({
-<<<<<<< HEAD
                 success: true
               });
             }
@@ -176,21 +164,12 @@ router.post(
             res.json({
               success: false,
               msg: "User is already connected."
-=======
-                success: true,
-              });
-            }
-          }
-          else {
-            res.json({
-              success: false,
-              msg: 'User is already connected.'
->>>>>>> a0be5e790da3a50788b64ea24d75e1852aa8ffa1
             });
           }
         });
       });
-  });
-});
+    });
+  }
+);
 
 module.exports = router;
