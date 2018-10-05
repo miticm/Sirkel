@@ -56,17 +56,18 @@ const styles = theme => ({
   }
 });
 
-class EventPost extends Component {
+class OrgProfile extends Component {
   
   render() {
     const { classes } = this.props;
+
     return (
       <React.Fragment>
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Typography variant="headline" className={classes.title}>
-              ORGANIZATION NAME
+                ORGANIZATION NAME
             </Typography>
             <p> INFO ABOUT ORG</p>
             <p> ANNOUNCEMENTS </p>
@@ -83,8 +84,8 @@ class EventPost extends Component {
   }
 }
 
-EventPost.propTypes = {
+OrgProfile.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(EventPost);
+export default withStyles(styles)(OrgProfile);

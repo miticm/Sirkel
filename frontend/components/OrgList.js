@@ -7,6 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
+import { Link, Route } from "react-router-dom";
+import "./Navbar.css";
+
 
 const styles = theme => ({
   layout: {
@@ -44,7 +47,8 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     marginTop: 0,
     marginLeft: 0,
-    marginRight: 0
+    marginRight: 0,
+    marginBottom: 10
   },
 
   title: {
@@ -67,8 +71,12 @@ function OrgList(props) {
             {props.name}
           </Typography>
           <p>{props.description}</p>
-          <Button style={{ backgroundColor: "#60b0f4", color: "white" }}>
+          <Button className={classes.submit} style={{ backgroundColor: "#60b0f4", color: "white" }}>
             Join
+          </Button>
+          <Button className="navButton"
+              style={{ backgroundColor: "#60b0f4", color: "white" }}>
+              <Link to="/orgprofile"> Visit Page </Link>
           </Button>
         </Paper>
       </main>
