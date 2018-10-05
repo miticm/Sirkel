@@ -33,10 +33,10 @@ const UserSchema = new Schema({
     {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        unique: true
       },
       username: String,
-      unique: true
     }
   ]
 });
