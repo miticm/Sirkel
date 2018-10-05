@@ -9,6 +9,7 @@ import Login from "../components/Login";
 require("../node_modules/normalize.css/normalize.css");
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
+import OrgProfile from "../components/OrgProfile";
 export default class App extends Component {
   state = {
     isAuth: false
@@ -48,6 +49,7 @@ export default class App extends Component {
           <Switch>
             <Route exact path="/" component={Homepage} />
             <Route exact path="/signup" component={SignUp} />
+
             <Route
               exact
               path="/login"
@@ -110,6 +112,17 @@ export default class App extends Component {
               render={props =>
                 this.state.isAuth ? (
                   <Dashboard {...props} show="connections" />
+                ) : (
+                  <Login />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/orgprofile"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="orgprofile" />
                 ) : (
                   <Login />
                 )
