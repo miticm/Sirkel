@@ -53,6 +53,7 @@ class Settings extends React.Component {
             <ListItemText primary="Allow direct chat" />
             <ListItemSecondaryAction>
               <Switch
+                color="primary"
                 onChange={this.handleToggle("wifi")}
                 checked={this.state.checked.indexOf("wifi") !== -1}
               />
@@ -65,6 +66,7 @@ class Settings extends React.Component {
             <ListItemText primary="Allow connect request" />
             <ListItemSecondaryAction>
               <Switch
+              color="primary"
                 onChange={this.handleToggle("bluetooth")}
                 checked={this.state.checked.indexOf("bluetooth") !== -1}
               />

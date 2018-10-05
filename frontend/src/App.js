@@ -12,7 +12,7 @@ import setAuthToken from "../utils/setAuthToken";
 import OrgProfile from "../components/OrgProfile";
 export default class App extends Component {
   state = {
-    isAuth: false
+    isAuth: localStorage.getItem("isAuth")
   };
   componentDidMount() {
     this.checkAuth();
@@ -30,6 +30,7 @@ export default class App extends Component {
       })
       .catch(err => {
         console.log("You are not logged in");
+        this.signOut()
       });
   };
   login = () => {
@@ -37,6 +38,7 @@ export default class App extends Component {
   };
   signOut = () => {
     localStorage.removeItem("jwtToken");
+    localStorage.removeItem("isAuth");
     setAuthToken("");
     this.setState({ isAuth: false });
   };
