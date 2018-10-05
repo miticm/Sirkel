@@ -107,4 +107,39 @@ router.get(
   }
 );
 
+router.post(
+  "/:id/add",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+      User.findById(req.user._id, (err, addingUser) => {
+          if (err) {
+              res.json({
+                  success: false,
+                  msg: err,
+              });
+          }
+
+          User.findById(req.params.id, (err, addeeUser) => {
+            if (err) {
+              res.json({
+                  success: false,
+                  msg: err,
+              });
+            }
+
+            addingUser.connections.push({
+              id: addeeUser._id,
+              username: addeeUser.username
+            });
+            addingUser.save();
+
+            if (addingUser && addeeUser) {
+              res.json({
+                success: true,
+              });
+            }
+          });
+      });
+});
+
 module.exports = router;
