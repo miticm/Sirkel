@@ -1,14 +1,22 @@
 import React, { Component } from "react";
-import Axios from "axios";
+import axios from "axios";
 
 export default class UserProfile extends Component {
   state = {
     allUsers: []
   };
+  componentDidMount() {
+    this.getAllUsers();
+  }
   getAllUsers = () => {
-    Axios.get("http://127.0.0.1:5000/users")
+    axios
+      .get("http://127.0.0.1:5000/users/")
       .then(res => {
-        console.log(res);
+        if (res.data.success) {
+          this.setState({
+            allUsers: res.data.users
+          });
+        }
       })
       .catch(err => console.log(err));
   };
@@ -16,10 +24,13 @@ export default class UserProfile extends Component {
     return (
       <div>
         {this.state.allUsers.map(user => {
-          <div>
-            <h2>{user.username}</h2>
-            <p>{user.email}</p>
-          </div>;
+          return (
+            <div>
+              <h2>{user.username}</h2>
+              <p>{user.email}</p>
+              <button>connect</button>
+            </div>
+          );
         })}
       </div>
     );

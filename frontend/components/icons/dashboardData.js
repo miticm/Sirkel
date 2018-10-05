@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export const firstDividerSideBarItems = (
   <div>
-    <ListItem component={Link} to="/dashboard" button>
+    <ListItem component={Link} to="/connections" button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
@@ -22,7 +22,7 @@ export const firstDividerSideBarItems = (
       <ListItemText primary="Organizations" />
     </ListItem>
 
-    <ListItem component={Link} to="/dashboard" button>
+    <ListItem component={Link} to="/chats" button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>

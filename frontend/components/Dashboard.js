@@ -5,6 +5,7 @@ import "./Dashboard.css";
 import Settings from "./Settings";
 import ProfilePage from "./ProfilePage";
 import OrgPage from "./OrgPage";
+import UserProfile from "./UserProfile";
 
 export default class Dashboard extends Component {
   render() {
@@ -22,6 +23,8 @@ export default class Dashboard extends Component {
                 return <ProfilePage />;
               case "org":
                 return <OrgPage />;
+              case "connections":
+                return <UserProfile />;
               default:
                 return <p>ToDo</p>;
             }
