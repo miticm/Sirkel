@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,9 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
-import { Link, Route } from "react-router-dom";
-import "./Navbar.css";
-
+import Axios from "axios";
 
 const styles = theme => ({
   layout: {
@@ -47,8 +45,7 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     marginTop: 0,
     marginLeft: 0,
-    marginRight: 0,
-    marginBottom: 10
+    marginRight: 0
   },
 
   title: {
@@ -59,33 +56,36 @@ const styles = theme => ({
   }
 });
 
-function OrgList(props) {
-  const { classes } = props;
+class OrgProfile extends Component {
+  
+  render() {
+    const { classes } = this.props;
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography variant="headline" className={classes.title}>
-            {props.name}
-          </Typography>
-          <p>{props.description}</p>
-          <Button className={classes.submit} style={{ backgroundColor: "#60b0f4", color: "white" }}>
-            Join
-          </Button>
-          <Button className="navButton"
-              style={{ backgroundColor: "#60b0f4", color: "white" }}>
-              <Link to="/orgprofile"> Visit Page </Link>
-          </Button>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography variant="headline" className={classes.title}>
+                ORGANIZATION NAME
+            </Typography>
+            <p> INFO ABOUT ORG</p>
+            <p> ANNOUNCEMENTS </p>
+            <Button
+              style={{ backgroundColor: "#60b0f4", color: "white" }}
+              onClick={this.onClick}
+            >
+              Join
+            </Button>
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
-OrgList.propTypes = {
+OrgProfile.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(OrgList);
+export default withStyles(styles)(OrgProfile);

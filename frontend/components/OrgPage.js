@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CreateOrg from "./CreateOrg";
 import OrgList from "./OrgList";
 import axios from "axios";
+
 export default class OrgPage extends Component {
   state = {
     OrgList: []
