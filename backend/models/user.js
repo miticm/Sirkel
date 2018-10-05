@@ -33,8 +33,7 @@ const UserSchema = new Schema({
     {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        unique: true
+        ref: 'User'
       },
       username: String,
     }

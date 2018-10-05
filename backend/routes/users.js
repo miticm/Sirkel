@@ -127,15 +127,38 @@ router.post(
           });
         }
 
-        addingUser.connections.push({
-          id: addeeUser._id,
-          username: addeeUser.username
-        });
-        addingUser.save();
+          User.findById(req.params.id, (err, addeeUser) => {
+            if (err) {
+              res.json({
+                  success: false,
+                  msg: err,
+              });
+            }
 
-        if (addingUser && addeeUser) {
-          res.json({
-            success: true
+            let isConnection = false;
+            addingUser.connections.forEach(connection => {
+              if (connection.id === addeeUser._id) isConnection = true;
+            });
+
+            if (!isConnection) {
+              addingUser.connections.push({
+                id: addeeUser._id,
+                username: addeeUser.username
+              });
+              addingUser.save();
+
+              if (addingUser && addeeUser) {
+                res.json({
+                  success: true,
+                });
+              }
+            }
+            else {
+              res.json({
+                success: false,
+                msg: 'User is already connected.'
+              });
+            }
           });
         }
       });
