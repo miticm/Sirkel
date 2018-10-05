@@ -22,13 +22,15 @@ export default class OrgPage extends Component {
   render() {
     return (
       <div>
-        <CreateOrg />
+        <CreateOrg getOrgList={this.getOrgList} />
         {this.state.OrgList.map(org => {
           return (
             <OrgList
-              key={org._id}
+              key={org._id + Math.random() * 100}
+              id={org._id}
               name={org.name}
               description={org.description}
+              orgObject={org}
             />
           );
         })}

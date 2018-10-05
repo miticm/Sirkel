@@ -5,7 +5,8 @@ module.exports = {
   entry: "./src/App.js",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js"
+    filename: "bundle.js",
+    publicPath: "/"
   },
   module: {
     rules: [
@@ -18,6 +19,7 @@ module.exports = {
   devtool: "inline-source-map",
   mode: "development",
   devServer: {
+    contentBase: path.join(__dirname, "dist"),
     historyApiFallback: true
   }
 };

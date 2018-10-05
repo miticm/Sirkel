@@ -25,11 +25,13 @@ export default class Dashboard extends Component {
               case "org":
                 return <OrgPage />;
               case "orgprofile":
-                return <OrgProfile />;
+                return <OrgProfile {...this.props} />;
               case "connections":
                 return <UserProfile />;
+              case "chats":
+                return <p>Under development</p>;
               default:
-                return <p>ToDo</p>;
+                return <h1>Start to find your sirkel !</h1>;
             }
           })()}
         </div>

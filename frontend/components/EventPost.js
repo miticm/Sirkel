@@ -83,7 +83,9 @@ class EventPost extends Component {
             </p>
             <ul>
               {this.props.attendees.map(att => {
-                return <li key={att.id}>{att.username}</li>;
+                return (
+                  <li key={att.id + Math.random() * 100}>{att.username}</li>
+                );
               })}
             </ul>
             <Button

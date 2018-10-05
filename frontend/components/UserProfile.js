@@ -39,7 +39,7 @@ export default class UserProfile extends Component {
       <div>
         {this.state.allUsers.map(user => {
           return (
-            <Paper>
+            <Paper key={user._id + Math.random() * 100}>
               <div>
                 <h2>{user.username}</h2>
                 <p>{user.email}</p>
@@ -49,9 +49,17 @@ export default class UserProfile extends Component {
                 >
                   connect
                 </Button>
-                {user.connections.map(user => {
-                  return <p>{user.username}</p>;
-                })}
+
+                <p>Connected with</p>
+                <ul>
+                  {user.connections.map(user => {
+                    return (
+                      <li key={(Math.random() * 100) / Math.PI}>
+                        {user.username}
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
             </Paper>
           );

@@ -73,6 +73,7 @@ class CreateOrg extends Component {
             name: "",
             description: ""
           });
+          this.props.getOrgList();
         }
       })
       .catch(err => console.log(err));

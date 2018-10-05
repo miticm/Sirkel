@@ -57,21 +57,60 @@ const styles = theme => ({
 });
 
 class OrgProfile extends Component {
-  
+  state = {
+    orgObject: {
+      name: "",
+      description: "",
+      leader: { username: "" },
+      members: [],
+      _id: ""
+    }
+  };
+  getOrgByID() {
+    Axios.get(`http://127.0.0.1:5000/orgs/${this.props.match.params.id}`).then(
+      res => {
+        console.log(res.data);
+        if (res.data.success) {
+          this.setState({ orgObject: res.data.org });
+        } else {
+          this.setState({ orgObject: { name: "Organization not found" } });
+        }
+      }
+    );
+  }
+  componentDidMount() {
+    this.getOrgByID();
+  }
+  onClick = e => {
+    Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/join`)
+      .then(res => {
+        if (res.data.success) {
+          this.getOrgByID();
+        }
+      })
+      .catch(err => console.log(err));
+  };
   render() {
     const { classes } = this.props;
-
     return (
       <React.Fragment>
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Typography variant="headline" className={classes.title}>
-                ORGANIZATION NAME
+              {this.state.orgObject.name}
             </Typography>
-            <p> INFO ABOUT ORG</p>
-            <p> ANNOUNCEMENTS </p>
+            <p> {this.state.orgObject.description}</p>
+
+            <p>{`Founder: ${this.state.orgObject.leader.username}`}</p>
+            <ul>
+              <p>Members:</p>
+              {this.state.orgObject.members.map(m => {
+                return <li key={Math.random() * 100}>{m.username}</li>;
+              })}
+            </ul>
             <Button
+              className={classes.submit}
               style={{ backgroundColor: "#60b0f4", color: "white" }}
               onClick={this.onClick}
             >

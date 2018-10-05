@@ -8,12 +8,15 @@ const Org = require("../models/org");
 
 const router = express.Router();
 
-router.post("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
     if (!req.user) {
-        res.json({
-            success: false,
-            msg: "Must be signed in to create an organization",
-        });
+      res.json({
+        success: false,
+        msg: "Must be signed in to create an organization"
+      });
     }
 
     const newOrg = req.body.org;
@@ -25,111 +28,120 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res, ne
     newOrg.members = [];
     newOrg.members.push(newOrg.leader);
     new Org(newOrg).save((err, org) => {
-        if (err) {
-            res.json({
-                success: false,
-                msg: err,
-            });
-        }
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
+        });
+      }
 
-        if (org) {
-            res.json({
-                success: true,
-                org
-            });
-        }
+      if (org) {
+        res.json({
+          success: true,
+          org
+        });
+      }
     });
-});
+  }
+);
 
 router.get("/", (req, res, next) => {
-    Org.find({}, (err, orgs) => {
-        if (err) {
-            res.json({
-                success: false,
-                msg: err,
-            });
-        }
+  Org.find({}, (err, orgs) => {
+    if (err) {
+      res.json({
+        success: false,
+        msg: err
+      });
+    }
 
-        if (orgs) {
-            res.json({
-                success: true,
-                orgs
-            });
-        }
-    });
+    if (orgs) {
+      res.json({
+        success: true,
+        orgs
+      });
+    }
+  });
 });
 
 router.get("/:id", (req, res, next) => {
-    Org.findById(req.params.id, (err, org) => {
-        if (err) {
-            res.json({
-                success: false,
-                msg: err,
-            });
-        }
-        
-        if (!org) {
-            res.json({
-                success: false,
-                msg: 'Organization not found.',
-            });
-        }
-        else {
-            res.json({
-                success: true,
-                org
-            });
-        }
-    });
+  Org.findById(req.params.id, (err, org) => {
+    if (err) {
+      res.json({
+        success: false,
+        msg: err
+      });
+    }
+
+    if (!org) {
+      res.json({
+        success: false,
+        msg: "Organization not found."
+      });
+    } else {
+      res.json({
+        success: true,
+        org
+      });
+    }
+  });
 });
 
 router.put(
-    "/:id",
-    passport.authenticate("jwt", { session: false }),
-    (req, res, next) => {
-        Org.findById(req.params.id, (err, org) => {
-            if (org.leader.id === req.user._id) {
-                const newOrg = req.body.org;
-                Org.findByIdAndUpdate(req.params.id, newOrg, (err, updatedOrg) => {
-                    if (err) {
-                        res.json({
-                            success: false,
-                            msg: err,
-                        });
-                    } else {
-                        res.json({
-                            success: true,
-                            org: updatedOrg
-                        });
-                    }
-                });
-            }
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Org.findById(req.params.id, (err, org) => {
+      if (org.leader.id === req.user._id) {
+        const newOrg = req.body.org;
+        Org.findByIdAndUpdate(req.params.id, newOrg, (err, updatedOrg) => {
+          if (err) {
+            res.json({
+              success: false,
+              msg: err
+            });
+          } else {
+            res.json({
+              success: true,
+              org: updatedOrg
+            });
+          }
         });
-});
+      }
+    });
+  }
+);
 
 router.post(
-    "/:id/join",
-    passport.authenticate("jwt", { session: false }),
-    (req, res, next) => {
-        Org.findById(req.params.id, (err, org) => {
-            if (err) {
-                res.json({
-                    success: false,
-                    msg: err,
-                });
-            }
-            org.members.push({
-                id: req.user._id,
-                username: req.user.username
-            });
-            org.save();
-
-            if (org) {
-                res.json({
-                    success: true,
-                });
-            }
+  "/:id/join",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Org.findById(req.params.id, (err, org) => {
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
         });
-});
+      }
+      org.members.push({
+        id: req.user._id,
+        username: req.user.username
+      });
+
+      org
+        .save()
+        .then(product => {
+          res.json({ success: true, product });
+        })
+        .catch(err => {
+          console.log(err);
+          res.json({
+            success: false,
+            msg: err,
+            fromSave: true
+          });
+        });
+    });
+  }
+);
 
 module.exports = router;

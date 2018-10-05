@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import { Link, Route } from "react-router-dom";
 import "./Navbar.css";
-
+import Axios from "axios";
 
 const styles = theme => ({
   layout: {
@@ -59,29 +59,33 @@ const styles = theme => ({
   }
 });
 
-function OrgList(props) {
-  const { classes } = props;
+class OrgList extends Component {
+  state = {
+    orgInfo: {}
+  };
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography variant="headline" className={classes.title}>
-            {props.name}
-          </Typography>
-          <p>{props.description}</p>
-          <Button className={classes.submit} style={{ backgroundColor: "#60b0f4", color: "white" }}>
-            Join
-          </Button>
-          <Button className="navButton"
-              style={{ backgroundColor: "#60b0f4", color: "white" }}>
-              <Link to="/orgprofile"> Visit Page </Link>
-          </Button>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
+  render() {
+    const { classes } = this.props;
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography variant="headline" className={classes.title}>
+              {this.props.name}
+            </Typography>
+            <p>{this.props.description}</p>
+            <Button
+              className="navButton"
+              style={{ backgroundColor: "#60b0f4", color: "white" }}
+            >
+              <Link to={`/org/${this.props.id}`}> Visit Page </Link>
+            </Button>
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
 }
 
 OrgList.propTypes = {

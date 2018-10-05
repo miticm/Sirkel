@@ -59,7 +59,11 @@ export default class App extends Component {
               exact
               path="/dashboard"
               render={props =>
-                this.state.isAuth ? <Dashboard {...props} /> : <Login />
+                this.state.isAuth ? (
+                  <Dashboard {...props} />
+                ) : (
+                  <Redirect to="/login" />
+                )
               }
             />
             <Route
@@ -69,7 +73,7 @@ export default class App extends Component {
                 this.state.isAuth ? (
                   <Dashboard {...props} show="events" />
                 ) : (
-                  <Login />
+                  <Redirect to="/login" />
                 )
               }
             />
@@ -80,7 +84,7 @@ export default class App extends Component {
                 this.state.isAuth ? (
                   <Dashboard {...props} show="settings" />
                 ) : (
-                  <Login />
+                  <Redirect to="/login" />
                 )
               }
             />
@@ -91,7 +95,7 @@ export default class App extends Component {
                 this.state.isAuth ? (
                   <Dashboard {...props} show="profile" />
                 ) : (
-                  <Login />
+                  <Redirect to="/login" />
                 )
               }
             />
@@ -102,7 +106,7 @@ export default class App extends Component {
                 this.state.isAuth ? (
                   <Dashboard {...props} show="org" />
                 ) : (
-                  <Login />
+                  <Redirect to="/login" />
                 )
               }
             />
@@ -113,7 +117,7 @@ export default class App extends Component {
                 this.state.isAuth ? (
                   <Dashboard {...props} show="connections" />
                 ) : (
-                  <Login />
+                  <Redirect to="/login" />
                 )
               }
             />
@@ -124,7 +128,29 @@ export default class App extends Component {
                 this.state.isAuth ? (
                   <Dashboard {...props} show="orgprofile" />
                 ) : (
-                  <Login />
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/org/:id"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="orgprofile" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/chats"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="chats" />
+                ) : (
+                  <Redirect to="/login" />
                 )
               }
             />
