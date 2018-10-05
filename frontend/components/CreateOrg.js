@@ -42,6 +42,8 @@ const styles = theme => ({
   },
   title: {
     width: "100%",
+    textAlign: "center",
+    color: "#ffffff", 
     backgroundColor: "#60b0f4",
     padding: theme.spacing.unit * (1 / 2),
     marginBottom: 0
