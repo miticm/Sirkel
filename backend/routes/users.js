@@ -127,43 +127,45 @@ router.post(
           });
         }
 
-          User.findById(req.params.id, (err, addeeUser) => {
-            if (err) {
-              res.json({
-                  success: false,
-                  msg: err,
-              });
-            }
-
-            let isConnection = false;
-            addingUser.connections.forEach(connection => {
-              if (connection.id === addeeUser._id) isConnection = true;
-            });
-
-            if (!isConnection) {
-              addingUser.connections.push({
-                id: addeeUser._id,
-                username: addeeUser.username
-              });
-              addingUser.save();
-
-              if (addingUser && addeeUser) {
-                res.json({
-                  success: true,
-                });
-              }
-            }
-            else {
-              res.json({
+        User.findById(req.params.id, (err, addeeUser) => {
+          if (err) {
+            res.json({
                 success: false,
-                msg: 'User is already connected.'
+                msg: err,
+            });
+          }
+
+          let isConnection = false;
+          addingUser.connections.forEach(connection => {
+            console.log(connection.id);
+            console.log(addeeUser._id);
+            if (connection.id.equals(addeeUser._id)) isConnection = true;
+          });
+
+          console.log(isConnection);
+
+          if (!isConnection) {
+            addingUser.connections.push({
+              id: addeeUser._id,
+              username: addeeUser.username
+            });
+            addingUser.save();
+
+            if (addingUser && addeeUser) {
+              res.json({
+                success: true,
               });
             }
-          });
-        }
+          }
+          else {
+            res.json({
+              success: false,
+              msg: 'User is already connected.'
+            });
+          }
+        });
       });
-    });
-  }
-);
+  });
+});
 
 module.exports = router;
