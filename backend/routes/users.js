@@ -7,6 +7,24 @@ const User = require("../models/user");
 
 const router = express.Router();
 
+router.get("/", (req, res, next) => {
+  User.find({}, (err, users) => {
+    if (err) {
+      res.json({
+        success: false,
+        msg: err
+      });
+    }
+
+    if (users) {
+      res.json({
+        success: true,
+        users
+      });
+    }
+  });
+});
+
 router.post("/register", (req, res, next) => {
   let newUser = new User({
     email: req.body.email,
