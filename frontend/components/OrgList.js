@@ -17,8 +17,8 @@ const styles = theme => ({
     display: "block", // Fix IE11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
-    marginTop: "75px",
-    marginBottom: "75px",
+    marginTop: "25px",
+    marginBottom: "25px",
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: "90%",
       marginLeft: "auto",
@@ -53,6 +53,8 @@ const styles = theme => ({
 
   title: {
     backgroundColor: "#60b0f4",
+    color: "#ffffff",
+    textAlign: "center",
     padding: theme.spacing.unit * (1 / 2),
     marginBottom: 0,
     width: "100%"
