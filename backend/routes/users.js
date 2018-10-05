@@ -102,7 +102,11 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.json({
-      success: true
+      success: true,
+      user: {
+        id: req.user._id,
+        username: req.user.username
+      }
     });
   }
 );
@@ -127,40 +131,38 @@ router.post(
           });
         }
 
-          User.findById(req.params.id, (err, addeeUser) => {
-            if (err) {
-              res.json({
-                  success: false,
-                  msg: err,
-              });
-            }
-
-            let isConnection = false;
-            addingUser.connections.forEach(connection => {
-              if (connection.id === addeeUser._id) isConnection = true;
+        User.findById(req.params.id, (err, addeeUser) => {
+          if (err) {
+            res.json({
+              success: false,
+              msg: err
             });
+          }
 
-            if (!isConnection) {
-              addingUser.connections.push({
-                id: addeeUser._id,
-                username: addeeUser.username
-              });
-              addingUser.save();
-
-              if (addingUser && addeeUser) {
-                res.json({
-                  success: true,
-                });
-              }
-            }
-            else {
-              res.json({
-                success: false,
-                msg: 'User is already connected.'
-              });
-            }
+          let isConnection = false;
+          addingUser.connections.forEach(connection => {
+            if (connection.id === addeeUser._id) isConnection = true;
           });
-        }
+
+          if (!isConnection) {
+            addingUser.connections.push({
+              id: addeeUser._id,
+              username: addeeUser.username
+            });
+            addingUser.save();
+
+            if (addingUser && addeeUser) {
+              res.json({
+                success: true
+              });
+            }
+          } else {
+            res.json({
+              success: false,
+              msg: "User is already connected."
+            });
+          }
+        });
       });
     });
   }

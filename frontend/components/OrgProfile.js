@@ -8,6 +8,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import Axios from "axios";
+import Switch from "@material-ui/core/Switch";
+import Avatar from "@material-ui/core/Avatar";
 
 const styles = theme => ({
   layout: {
@@ -61,9 +63,10 @@ class OrgProfile extends Component {
     orgObject: {
       name: "",
       description: "",
-      leader: { username: "" },
+      leader: { username: "", id: "" },
       members: [],
-      _id: ""
+      _id: "",
+      avatar: ""
     }
   };
   getOrgByID() {
@@ -100,13 +103,29 @@ class OrgProfile extends Component {
             <Typography variant="headline" className={classes.title}>
               {this.state.orgObject.name}
             </Typography>
+            <Avatar
+              alt="orj avatar"
+              src={this.state.orgObject.avatar}
+              style={{ height: 80, width: 80 }}
+            />
             <p> {this.state.orgObject.description}</p>
 
             <p>{`Founder: ${this.state.orgObject.leader.username}`}</p>
             <ul>
               <p>Members:</p>
               {this.state.orgObject.members.map(m => {
-                return <li key={Math.random() * 100}>{m.username}</li>;
+                if (
+                  this.state.orgObject.leader.id ==
+                  localStorage.getItem("userID")
+                ) {
+                  return (
+                    <li key={Math.random() * 100}>
+                      {m.username} <Switch color="primary" />
+                    </li>
+                  );
+                } else {
+                  return <li key={Math.random() * 100}>{m.username}</li>;
+                }
               })}
             </ul>
             <Button
