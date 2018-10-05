@@ -6,6 +6,7 @@ import Settings from "./Settings";
 import ProfilePage from "./ProfilePage";
 import OrgPage from "./OrgPage";
 import OrgProfile from "./OrgProfile";
+import UserProfile from "./UserProfile";
 
 export default class Dashboard extends Component {
   render() {
@@ -25,6 +26,8 @@ export default class Dashboard extends Component {
                 return <OrgPage />;
               case "orgprofile":
                 return <OrgProfile />;
+              case "connections":
+                return <UserProfile />;
               default:
                 return <p>ToDo</p>;
             }

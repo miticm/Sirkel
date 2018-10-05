@@ -108,6 +108,17 @@ export default class App extends Component {
             />
             <Route
               exact
+              path="/connections"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="connections" />
+                ) : (
+                  <Login />
+                )
+              }
+            />
+            <Route
+              exact
               path="/orgprofile"
               render={props =>
                 this.state.isAuth ? (

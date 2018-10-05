@@ -28,6 +28,16 @@ const UserSchema = new Schema({
         },
         orgname: String
     },
+  ],
+  connections: [
+    {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        unique: true
+      },
+      username: String,
+    }
   ]
 });
 
