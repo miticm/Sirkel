@@ -36,9 +36,27 @@ router.post(
       }
 
       if (org) {
-        res.json({
-          success: true,
-          org
+        const newUser = req.user;
+        if (!newUser.orgsAdmin) newUser.orgsAdmin = [];
+        newUser.orgsAdmin.push({
+          id: org._id,
+          orgname: org.name
+        });
+
+        User.findByIdAndUpdate(req.user._id, newUser, (err, updatedUser) => {
+          if (err) {
+            res.json({
+              success: false,
+              msg: err
+            });
+          }
+
+          if (updatedUser && org) {
+            res.json({
+              success: true,
+              org
+            });
+          }
         });
       }
     });
