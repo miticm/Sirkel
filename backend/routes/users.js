@@ -103,10 +103,7 @@ router.get(
   (req, res) => {
     res.json({
       success: true,
-      user: {
-        id: req.user._id,
-        username: req.user.username
-      }
+      user: req.user
     });
   }
 );

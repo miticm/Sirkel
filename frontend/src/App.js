@@ -9,7 +9,6 @@ import Login from "../components/Login";
 require("../node_modules/normalize.css/normalize.css");
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
-import OrgProfile from "../components/OrgProfile";
 export default class App extends Component {
   state = {
     isAuth: localStorage.getItem("isAuth")
@@ -30,7 +29,7 @@ export default class App extends Component {
       })
       .catch(err => {
         console.log("You are not logged in");
-        this.signOut()
+        this.signOut();
       });
   };
   login = () => {

@@ -31,9 +31,9 @@ const EventSchema = new Schema({
     },
     username: String
   },
-  byOrg: {
-    type: Boolean,
-    default: false
+  hostBy: {
+    type: String,
+    required: true
   }
 });
 

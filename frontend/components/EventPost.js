@@ -86,7 +86,9 @@ class EventPost extends Component {
             </Typography>
             <h3>
               Host by:{" "}
-              {this.props.byOrg ? "Organization" : this.props.poster.username}
+              {this.props.hostBy == "Myself"
+                ? this.props.poster.username
+                : this.props.hostBy}{" "}
             </h3>
             <p>Description: {this.props.desc}</p>
             <p>

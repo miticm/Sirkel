@@ -6,7 +6,6 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
-import Divider from "@material-ui/core/Divider";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
@@ -14,6 +13,9 @@ import axios from "axios";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import setAuthToken from "../utils/setAuthToken";
 
 const styles = theme => ({
   layout: {
@@ -50,6 +52,9 @@ const styles = theme => ({
     backgroundColor: "#60b0f4",
     padding: theme.spacing.unit * (1 / 2),
     marginBottom: 0
+  },
+  formControl: {
+    marginTop: theme.spacing.unit * 2
   }
 });
 
@@ -58,8 +63,15 @@ class CreateEvent extends Component {
     name: "",
     desc: "",
     date: "2018-10-01T00:00",
-    byOrg: false
+    hostBy: "Myself",
+    orgsAdmin: []
   };
+
+  componentDidMount() {
+    const token = localStorage.getItem("jwtToken");
+    setAuthToken(token);
+    this.getOrgsAdmin();
+  }
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -70,29 +82,36 @@ class CreateEvent extends Component {
       name: this.state.name,
       desc: this.state.desc,
       date: this.state.date,
-      byOrg: this.state.byOrg
+      hostBy: this.state.hostBy
     };
     axios
       .post("http://127.0.0.1:5000/events", {
         event
       })
       .then(res => {
-        if (res.status === 200) {
+        if (res.status == 200) {
           this.props.getEventsList();
           console.log(this);
           this.setState({
             name: "",
             desc: "",
             date: "2018-10-01T00:00",
-            byOrg: false
+            hostBy: "Myself"
           });
         }
       })
       .catch(err => console.log(err));
   };
-  handleChange = e => {
-    this.setState({ byOrg: !this.state.byOrg });
-  };
+  getOrgsAdmin() {
+    axios
+      .get("http://127.0.0.1:5000/users/checkToken")
+      .then(res => {
+        if (res.data.success) {
+          this.setState({ orgsAdmin: res.data.user.orgsAdmin });
+        }
+      })
+      .catch(err => console.log(err));
+  }
 
   render() {
     const { classes } = this.props;
@@ -135,17 +154,27 @@ class CreateEvent extends Component {
                 onChange={this.onChange}
               />
 
-              <FormGroup row>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={this.state.byOrg}
-                      onChange={this.handleChange}
-                    />
-                  }
-                  label="Organzation event"
-                />
-              </FormGroup>
+              <FormControl fullWidth className={classes.formControl}>
+                <InputLabel>Event host by</InputLabel>
+                <Select
+                  value={this.state.hostBy}
+                  onChange={this.onChange}
+                  inputProps={{
+                    name: "hostBy"
+                  }}
+                >
+                  <MenuItem value="Myself">
+                    <em>Myself</em>
+                  </MenuItem>
+                  {this.state.orgsAdmin.map(org => {
+                    return (
+                      <MenuItem key={org._id} value={`${org.orgname}`}>
+                        {org.orgname}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
 
               <Button
                 style={{ backgroundColor: "#60b0f4" }}
