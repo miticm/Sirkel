@@ -33,6 +33,7 @@ export default class Eventpage extends Component {
               getEventsList={this.getEventsList}
               attendees={e.attendees}
               byOrg={e.byOrg}
+              poster={e.poster}
             />
           );
         })}

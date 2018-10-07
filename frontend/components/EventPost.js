@@ -70,6 +70,12 @@ class EventPost extends Component {
   };
   render() {
     const { classes } = this.props;
+    const date = new Date(this.props.date);
+    const options = {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true
+    };
     return (
       <React.Fragment>
         <CssBaseline />
@@ -78,11 +84,17 @@ class EventPost extends Component {
             <Typography variant="headline" className={classes.title}>
               {this.props.name}
             </Typography>
-            <h3>Host by: {this.props.byOrg ? "Organization" : "person"}</h3>
+            <h3>
+              Host by:{" "}
+              {this.props.byOrg ? "Organization" : this.props.poster.username}
+            </h3>
             <p>Description: {this.props.desc}</p>
             <p>
               Date:
-              {this.props.date}
+              {" " +
+                date.toLocaleDateString() +
+                " " +
+                date.toLocaleString("en-US", options)}
             </p>
             <h3>Attendee:</h3>
             <ul>
