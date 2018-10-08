@@ -8,7 +8,7 @@ export default class Eventpage extends Component {
   };
   getEventsList = () => {
     axios
-      .get("http://127.0.0.1:5000/events")
+      .get("http://159.65.160.251:5000/events")
       .then(res => {
         console.log(res.data);
         this.setState({ eventsList: res.data.events });

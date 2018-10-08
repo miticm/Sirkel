@@ -60,7 +60,7 @@ const styles = theme => ({
 
 class EventPost extends Component {
   onClick = e => {
-    Axios.post(`http://127.0.0.1:5000/events/${this.props.id}/attend`)
+    Axios.post(`http://159.65.160.251:5000/events/${this.props.id}/attend`)
       .then(res => {
         if (res.data.success) {
           this.props.getEventsList();

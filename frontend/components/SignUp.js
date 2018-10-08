@@ -59,7 +59,7 @@ class SignUp extends Component {
     e.preventDefault();
 
     axios
-      .post("http://127.0.0.1:5000/users/register", {
+      .post("http://159.65.160.251:5000/users/register", {
         username: this.state.username,
         email: this.state.email,
         password: this.state.password

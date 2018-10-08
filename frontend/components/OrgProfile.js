@@ -70,7 +70,7 @@ class OrgProfile extends Component {
     }
   };
   getOrgByID() {
-    Axios.get(`http://127.0.0.1:5000/orgs/${this.props.match.params.id}`).then(
+    Axios.get(`http://159.65.160.251:5000/orgs/${this.props.match.params.id}`).then(
       res => {
         console.log(res.data);
         if (res.data.success) {
@@ -85,7 +85,7 @@ class OrgProfile extends Component {
     this.getOrgByID();
   }
   onClick = e => {
-    Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/join`)
+    Axios.post(`http://159.65.160.251:5000/orgs/${this.state.orgObject._id}/join`)
       .then(res => {
         if (res.data.success) {
           this.getOrgByID();

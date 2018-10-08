@@ -85,7 +85,7 @@ class CreateEvent extends Component {
       hostBy: this.state.hostBy
     };
     axios
-      .post("http://127.0.0.1:5000/events", {
+      .post("http://159.65.160.251:5000/events", {
         event
       })
       .then(res => {
@@ -104,7 +104,7 @@ class CreateEvent extends Component {
   };
   getOrgsAdmin() {
     axios
-      .get("http://127.0.0.1:5000/users/checkToken")
+      .get("http://159.65.160.251:5000/users/checkToken")
       .then(res => {
         if (res.data.success) {
           this.setState({ orgsAdmin: res.data.user.orgsAdmin });

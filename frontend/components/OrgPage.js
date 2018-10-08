@@ -9,7 +9,7 @@ export default class OrgPage extends Component {
   };
   getOrgList = () => {
     axios
-      .get("http://127.0.0.1:5000/orgs")
+      .get("http://159.65.160.251:5000/orgs")
       .then(res => {
         console.log(res.data);
         this.setState({ OrgList: res.data.orgs });

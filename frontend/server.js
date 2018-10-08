@@ -8,6 +8,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.resolve(distPath, "index.html"));
 });
 
-app.listen(3000, () => {
-  console.log("http://localhost:3000");
+app.listen(80, () => {
+  console.log("http://localhost:80");
 });

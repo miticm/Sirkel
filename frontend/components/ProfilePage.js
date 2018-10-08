@@ -24,7 +24,7 @@ class ProfilePage extends Component {
     email: ""
   };
   componentDidMount() {
-    axios.get("http://127.0.0.1:5000/users/profile").then(res => {
+    axios.get("http://159.65.160.251:5000/users/profile").then(res => {
       this.setState({
         username: res.data.user.username,
         email: res.data.user.email

@@ -11,7 +11,7 @@ export default class UserProfile extends Component {
   }
   getAllUsers = () => {
     axios
-      .get("http://127.0.0.1:5000/users/")
+      .get("http://159.65.160.251:5000/users/")
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -24,7 +24,7 @@ export default class UserProfile extends Component {
   onClick = id => {
     console.log(id);
     axios
-      .post(`http://127.0.0.1:5000/users/${id}/add`)
+      .post(`http://159.65.160.251:5000/users/${id}/add`)
       .then(res => {
         if (res.data.success) {
           this.getAllUsers();

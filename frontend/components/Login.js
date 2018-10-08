@@ -57,7 +57,7 @@ class Login extends Component {
   onSubmit = e => {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:5000/users/authenticate", {
+      .post("http://159.65.160.251:5000/users/authenticate", {
         username: this.state.username,
         password: this.state.password
       })

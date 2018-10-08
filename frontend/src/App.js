@@ -21,7 +21,7 @@ export default class App extends Component {
     const token = localStorage.getItem("jwtToken");
     setAuthToken(token);
     axios
-      .get("http://127.0.0.1:5000/users/checkToken")
+      .get("http://159.65.160.251:5000/users/checkToken")
       .then(res => {
         if (res.data.success) {
           this.login();

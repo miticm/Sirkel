@@ -65,7 +65,7 @@ class CreateOrg extends Component {
       description: this.state.description
     };
     axios
-      .post("http://127.0.0.1:5000/orgs", {
+      .post("http://159.65.160.251:5000/orgs", {
         org
       })
       .then(res => {
