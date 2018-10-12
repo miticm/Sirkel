@@ -12,11 +12,11 @@ import setAuthToken from "../utils/setAuthToken";
 import io from "socket.io-client";
 
 export default class App extends Component {
-  socket = (this.socket = io("http://127.0.0.1:5000"));
-
+  socket = null;
   state = {
     isAuth: localStorage.getItem("isAuth")
   };
+
   componentDidMount() {
     this.checkAuth();
   }
@@ -38,6 +38,10 @@ export default class App extends Component {
   };
   login = () => {
     this.setState({ isAuth: true });
+    this.socket = this.socket = io("http://127.0.0.1:5000");
+    this.socket.on("connect", () => {
+      console.log("It worked");
+    });
   };
   signOut = () => {
     localStorage.removeItem("jwtToken");
