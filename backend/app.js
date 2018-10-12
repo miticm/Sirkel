@@ -5,6 +5,7 @@ const passport = require("passport");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const config = require("./config/database");
+const socket = require("socket.io");
 
 // Import models
 const User = require("./models/user");
@@ -15,6 +16,14 @@ const orgs = require("./routes/orgs");
 const events = require("./routes/events");
 
 const app = express();
+
+const server = app.listen(5000, () => {
+  console.log("http://localhost:5000");
+});
+const io = socket(server);
+io.on("connection", socket => {
+  console.log("make connection with " + socket.id);
+});
 
 // Enable All CORS Requests
 app.use(cors());
@@ -37,7 +46,3 @@ app.use("/events", events);
 app.use(passport.initialize());
 app.use(passport.session());
 require("./config/passport")(passport);
-
-app.listen(5000, () => {
-  console.log("http://localhost:5000");
-});
