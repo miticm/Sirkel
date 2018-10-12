@@ -20,6 +20,8 @@ const app = express();
 const server = app.listen(5000, () => {
   console.log("http://localhost:5000");
 });
+
+// Set up socket.io
 const io = socket(server);
 io.on("connection", socket => {
   console.log("make connection with " + socket.id);
