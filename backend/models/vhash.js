@@ -20,7 +20,7 @@ const vHashSchema = new Schema({
 const vHash= module.exports = mongoose.model("vHash", vHashSchema);
 
 
-module.exports.getUserIDByvHash = function(hash, callback) {
+module.exports.getHashByvHash = function(hash, callback) {
     const query = {hash: hash};
     vHash.findOne(query, callback);
   }

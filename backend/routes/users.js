@@ -57,8 +57,9 @@ router.post("/authenticate", (req, res, next) => {
 
   User.getUserByUsername(username, (err, user) => {
     if (err) throw err;
-    if (!user) return res.json({ sucess: false, msg: "user not found" });
-    if (user.)
+    if (!user) return res.json({ success: false, msg: "user not found" });
+    if (!user.verified) return res.json({ success: false, msg: "user not verified" });
+
     User.comparePassword(password, user.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch) {
@@ -96,7 +97,6 @@ router.get(
     });
   }
 );
-
 router.get(
   "/checkToken",
   passport.authenticate("jwt", { session: false }),
