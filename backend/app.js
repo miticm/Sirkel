@@ -13,7 +13,6 @@ const Event = require("./models/event");
 const users = require("./routes/users");
 const orgs = require("./routes/orgs");
 const events = require("./routes/events");
-const verify = require("./routes/verify");
 
 const app = express();
 
@@ -34,7 +33,6 @@ app.use(bodyParser.json());
 app.use("/users", users);
 app.use("/orgs", orgs);
 app.use("/events", events);
-app.use("/verify", verify);
 
 app.use(passport.initialize());
 app.use(passport.session());

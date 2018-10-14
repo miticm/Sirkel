@@ -4,23 +4,12 @@ const Schema = mongoose.Schema;
 const vHashSchema = new Schema({
   hash: {
     type: String,
-    default: crypto.randomBytes(25).toString('hex'),
     required: true
   },
   userid: {
-    id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    username: String
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   }
 });
 
-const vHash= module.exports = mongoose.model("vHash", vHashSchema);
-
-
-module.exports.getHashByvHash = function(hash, callback) {
-    const query = {hash: hash};
-    vHash.findOne(query, callback);
-  }
+const vHash = module.exports = mongoose.model("vHash", vHashSchema);
