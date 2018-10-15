@@ -210,7 +210,7 @@ router.post(
 
 
 
-router.post("/verify/:hsh", (req, res, next) => {
+router.get("/verify/:hsh", (req, res, next) => {
   vHash.findOne({hash: req.params.hsh}, (err,hash) => {
       if (err) throw err;
       if (!hash) return res.json({ success: false, msg: "hash not found " });
