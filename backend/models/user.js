@@ -37,12 +37,7 @@ const UserSchema = new Schema({
       },
       username: String,
     }
-  ],
-  verified: {
-    type: Boolean,
-    default: false,
-    required: true
-  }
+  ]
 });
 
 
