@@ -1,26 +1,11 @@
 const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const nodemailer = require('nodemailer')
-const validator = require('email-validator')
-const crypto = require('crypto')
 
 const config = require("../config/database");
 const User = require("../models/user");
-const vHash = require("../models/vhash");
 
 const router = express.Router();
-
-const serverURL = '159.65.160.251';
-const senderAddr = 'sirkel2018@gmail.com';
-const senderPass = 'CS307FALL2018';
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-         user: senderAddr,
-         pass: senderPass
-     }
- });
 
 router.get("/", (req, res, next) => {
   User.find({}, (err, users) => {
@@ -41,13 +26,6 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/register", (req, res, next) => {
-  if (!req.body.email || !req.body.username || !req.body.password) {
-    return res.json({ success: false, msg: "one or more empty fields" });
-  }
-  if (!validator.validate(req.body.email)) {
-    return res.json({ success: false, msg: "email is invalid" });
-  }
-
   let newUser = new User({
     email: req.body.email,
     username: req.body.username,
@@ -55,39 +33,22 @@ router.post("/register", (req, res, next) => {
   });
 
   User.addUser(newUser, (err, user) => {
-    if (err) return res.json({ success: false, msg: "Failed to register user" });
-    let verhash = new vHash({
-      hash: crypto.randomBytes(20).toString('hex'),
-      userid: user._id
-    });
-    verhash.save((err,h) => {
-      if (err) return res.json({ success: false, msg: "hash did not save to database" });
-    });
-    let mail = {
-      from: senderAddr,
-      to: user.email,
-      subject: 'Welcome to Sirkel!',
-      html: '<p>Hello!\nWelcome to Sirkel, please verify your account using the link below:\n</p><a href=\"' 
-      + serverURL + '/users/verify/' + verhash.hash +  '\">' + serverURL + '/users/verify/' + verhash.hash + '</a>'
-      + '<p>\n\n- The Sirkel Team</p>'
-    };
-    transporter.sendMail(mail, function (err, dat) {
-      if(err){ //email coulnd't be sent, delete new user and hash
-        User.findByIdAndDelete(user._id);
-        vHash.findByIdAndDelete(verhash._id);
-        res.json({ success: false, msg: "error sending verification email" });
-      }
-      else {
-        res.json({
-          success: true,
-          user: {
-           id: user._id,
-           username: user.username,
-           email: user.email
-          }
-        });
-      }
-   });
+    if (err) res.json({ success: false, msg: "Failed to register user" });
+    else {
+      const token = jwt.sign(user.toJSON(), config.secret, {
+        expiresIn: "1d"
+      });
+
+      res.json({
+        success: true,
+        token: "JWT " + token,
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email
+        }
+      });
+    }
   });
 });
 
@@ -96,8 +57,7 @@ router.post("/authenticate", (req, res, next) => {
 
   User.getUserByUsername(username, (err, user) => {
     if (err) throw err;
-    if (!user) return res.json({ success: false, msg: "user not found" });
-    if (!user.verified) return res.json({ success: false, msg: "user not verified" });
+    if (!user) return res.json({ sucess: false, msg: "user not found" });
 
     User.comparePassword(password, user.password, (err, isMatch) => {
       if (err) throw err;
@@ -136,6 +96,7 @@ router.get(
     });
   }
 );
+
 router.get(
   "/checkToken",
   passport.authenticate("jwt", { session: false }),
@@ -207,43 +168,5 @@ router.post(
     });
   }
 );
-
-
-
-router.post("/verify/:hsh", (req, res, next) => {
-  vHash.findOne({hash: req.params.hsh}, (err,hash) => {
-      if (err) throw err;
-      if (!hash) return res.json({ success: false, msg: "hash not found " });
-      
-      User.findById(hash.userid, (err, user) => {
-          if (err) throw err;
-          user.verified = true;
-          user.save();
-          vHash.findByIdAndDelete(req.params.id, (err,hash) => {
-              if (err) throw err;
-              let time = new Date();
-              console.log(user.username + " verified at " + time);
-              let mail = {
-                from: senderAddr,
-                to: user.email,
-                subject: 'Welcome to Sirkel!',
-                html: '<p>Hello!\nYour account has been successfully verified!\nEnjoy!\n\n- The Sirkel Team</p>'
-              };
-              transporter.sendMail(mail, function (err, dat) {
-                if(err){
-                  res.json({ success: false, msg: "confirmation email not sent" });
-                }
-             });
-          });
-      });
-      return res.json({success: true, msg: hash});
-  });
-});
-
-
-
-
-
-
 
 module.exports = router;
