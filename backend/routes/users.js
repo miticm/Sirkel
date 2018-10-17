@@ -88,11 +88,7 @@ router.get(
   (req, res, next) => {
     res.json({
       success: true,
-      user: {
-        id: req.user._id,
-        username: req.user.username,
-        email: req.user.email
-      }
+      user: req.user
     });
   }
 );
