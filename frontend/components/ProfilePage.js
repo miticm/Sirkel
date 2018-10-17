@@ -46,11 +46,11 @@ class ProfilePage extends Component {
     this.setState({ events: posterEvents });
   }
   deleteEvent = id => {
-    // axios.delete(`http://127.0.0.1:5000/events/${id}`).then(res => {
-    //   if (res.data.success) {
-    //     this.getEventData();
-    //   }
-    // });
+    axios.delete(`http://127.0.0.1:5000/events/${id}`).then(res => {
+      if (res.data.success) {
+        this.getEventData();
+      }
+    });
   };
   dismissOrg = id => {};
 
@@ -107,7 +107,7 @@ class ProfilePage extends Component {
                 <h3>{e.name.toUpperCase()}</h3>
                 <Button
                   style={{ backgroundColor: "red", color: "white" }}
-                  onClick={() => this.onClick(e._id)}
+                  onClick={() => this.deleteEvent(e._id)}
                 >
                   Cancel
                 </Button>
