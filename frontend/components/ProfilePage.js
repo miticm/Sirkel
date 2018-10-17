@@ -52,7 +52,9 @@ class ProfilePage extends Component {
       }
     });
   };
-  dismissOrg = id => {};
+  dismissOrg = id => {
+    console.log(id);
+  };
 
   render() {
     const { classes } = this.props;
@@ -87,7 +89,7 @@ class ProfilePage extends Component {
                 <h3>{org.orgname}</h3>
                 <Button
                   style={{ backgroundColor: "red", color: "white" }}
-                  onClick={() => this.onClick(org._id)}
+                  onClick={() => this.dismissOrg(org._id)}
                 >
                   Dismiss
                 </Button>
