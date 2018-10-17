@@ -127,8 +127,8 @@ router.post(
         User.findById(req.params.id, (err, addeeUser) => {
           if (err) {
             res.json({
-              success: false,
-              msg: err
+                success: false,
+                msg: err,
             });
           }
 
@@ -150,13 +150,14 @@ router.post(
 
             if (addingUser && addeeUser) {
               res.json({
-                success: true
+                success: true,
               });
             }
-          } else {
+          }
+          else {
             res.json({
               success: false,
-              msg: "User is already connected."
+              msg: 'User is already connected.'
             });
           }
         });

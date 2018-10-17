@@ -140,4 +140,20 @@ router.post(
   }
 );
 
+router.delete('/:id', passport.authenticate("jwt", { session: false }), (req, res, next) => {
+  console.log("working");
+  Event.findById(req.params.id, (err, event) => {
+    if (err) {
+      res.json({
+        success: false,
+        msg: err
+      });
+    }
+
+    if (event.poster.id.equals(req.user._id)) {
+      event.delete();
+    }
+  });
+});
+
 module.exports = router;
