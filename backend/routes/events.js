@@ -150,8 +150,19 @@ router.delete('/:id', passport.authenticate("jwt", { session: false }), (req, re
       });
     }
 
-    if (event.poster.id.equals(req.user._id)) {
+    if (!event) {
+      res.json({
+        success: false,
+        msg: "Event doesn't exist"
+      });
+    }
+
+    if (event && event.poster.id.equals(req.user._id)) {
       event.delete();
+      res.json({
+        success: true,
+        msg: "Event deleted"
+      });
     }
   });
 });
