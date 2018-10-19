@@ -58,7 +58,7 @@ class UserProfile extends Component {
         {this.state.filteredUsers.map(user => {
           return (
             <Paper key={user._id + Math.random() * 100}>
-              <div>
+              <div style={{ textAlign: "center" }}>
                 <h2>{user.username}</h2>
                 <p>{user.email}</p>
                 <Button
