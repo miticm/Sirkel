@@ -85,7 +85,7 @@ router.post("/authenticate", (req, res, next) => {
 router.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => {
+  (req, res) => {
     res.json({
       success: true,
       user: req.user
@@ -107,7 +107,7 @@ router.get(
 router.post(
   "/:id/add",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => {
+  (req, res) => {
     User.findById(req.user._id, (err, addingUser) => {
       if (err) {
         res.json({

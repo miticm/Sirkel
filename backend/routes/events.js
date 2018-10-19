@@ -1,7 +1,6 @@
 const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-
 const config = require("../config/database");
 const User = require("../models/user");
 const Org = require("../models/org");

@@ -55,6 +55,18 @@ class ProfilePage extends Component {
   dismissOrg = id => {
     console.log(id);
   };
+  handleMessage = id => {
+    let members = [this.state.user._id, id];
+    axios
+      .post("http://127.0.0.1:5000/chats/create", {
+        members
+      })
+      .then(res => {
+        if (res.data.success) {
+          this.props.history.push(`/chats/${res.data.id}`);
+        }
+      });
+  };
 
   render() {
     const { classes } = this.props;
@@ -126,7 +138,9 @@ class ProfilePage extends Component {
             return (
               <ExpansionPanelDetails key={Math.random() * 100}>
                 <Typography>{user.username}</Typography>
-                <button>Message</button>
+                <button onClick={() => this.handleMessage(user.id)}>
+                  Message
+                </button>
               </ExpansionPanelDetails>
             );
           })}

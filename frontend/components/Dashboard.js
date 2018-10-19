@@ -23,7 +23,7 @@ export default class Dashboard extends Component {
               case "settings":
                 return <Settings />;
               case "profile":
-                return <ProfilePage />;
+                return <ProfilePage {...this.props} />;
               case "org":
                 return <OrgPage />;
               case "orgprofile":
@@ -31,7 +31,7 @@ export default class Dashboard extends Component {
               case "connections":
                 return <UserProfile />;
               case "chats":
-                return <ChatRoom />;
+                return <ChatRoom user={this.props.user} />;
               case "messages":
                 return <Message {...this.props} />;
               default:

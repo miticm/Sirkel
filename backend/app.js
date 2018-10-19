@@ -13,6 +13,7 @@ const Event = require("./models/event");
 const users = require("./routes/users");
 const orgs = require("./routes/orgs");
 const events = require("./routes/events");
+const chats = require("./routes/chats");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(bodyParser.json());
 app.use("/users", users);
 app.use("/orgs", orgs);
 app.use("/events", events);
+app.use("/chats", chats);
 
 app.use(passport.initialize());
 app.use(passport.session());
