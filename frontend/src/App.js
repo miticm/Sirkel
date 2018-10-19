@@ -126,17 +126,6 @@ export default class App extends Component {
             />
             <Route
               exact
-              path="/orgprofile"
-              render={props =>
-                this.state.isAuth ? (
-                  <Dashboard {...props} show="orgprofile" />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-            <Route
-              exact
               path="/org/:id"
               render={props =>
                 this.state.isAuth ? (
@@ -152,6 +141,17 @@ export default class App extends Component {
               render={props =>
                 this.state.isAuth ? (
                   <Dashboard {...props} show="chats" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/chats/:id"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="messages" />
                 ) : (
                   <Redirect to="/login" />
                 )

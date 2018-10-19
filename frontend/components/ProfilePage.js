@@ -126,6 +126,7 @@ class ProfilePage extends Component {
             return (
               <ExpansionPanelDetails key={Math.random() * 100}>
                 <Typography>{user.username}</Typography>
+                <button>Message</button>
               </ExpansionPanelDetails>
             );
           })}
