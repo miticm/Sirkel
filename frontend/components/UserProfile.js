@@ -74,9 +74,9 @@ class UserProfile extends Component {
                 <ul>
                   {user.connections.map(user => {
                     return (
-                      <li key={(Math.random() * 100) / Math.PI}>
+                      <p key={(Math.random() * 100) / Math.PI}>
                         {user.username}
-                      </li>
+                      </p>
                     );
                   })}
                 </ul>
@@ -97,6 +97,7 @@ const styles = theme => ({
   },
   paper: {
     marginTop: 10,
+    textAlign: "center",
     width: "95%",
     padding: `${theme.spacing.unit * (1/100)}px ${theme.spacing.unit}px ${theme
       .spacing.unit}px`
@@ -107,7 +108,7 @@ const styles = theme => ({
     color: "#ffffff",
     padding: theme.spacing.unit * (1 / 2),
     marginBottom: 0,
-    width: "100%"
+    width: "99%"
   }
 });
 
