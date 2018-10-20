@@ -76,7 +76,7 @@ class Login extends Component {
           this.props.history.push("/dashboard");
         } else {
           console.log(res.data.msg);
-          this.state.passwordFail = res.data.msg;
+          alert(res.data.msg)
         }
       })
       .catch(err => console.log(err));
@@ -123,10 +123,6 @@ class Login extends Component {
               >
                 Login
               </Button>    
-              <p>
-                {this.state.passwordFail}
-              </p>
-
             </form>
           </Paper>
         </main>
