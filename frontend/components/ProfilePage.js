@@ -23,7 +23,7 @@ const styles = theme => ({
 
 class ProfilePage extends Component {
   state = {
-    user: { orgsAdmin: [] },
+    user: { orgsAdmin: [], connections: [] },
     events: []
   };
   componentDidMount() {
@@ -52,7 +52,9 @@ class ProfilePage extends Component {
       }
     });
   };
-  dismissOrg = id => {};
+  dismissOrg = id => {
+    console.log(id);
+  };
 
   render() {
     const { classes } = this.props;
@@ -87,9 +89,9 @@ class ProfilePage extends Component {
                 <h3>{org.orgname}</h3>
                 <Button
                   style={{ backgroundColor: "red", color: "white" }}
-                  onClick={() => this.onClick(org._id)}
+                  onClick={() => this.dismissOrg(org._id)}
                 >
-                  Dismiss
+                  Leave
                 </Button>
               </Paper>
             );
@@ -112,6 +114,20 @@ class ProfilePage extends Component {
                   Cancel
                 </Button>
               </Paper>
+            );
+          })}
+        </ExpansionPanel>
+
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>My connections</Typography>
+          </ExpansionPanelSummary>
+          {this.state.user.connections.map(user => {
+            return (
+              <ExpansionPanelDetails key={Math.random() * 100}>
+                <Typography>{user.username}</Typography>
+                <button>Message</button>
+              </ExpansionPanelDetails>
             );
           })}
         </ExpansionPanel>

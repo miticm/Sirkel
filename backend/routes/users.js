@@ -127,19 +127,15 @@ router.post(
         User.findById(req.params.id, (err, addeeUser) => {
           if (err) {
             res.json({
-                success: false,
-                msg: err,
+              success: false,
+              msg: err
             });
           }
 
           let isConnection = false;
           addingUser.connections.forEach(connection => {
-            console.log(connection.id);
-            console.log(addeeUser._id);
             if (connection.id.equals(addeeUser._id)) isConnection = true;
           });
-
-          console.log(isConnection);
 
           if (!isConnection) {
             addingUser.connections.push({
@@ -150,14 +146,13 @@ router.post(
 
             if (addingUser && addeeUser) {
               res.json({
-                success: true,
+                success: true
               });
             }
-          }
-          else {
+          } else {
             res.json({
               success: false,
-              msg: 'User is already connected.'
+              msg: "User is already connected."
             });
           }
         });
