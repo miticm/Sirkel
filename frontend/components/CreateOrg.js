@@ -62,10 +62,7 @@ class CreateOrg extends Component {
     open: false,
     scroll: 'paper'
   };
-  handleClickOpen = scroll => () => {
-    this.setState({open: true, scroll})
-  };
-
+  
   handleClose = () => {
     this.setState({open: false});
   };
@@ -85,11 +82,13 @@ class CreateOrg extends Component {
       })
       .then(res => {
         console.log(res);
+        
         if (res.status === 200) {
           this.setState({
             name: "",
             description: ""
           });
+          this.setState({open: true});
           this.props.getOrgList();
         }
       })
@@ -132,7 +131,6 @@ class CreateOrg extends Component {
                 variant="raised"
                 color="primary"
                 className={classes.submit}
-                onClick={this.handleClickOpen('paper')}
               >
                 Create
               </Button>
@@ -144,7 +142,7 @@ class CreateOrg extends Component {
                 aria-labelledby="scroll-dialog-title"
               >
 
-                <DialogTitle id="scroll-dialog-title">Purdue club regulations</DialogTitle>
+                <DialogTitle id="scroll-dialog-title">Purdue Club Regulations</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
                   A group of Purdue students may become a student organization upon formal recognition by the Office of the Dean of Students. According to Article 13 of the Purdue University Bill of Student Rights, any student group recognized as a Purdue student organization shall be entitled to the use of available University facilities in conformity with regulations. Recognition shall not imply University endorsement of group goals and activities. Such recognition is contingent upon the following considerations:
