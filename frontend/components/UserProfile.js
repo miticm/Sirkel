@@ -12,6 +12,8 @@ class UserProfile extends Component {
     filteredUsers: [],
     search: ""
   };
+
+  
   componentDidMount() {
     this.getAllUsers();
   }
@@ -57,12 +59,12 @@ class UserProfile extends Component {
         </div>
         {this.state.filteredUsers.map(user => {
           return (
-            <Paper key={user._id + Math.random() * 100}>
-              <div style={{ textAlign: "center" }}>
-                <h2>{user.username}</h2>
+            <Paper key={user._id + Math.random() * 100} className={classes.paper}>
+              <div>
+                <h2 className={classes.title}>{user.username}</h2>
                 <p>{user.email}</p>
                 <Button
-                  className={classes.bgc}
+                  style={{ backgroundColor: "#60b0f4", color: "white" }}
                   onClick={() => this.onClick(user._id)}
                 >
                   connect
@@ -72,9 +74,9 @@ class UserProfile extends Component {
                 <ul>
                   {user.connections.map(user => {
                     return (
-                      <li key={(Math.random() * 100) / Math.PI}>
+                      <p key={(Math.random() * 100) / Math.PI}>
                         {user.username}
-                      </li>
+                      </p>
                     );
                   })}
                 </ul>
@@ -92,6 +94,21 @@ const styles = theme => ({
   },
   border: {
     border: "1px solid #60b0f4"
+  },
+  paper: {
+    marginTop: 10,
+    textAlign: "center",
+    width: "95%",
+    padding: `${theme.spacing.unit * (1/100)}px ${theme.spacing.unit}px ${theme
+      .spacing.unit}px`
+  },
+  title: {
+    backgroundColor: "#60b0f4",
+    textAlign: "left",
+    color: "#ffffff",
+    padding: theme.spacing.unit * (1 / 2),
+    marginBottom: 0,
+    width: "99%"
   }
 });
 
