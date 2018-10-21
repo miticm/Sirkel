@@ -49,19 +49,17 @@ const styles = theme => ({
 class Login extends Component {
   state = {
     username: "",
-    password: "",
-    passwordFail: "",
+    password: ""
   };
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
-
   onSubmit = e => {
     e.preventDefault();
     axios
       .post("http://127.0.0.1:5000/users/authenticate", {
         username: this.state.username,
-        password: this.state.password,
+        password: this.state.password
       })
       .then(res => {
         if (res.data.success) {
@@ -76,7 +74,6 @@ class Login extends Component {
           this.props.history.push("/dashboard");
         } else {
           console.log(res.data.msg);
-          alert(res.data.msg)
         }
       })
       .catch(err => console.log(err));
@@ -122,7 +119,7 @@ class Login extends Component {
                 className={classes.submit}
               >
                 Login
-              </Button>    
+              </Button>
             </form>
           </Paper>
         </main>

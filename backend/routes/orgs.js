@@ -162,34 +162,4 @@ router.post(
   }
 );
 
-router.delete(
-  "/:id",
-  passport.authenticate("jwt", { session: false }),
-  (req, res, next) => {
-    Ord.findById(req.params.id, (err, org) => {
-      if (err) {
-        res.json({
-          success: false,
-          msg: err
-        });
-      }
-
-      if (!org) {
-        res.json({
-          success: false,
-          msg: "Organization doesn't exist"
-        });
-      }
-
-      if (org.leader.id.equals(req.user._id)) {
-        org.delete();
-        res.json({
-          success: true,
-          msg: "Oranization deleted"
-        });
-      }
-    });
-  }
-);
-
 module.exports = router;

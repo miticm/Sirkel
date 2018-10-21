@@ -10,7 +10,6 @@ export default class LandingPage extends Component {
     "Go Advanture",
     "Study Together"
   ];
-  timeoutID = null;
   txt = "";
   wordIndex = 0;
   wait = 1000;
@@ -40,15 +39,11 @@ export default class LandingPage extends Component {
       this.wordIndex++;
       typeSpeed = this.wait / 2;
     }
-    this.timeoutID = setTimeout(() => this.type(), typeSpeed);
+    setTimeout(() => this.type(), typeSpeed);
   }
   componentDidMount() {
     this.type();
   }
-  componentWillUnmount() {
-    clearTimeout(this.timeoutID);
-  }
-
   state = {
     text: ""
   };
