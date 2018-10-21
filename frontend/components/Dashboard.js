@@ -7,7 +7,7 @@ import ProfilePage from "./ProfilePage";
 import OrgPage from "./OrgPage";
 import OrgProfile from "./OrgProfile";
 import UserProfile from "./UserProfile";
-import ChatRoom from "./ChatRoom";
+import ChatRoomList from "./ChatRoomList";
 import Message from "./Message";
 
 export default class Dashboard extends Component {
@@ -31,7 +31,7 @@ export default class Dashboard extends Component {
               case "connections":
                 return <UserProfile />;
               case "chats":
-                return <ChatRoom user={this.props.user} />;
+                return <ChatRoomList />;
               case "messages":
                 return <Message {...this.props} />;
               default:
