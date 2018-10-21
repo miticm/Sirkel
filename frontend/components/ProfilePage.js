@@ -52,6 +52,13 @@ class ProfilePage extends Component {
       }
     });
   };
+
+  async messageUser(id) {
+    const messageRes = await axios.post(`http://127.0.0.1:5000/chats/add/${id}`);
+    if (messageRes.success) {
+    }
+  }
+  
   dismissOrg = id => {
     console.log(id);
   };
@@ -138,9 +145,18 @@ class ProfilePage extends Component {
             return (
               <ExpansionPanelDetails key={Math.random() * 100}>
                 <Typography>{user.username}</Typography>
+<<<<<<< HEAD
                 <button onClick={() => this.handleMessage(user.id)}>
                   Message
                 </button>
+=======
+                <Button
+                  style={{ backgroundColor: "red", color: "white" }}
+                  onClick={() => this.messageUser(user.id)}
+                >
+                  Message
+                </Button>
+>>>>>>> Add method to message user
               </ExpansionPanelDetails>
             );
           })}
