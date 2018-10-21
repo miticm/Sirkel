@@ -145,18 +145,12 @@ class ProfilePage extends Component {
             return (
               <ExpansionPanelDetails key={Math.random() * 100}>
                 <Typography>{user.username}</Typography>
-<<<<<<< HEAD
-                <button onClick={() => this.handleMessage(user.id)}>
-                  Message
-                </button>
-=======
                 <Button
                   style={{ backgroundColor: "red", color: "white" }}
                   onClick={() => this.messageUser(user.id)}
                 >
                   Message
                 </Button>
->>>>>>> Add method to message user
               </ExpansionPanelDetails>
             );
           })}
