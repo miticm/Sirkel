@@ -5,10 +5,11 @@ import React, { Component } from "react";
 export default class LandingPage extends Component {
   words = [
     "Meet People",
+    "Study Together",
     "Find Clubs",
-    "Found Clubs",
-    "Go Advanture",
-    "Study Together"
+    "Go Adventure",
+    "Find Your Sirkel"
+    
   ];
   timeoutID = null;
   txt = "";
