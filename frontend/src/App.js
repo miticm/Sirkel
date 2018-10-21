@@ -9,10 +9,13 @@ import Login from "../components/Login";
 require("../node_modules/normalize.css/normalize.css");
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
+
 export default class App extends Component {
   state = {
-    isAuth: localStorage.getItem("isAuth")
+    isAuth: localStorage.getItem("isAuth"),
+    user: {}
   };
+
   componentDidMount() {
     this.checkAuth();
   }
@@ -24,7 +27,7 @@ export default class App extends Component {
       .get("http://127.0.0.1:5000/users/checkToken")
       .then(res => {
         if (res.data.success) {
-          this.login();
+          this.login(res.data.user);
         }
       })
       .catch(err => {
@@ -32,14 +35,15 @@ export default class App extends Component {
         this.signOut();
       });
   };
-  login = () => {
-    this.setState({ isAuth: true });
+  login = user => {
+    this.setState({ isAuth: true, user: user });
   };
   signOut = () => {
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("isAuth");
+    localStorage.removeItem("userID");
     setAuthToken("");
-    this.setState({ isAuth: false });
+    this.setState({ isAuth: false, user: {} });
   };
 
   render() {
@@ -124,17 +128,6 @@ export default class App extends Component {
             />
             <Route
               exact
-              path="/orgprofile"
-              render={props =>
-                this.state.isAuth ? (
-                  <Dashboard {...props} show="orgprofile" />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-            <Route
-              exact
               path="/org/:id"
               render={props =>
                 this.state.isAuth ? (
@@ -149,7 +142,18 @@ export default class App extends Component {
               path="/chats"
               render={props =>
                 this.state.isAuth ? (
-                  <Dashboard {...props} show="chats" />
+                  <Dashboard {...props} user={this.state.user} show="chats" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/chats/:id"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="messages" />
                 ) : (
                   <Redirect to="/login" />
                 )

@@ -7,6 +7,9 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import axios from "axios";
+import setAuthToken from "../utils/setAuthToken";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   root: {
@@ -20,17 +23,58 @@ const styles = theme => ({
 
 class ProfilePage extends Component {
   state = {
-    username: "",
-    email: ""
+    user: { orgsAdmin: [], connections: [] },
+    events: []
   };
   componentDidMount() {
-    axios.get("http://127.0.0.1:5000/users/profile").then(res => {
-      this.setState({
-        username: res.data.user.username,
-        email: res.data.user.email
-      });
-    });
+    this.getProfileData();
   }
+  async getProfileData() {
+    const token = localStorage.getItem("jwtToken");
+    setAuthToken(token);
+    const profileRes = await axios.get("http://127.0.0.1:5000/users/profile");
+    this.setState({
+      user: profileRes.data.user
+    });
+    this.getEventData();
+  }
+  async getEventData() {
+    const eventRes = await axios.get("http://127.0.0.1:5000/events");
+    let posterEvents = eventRes.data.events.filter(e => {
+      return e.poster.id == this.state.user._id;
+    });
+    this.setState({ events: posterEvents });
+  }
+  deleteEvent = id => {
+    axios.delete(`http://127.0.0.1:5000/events/${id}`).then(res => {
+      if (res.data.success) {
+        this.getEventData();
+      }
+    });
+  };
+
+  async messageUser(id) {
+    const messageRes = await axios.post(`http://127.0.0.1:5000/chats/add/${id}`);
+    if (messageRes.success) {
+    }
+  }
+  
+  dismissOrg = id => {
+    console.log(id);
+  };
+  handleMessage = id => {
+    let members = [this.state.user._id, id];
+    axios
+      .post("http://127.0.0.1:5000/chats/create", {
+        members
+      })
+      .then(res => {
+        if (res.data.success) {
+          this.props.history.push(`/chats/${res.data.id}`);
+        }
+      });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -40,7 +84,7 @@ class ProfilePage extends Component {
             <Typography className={classes.heading}>My username</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Typography>{this.state.username}</Typography>
+            <Typography>{this.state.user.username}</Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
@@ -49,8 +93,67 @@ class ProfilePage extends Component {
             <Typography className={classes.heading}>My email</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Typography>{this.state.email}</Typography>
+            <Typography>{this.state.user.email}</Typography>
           </ExpansionPanelDetails>
+        </ExpansionPanel>
+
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>My Organzations</Typography>
+          </ExpansionPanelSummary>
+
+          {this.state.user.orgsAdmin.map(org => {
+            return (
+              <Paper key={Math.random() * 100} style={{ margin: "2rem" }}>
+                <h3>{org.orgname}</h3>
+                <Button
+                  style={{ backgroundColor: "red", color: "white" }}
+                  onClick={() => this.dismissOrg(org._id)}
+                >
+                  Leave
+                </Button>
+              </Paper>
+            );
+          })}
+        </ExpansionPanel>
+
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>My events</Typography>
+          </ExpansionPanelSummary>
+
+          {this.state.events.map(e => {
+            return (
+              <Paper key={Math.random() * 100} style={{ margin: "2rem" }}>
+                <h3>{e.name.toUpperCase()}</h3>
+                <Button
+                  style={{ backgroundColor: "red", color: "white" }}
+                  onClick={() => this.deleteEvent(e._id)}
+                >
+                  Cancel
+                </Button>
+              </Paper>
+            );
+          })}
+        </ExpansionPanel>
+
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>My connections</Typography>
+          </ExpansionPanelSummary>
+          {this.state.user.connections.map(user => {
+            return (
+              <ExpansionPanelDetails key={Math.random() * 100}>
+                <Typography>{user.username}</Typography>
+                <Button
+                  style={{ backgroundColor: "red", color: "white" }}
+                  onClick={() => this.messageUser(user.id)}
+                >
+                  Message
+                </Button>
+              </ExpansionPanelDetails>
+            );
+          })}
         </ExpansionPanel>
       </div>
     );

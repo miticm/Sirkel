@@ -13,8 +13,13 @@ const Event = require("./models/event");
 const users = require("./routes/users");
 const orgs = require("./routes/orgs");
 const events = require("./routes/events");
+const chats = require("./routes/chats");
 
 const app = express();
+
+app.listen(5000, () => {
+  console.log("http://localhost:5000");
+});
 
 // Enable All CORS Requests
 app.use(cors());
@@ -33,11 +38,8 @@ app.use(bodyParser.json());
 app.use("/users", users);
 app.use("/orgs", orgs);
 app.use("/events", events);
+app.use("/chats", chats);
 
 app.use(passport.initialize());
 app.use(passport.session());
 require("./config/passport")(passport);
-
-app.listen(5000, () => {
-  console.log("http://localhost:5000");
-});

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -16,44 +16,54 @@ const UserSchema = new Schema({
     required: true
   },
   creationDate: {
-    type : Date, 
+    type: Date,
     default: Date.now,
     required: true
   },
+  avatar: {
+    type: String,
+    default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png'
+  },
   orgsAdmin: [
     {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Org',
-        },
-        orgname: String
-    },
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Org"
+      },
+      orgname: String
+    }
   ],
   connections: [
     {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: "User"
       },
-      username: String,
+      username: String
     }
   ],
-  verified: {
-    type: Boolean,
-    default: false,
-    required: true
-  }
+  chats: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Chat"
+    }
+  ],
+  chats: [
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chat'
+    }
+  ]
 });
 
-
-const User = module.exports = mongoose.model("User", UserSchema);
+const User = (module.exports = mongoose.model("User", UserSchema));
 
 module.exports.getUserById = function(id, callback) {
   User.findById(id, callback);
 };
 
 module.exports.getUserByUsername = function(username, callback) {
-  const query = {username: username};
+  const query = { username: username };
   User.findOne(query, callback);
 };
 

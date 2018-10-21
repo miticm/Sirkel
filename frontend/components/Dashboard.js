@@ -7,6 +7,8 @@ import ProfilePage from "./ProfilePage";
 import OrgPage from "./OrgPage";
 import OrgProfile from "./OrgProfile";
 import UserProfile from "./UserProfile";
+import ChatRoomList from "./ChatRoomList";
+import Message from "./Message";
 
 export default class Dashboard extends Component {
   render() {
@@ -21,7 +23,7 @@ export default class Dashboard extends Component {
               case "settings":
                 return <Settings />;
               case "profile":
-                return <ProfilePage />;
+                return <ProfilePage {...this.props} />;
               case "org":
                 return <OrgPage />;
               case "orgprofile":
@@ -29,7 +31,9 @@ export default class Dashboard extends Component {
               case "connections":
                 return <UserProfile />;
               case "chats":
-                return <p>Under development</p>;
+                return <ChatRoomList />;
+              case "messages":
+                return <Message {...this.props} />;
               default:
                 return <h1>Start to find your sirkel !</h1>;
             }
