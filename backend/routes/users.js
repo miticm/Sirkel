@@ -13,12 +13,14 @@ const router = express.Router();
 
 const serverURL = '159.65.160.251';
 const senderAddr = 'sirkel2018@gmail.com';
-const senderPass = 'CS307FALL2018';
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
+         type: 'oauth2',
          user: senderAddr,
-         pass: senderPass
+         clientId: "694756784067-vc5iffuta4l7dsmp4tbr6mfe6pu7vg1s.apps.googleusercontent.com",
+         clientSecret: "ZFqI_-UqQcO0v039Lnokc11M",
+         refreshToken: "1/9icJuyTLoeMHWG4sV7H2H6Ee_PyqnBiQuRBiYmDKx1FgQlpsub-zLAdaEOPQw6i_",
      }
  });
 
