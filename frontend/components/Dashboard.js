@@ -31,7 +31,7 @@ export default class Dashboard extends Component {
               case "connections":
                 return <UserProfile />;
               case "chats":
-                return <ChatRoomList />;
+                return <ChatRoomList {...this.props} />;
               case "messages":
                 return <Message {...this.props} />;
               default:

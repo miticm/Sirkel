@@ -27,31 +27,43 @@ const styles = theme => ({
   }
 });
 
-const ChatRoomCard = (props) => {
-  const { classes, theme, chat } = props;
-  return (
-    <Card className={classes.card}>
-      <CardMedia
-        className={classes.cover}
-        image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png"
-        title="ChatRoom"
-      />
-      <div className={classes.details}>
-        <CardContent className={classes.content}>
-          <Typography>{chat.recipient}</Typography>
-          <Typography color="textSecondary">
-            {
-              chat.messages.length > 0 
+class ChatRoomCard extends React.Component {
+  ChatWith = "";
+  handleOnClick = e => {
+    this.props.history.push(`/chats/${this.props.chat._id}`);
+  };
+  render() {
+    const { classes, theme, chat } = this.props;
+    const currentLoginUserID = localStorage.getItem("userID");
+    chat.receivers.map(re => {
+      if (re._id != currentLoginUserID) {
+        this.ChatWith = re.username;
+      }
+    });
+    return (
+      <Card className={classes.card}>
+        <CardMedia
+          className={classes.cover}
+          image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png"
+          title="ChatRoom"
+        />
+        <div className={classes.details}>
+          <CardContent className={classes.content}>
+            <Typography>Chat with {this.ChatWith}</Typography>
+            <Typography color="textSecondary">
+              {chat.messages.length > 0
                 ? chat.messages[chat.messages.length - 1].content
-                : 'No messages yet'
-            }
-          </Typography>
-        </CardContent>
-      </div>
-      <Button className={classes.btn}>Enter</Button>
-    </Card>
-  );
-};
+                : "No messages yet"}
+            </Typography>
+          </CardContent>
+        </div>
+        <Button className={classes.btn} onClick={this.handleOnClick}>
+          Message now
+        </Button>
+      </Card>
+    );
+  }
+}
 
 ChatRoomCard.propTypes = {
   classes: PropTypes.object.isRequired,
