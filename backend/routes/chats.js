@@ -57,4 +57,35 @@ router.get(
       });
   }
 );
+
+router.post(
+  "/addMessage/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const chatID = req.params.id;
+    const message = {
+      content: req.body.message,
+      sender: req.user.username
+    };
+    Chat.findById(chatID, (err, chat) => {
+      if (err) res.send({ err: err });
+      chat.messages.push(message);
+      chat.save();
+    });
+    res.send({ success: true });
+  }
+);
+
+router.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const chatID = req.params.id;
+    Chat.findById(chatID, (err, chat) => {
+      if (err) res.send({ err: err });
+      res.send({ success: true, messages: chat.messages });
+    });
+  }
+);
+
 module.exports = router;
