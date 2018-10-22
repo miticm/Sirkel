@@ -22,7 +22,8 @@ const UserSchema = new Schema({
   },
   avatar: {
     type: String,
-    default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png'
+    default:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png"
   },
   orgsAdmin: [
     {
@@ -46,12 +47,6 @@ const UserSchema = new Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Chat"
-    }
-  ],
-  chats: [
-    {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Chat'
     }
   ]
 });

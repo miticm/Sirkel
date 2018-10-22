@@ -1,93 +1,91 @@
 const express = require("express");
 const passport = require("passport");
-const jwt = require("jsonwebtoken");
-
-const config = require("../config/database");
 const User = require("../models/user");
 const Chat = require("../models/chat");
 
 const router = express.Router();
 
-getChatData = (chatId) => {
-  
-}
-
-router.get("/", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-  console.log("made it");
-  User.findById(req.user._id).populate('chats').lean().exec((err, user) => {
-    console.log(user);
-    if (err) {
-      res.json({
-        success: false,
-        msg: err
-      });
-    }
-
-    const chatsData = [];
-    if (user.chats.length > 0) {
-      user.chats.forEach((chat, i) => {
-
-        chat.user1.id.equals(req.user._id)
-          ? chat.recipient = chat.user2.username
-          : chat.recipient = chat.user1.username;
-
-        chatsData.push(chat);
-        console.log(i);
-        console.log(user.chats.length);
-
-        if (i >= user.chats.length - 1) {
-          console.log(chatsData)
-          res.json({
-            success: true,
-            chatsData
+router.post(
+  "/create",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Chat.findOne({ receivers: req.body.receivers.sort() }, (err, chat) => {
+      if (err) throw err;
+      if (chat) {
+        // chat already exist
+        console.log("chat already exist");
+        res.send({ id: chat._id, success: true });
+      } else {
+        // create new chat
+        let chat = new Chat({
+          receivers: req.body.receivers.sort(),
+          messages: []
+        });
+        // save chat
+        chat.save((err, newchat) => {
+          if (err) throw err;
+          // successfully saved
+          console.log("new chat");
+          req.body.receivers.forEach(receiver => {
+            User.findById(receiver, (err, user) => {
+              user.chats.push(newchat._id);
+              user.save((err, user) => {
+                if (err) throw err;
+              });
+            });
           });
-        }
-      });
-    }
-  });
-});
-
-router.post("/add/:id", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-  User.findById(req.user._id, (err, sender) => {
-    if (err) {
-      res.json({
-        success: false,
-        msg: err
-      });
-    }
-
-    User.findById(req.params.id, (err, recipient) => {
-      if (err) {
-        res.json({
-          success: false,
-          msg: err
+          res.send({ id: chat._id, success: true });
         });
       }
-
-      const newChat = new Chat({
-        user1: {
-          id: sender._id,
-          username: sender.username
-        },
-        user2: {
-          id: recipient._id,
-          username: recipient.username
-        }
-      });
-
-      newChat.save((err, chat) => {
-        sender.chats.push(chat);
-        recipient.chats.push(chat);
-        sender.save();
-        recipient.save();
-
-        res.json({
-          success: true,
-          msg: 'Created new chat'
-        })
-      });
     });
-  });
-});
+  }
+);
+
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    User.findById(req.user._id)
+      .populate({
+        path: "chats",
+        populate: {
+          path: "receivers"
+        }
+      })
+      .exec((err, user) => {
+        res.send({ success: true, chatsList: user.chats });
+      });
+  }
+);
+
+router.post(
+  "/addMessage/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const chatID = req.params.id;
+    const message = {
+      content: req.body.message,
+      sender: req.user.username
+    };
+    Chat.findById(chatID, (err, chat) => {
+      if (err) res.send({ err: err });
+      chat.messages.push(message);
+      chat.save();
+    });
+    res.send({ success: true });
+  }
+);
+
+router.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const chatID = req.params.id;
+    Chat.findById(chatID, (err, chat) => {
+      if (err) res.send({ err: err });
+      res.send({ success: true, messages: chat.messages });
+    });
+  }
+);
 
 module.exports = router;

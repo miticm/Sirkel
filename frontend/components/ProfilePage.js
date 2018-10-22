@@ -52,21 +52,14 @@ class ProfilePage extends Component {
       }
     });
   };
-
-  async messageUser(id) {
-    const messageRes = await axios.post(`http://127.0.0.1:5000/chats/add/${id}`);
-    if (messageRes.success) {
-    }
-  }
-  
   dismissOrg = id => {
     console.log(id);
   };
   handleMessage = id => {
-    let members = [this.state.user._id, id];
+    let receivers = [this.state.user._id, id];
     axios
       .post("http://127.0.0.1:5000/chats/create", {
-        members
+        receivers
       })
       .then(res => {
         if (res.data.success) {
@@ -145,12 +138,9 @@ class ProfilePage extends Component {
             return (
               <ExpansionPanelDetails key={Math.random() * 100}>
                 <Typography>{user.username}</Typography>
-                <Button
-                  style={{ backgroundColor: "red", color: "white" }}
-                  onClick={() => this.messageUser(user.id)}
-                >
+                <button onClick={() => this.handleMessage(user.id)}>
                   Message
-                </Button>
+                </button>
               </ExpansionPanelDetails>
             );
           })}
