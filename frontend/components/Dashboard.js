@@ -35,8 +35,8 @@ export default class Dashboard extends Component {
               case "messages":
                 return <Message {...this.props} />;
               default:
-                return <h1>Start to find your sirkel !</h1>;
-            }
+                return <ProfilePage {...this.props} />;
+              }
           })()}
         </div>
       </div>

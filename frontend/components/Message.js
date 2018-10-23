@@ -6,11 +6,23 @@ import Button from "@material-ui/core/Button";
 import Axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 
+const styles = theme => ({ 
+  paper: {
+    marginTop: theme.spacing.unit * 4,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`
+  },
+});
+
 export default class Message extends Component {
   state = {
     input: "",
     messages: []
   };
+  
   timeoutID;
   componentDidMount() {
     const token = localStorage.getItem("jwtToken");
@@ -49,7 +61,7 @@ export default class Message extends Component {
   render() {
     return (
       <Paper
-        style={{ padding: "2rem", border: "1px solid black", width: "80%" }}
+        style={{ padding: "2rem", border: "1px solid black", width: "80%"}}
       >
         {this.state.messages.map(me => {
           return (
@@ -60,11 +72,12 @@ export default class Message extends Component {
               value={me.content}
               margin="normal"
               variant="outlined"
+              multiline
             />
           );
         })}
         <div>
-          <Input value={this.state.input} onChange={this.onChange} />
+          <Input multiline value={this.state.input} onChange={this.onChange} />
           <Button onClick={this.onClick}>Send</Button>
         </div>
       </Paper>
