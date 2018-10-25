@@ -48,7 +48,11 @@ const UserSchema = new Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Chat"
     }
-  ]
+  ],
+  reputation: {
+    type: Number,
+    default: 0
+  }
 });
 
 const User = (module.exports = mongoose.model("User", UserSchema));
