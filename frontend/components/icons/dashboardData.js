@@ -12,7 +12,7 @@ export const firstDividerSideBarItems = (
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
-      <ListItemText primary="Connections" />
+      <ListItemText primary="Users" />
     </ListItem>
 
     <ListItem component={Link} to="/org" button>
