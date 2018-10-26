@@ -34,6 +34,7 @@ export default class Eventpage extends Component {
               attendees={e.attendees}
               poster={e.poster}
               hostBy={e.hostBy}
+              upvotes={e.upvotes}
             />
           );
         })}
