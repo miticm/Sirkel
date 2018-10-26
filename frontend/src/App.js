@@ -9,7 +9,6 @@ import Login from "../components/Login";
 require("../node_modules/normalize.css/normalize.css");
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
-
 export default class App extends Component {
   state = {
     isAuth: localStorage.getItem("isAuth"),
