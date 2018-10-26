@@ -85,13 +85,21 @@ class OrgProfile extends Component {
     this.getOrgByID();
   }
   onClick = e => {
-    Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/join`)
-      .then(res => {
-        if (res.data.success) {
-          this.getOrgByID();
-        }
-      })
-      .catch(err => console.log(err));
+    let currentUserId = localStorage.getItem("userID");
+    let exist = this.state.orgObject.members.find(e => {
+      return e.id === currentUserId;
+    });
+    if (!exist) {
+      Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/join`)
+        .then(res => {
+          if (res.data.success) {
+            this.getOrgByID();
+          }
+        })
+        .catch(err => console.log(err));
+    } else {
+      alert("You are a member of this Org already");
+    }
   };
   render() {
     const { classes } = this.props;

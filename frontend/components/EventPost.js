@@ -5,8 +5,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import TextField from "@material-ui/core/TextField";
-import Divider from "@material-ui/core/Divider";
 import Axios from "axios";
 
 const styles = theme => ({
@@ -60,13 +58,21 @@ const styles = theme => ({
 
 class EventPost extends Component {
   onClick = e => {
-    Axios.post(`http://127.0.0.1:5000/events/${this.props.id}/attend`)
-      .then(res => {
-        if (res.data.success) {
-          this.props.getEventsList();
-        }
-      })
-      .catch(err => console.log(err));
+    let currentUserId = localStorage.getItem("userID");
+    let exist = this.props.attendees.find(e => {
+      return e.id === currentUserId;
+    });
+    if (!exist) {
+      Axios.post(`http://127.0.0.1:5000/events/${this.props.id}/attend`)
+        .then(res => {
+          if (res.data.success) {
+            this.props.getEventsList();
+          }
+        })
+        .catch(err => console.log(err));
+    } else {
+      alert("You joined this event already");
+    }
   };
   render() {
     const { classes } = this.props;

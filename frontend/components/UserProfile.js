@@ -13,7 +13,6 @@ class UserProfile extends Component {
     search: ""
   };  
 
-  
   componentDidMount() {
     this.getAllUsers();
   }
@@ -58,31 +57,37 @@ class UserProfile extends Component {
           <InputBase placeholder="search user" onKeyUp={this.handleKeyUp} />
         </div>
         {this.state.filteredUsers.map(user => {
-          return (
-            <Paper key={user._id + Math.random() * 100} className={classes.paper}>
-              <div>
-                <h2 className={classes.title}>{user.username}</h2>
-                <p>{user.email}</p>
-                <Button
-                  style={{ backgroundColor: "#60b0f4", color: "white" }}
-                  onClick={() => this.onClick(user._id)}
-                >
-                  connect
-                </Button>
+          let currentUserID = localStorage.getItem("userID");
+          if (user._id !== currentUserID) {
+            return (
+              <Paper
+                key={user._id + Math.random() * 100}
+                className={classes.paper}
+              >
+                <div>
+                  <h2 className={classes.title}>{user.username}</h2>
+                  <p>{user.email}</p>
+                  <Button
+                    style={{ backgroundColor: "#60b0f4", color: "white" }}
+                    onClick={() => this.onClick(user._id)}
+                  >
+                    connect
+                  </Button>
 
-                <p>Connected with</p>
-                <ul>
-                  {user.connections.map(user => {
-                    return (
-                      <p key={(Math.random() * 100) / Math.PI}>
-                        {user.username}
-                      </p>
-                    );
-                  })}
-                </ul>
-              </div>
-            </Paper>
-          );
+                  <p>Connected with</p>
+                  <ul>
+                    {user.connections.map(user => {
+                      return (
+                        <p key={(Math.random() * 100) / Math.PI}>
+                          {user.username}
+                        </p>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </Paper>
+            );
+          }
         })}
       </div>
     );
@@ -99,8 +104,9 @@ const styles = theme => ({
     marginTop: 10,
     textAlign: "center",
     width: "95%",
-    padding: `${theme.spacing.unit * (1/100)}px ${theme.spacing.unit}px ${theme
-      .spacing.unit}px`
+    padding: `${theme.spacing.unit * (1 / 100)}px ${theme.spacing.unit}px ${
+      theme.spacing.unit
+    }px`
   },
   title: {
     backgroundColor: "#60b0f4",
