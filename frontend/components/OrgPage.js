@@ -22,7 +22,7 @@ export default class OrgPage extends Component {
   render() {
     return (
       <div>
-        <CreateOrg getOrgList={this.getOrgList} />
+       <CreateOrg getOrgList={this.getOrgList} />
         {this.state.OrgList.map(org => {
           return (
             <OrgList
