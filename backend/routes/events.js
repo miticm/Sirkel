@@ -139,6 +139,35 @@ router.post(
   }
 );
 
+router.post(
+  "/:id/upvote",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Event.findById(req.params.id, (err, event) => {
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
+        });
+      }
+      event.upvotes += 1;
+      event.save();
+
+      User.findById(event.poster.id, (err, user) => {
+        user.reputation += 1;
+        user.save((err, user) => {
+          if (!err) {
+            res.json({
+              success: true,
+              event
+            });
+          }
+        });
+      });
+    });
+  }
+);
+
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
