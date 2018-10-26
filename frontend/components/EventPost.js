@@ -6,6 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Axios from "axios";
+import Icon from '@material-ui/core/Icon';
+import red from '@material-ui/core/colors/red';
 
 const styles = theme => ({
   layout: {
@@ -53,11 +55,22 @@ const styles = theme => ({
     padding: theme.spacing.unit * (1 / 2),
     marginBottom: 0,
     width: "100%"
-  }
+  },
+
+  iconUp: {
+    margin: theme.spacing.unit * 2,
+  },
+
+  iconDown: {
+    margin: theme.spacing.unit * 2,
+    '&:hover': {
+      color: red[800],
+    },
+  },
 });
 
 class EventPost extends Component {
-  onClick = e => {
+  onAttend = e => {
     let currentUserId = localStorage.getItem("userID");
     let exist = this.props.attendees.find(e => {
       return e.id === currentUserId;
@@ -73,7 +86,23 @@ class EventPost extends Component {
     } else {
       alert("You joined this event already");
     }
+  }
+
+  onVote = e => {
+    let currentUserId = localStorage.getItem("userID");
+    // let exist = this.props.attendees.find(e => {
+    //   return e.id === currentUserId;
+    // });
+    Axios.post(`http://127.0.0.1:5000/events/${this.props.id}/upvote`)
+      .then(res => {
+        if (res.data.success) {
+          this.props.getEventsList();
+        }
+      })
+      .catch(err => console.log(err));
+    
   };
+
   render() {
     const { classes } = this.props;
     const date = new Date(this.props.date);
@@ -114,10 +143,20 @@ class EventPost extends Component {
             </ul>
             <Button
               style={{ backgroundColor: "#60b0f4", color: "white" }}
-              onClick={this.onClick}
+              onClick={this.onAttend}
             >
               Join
             </Button>
+            <Button
+              onClick={this.onVote}
+            >
+              <Icon className="iconUp" color="action">
+                thumb_up
+              </Icon>
+            </Button>
+            <div>
+              Upvotes: {this.props.upvotes}
+            </div>
           </Paper>
         </main>
       </React.Fragment>
