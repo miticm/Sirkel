@@ -10,6 +10,7 @@ import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
   root: {
@@ -51,9 +52,6 @@ class ProfilePage extends Component {
         this.getEventData();
       }
     });
-  };
-  dismissOrg = id => {
-    console.log(id);
   };
   handleMessage = id => {
     let receivers = [this.state.user._id, id];
@@ -100,10 +98,10 @@ class ProfilePage extends Component {
               <Paper key={Math.random() * 100} style={{ margin: "2rem" }}>
                 <h3>{org.orgname}</h3>
                 <Button
-                  style={{ backgroundColor: "red", color: "white" }}
-                  onClick={() => this.dismissOrg(org._id)}
+                  className="navButton"
+                  style={{ backgroundColor: "#60b0f4", color: "white" }}
                 >
-                  Leave
+                  <Link to={`/org/${org.id}`}> Visit Page </Link>
                 </Button>
               </Paper>
             );
