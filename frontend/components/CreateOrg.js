@@ -5,8 +5,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import TextField from "@material-ui/core/TextField";
-import Divider from "@material-ui/core/Divider";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
@@ -134,6 +132,18 @@ class CreateOrg extends Component {
               >
                 Create
               </Button>
+
+              <Button
+                style={{ backgroundColor: "#60b0f4", marginLeft: "68%"}}
+                multiple
+                variant="raised"
+                color="primary"
+                href="https://www.purdue.edu/studentregulations/student_organizations/forming.html" 
+                target="_blank"
+                className={classes.submit}
+              >
+                Forming Clubs Info
+              </Button>
               
               <Dialog
                 open={this.state.open}
@@ -162,11 +172,9 @@ class CreateOrg extends Component {
                   If a recognized student organization is in a state of deactivation for a period of at least two years, the Office of the Dean of Students will withdraw recognition from that organization.
                   An organization may request to have recognition withdrawn at any time it chooses.
                   </DialogContentText>
+                  <a href="https://www.purdue.edu/studentregulations/student_organizations/forming.html" target="_blank">Learn More</a>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={this.handleClose} color="primary">
-                    Cancel
-                  </Button>
                   <Button onClick={this.handleClose} color="primary">
                     Accept
                   </Button>

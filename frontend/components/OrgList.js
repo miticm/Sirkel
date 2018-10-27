@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import Divider from "@material-ui/core/Divider";
 import { Link, Route } from "react-router-dom";
 import "./Navbar.css";
-import Axios from "axios";
+import axios from "axios";
 
 const styles = theme => ({
   layout: {

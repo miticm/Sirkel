@@ -11,7 +11,7 @@ class UserProfile extends Component {
     allUsers: [],
     filteredUsers: [],
     search: ""
-  };
+  };  
 
   componentDidMount() {
     this.getAllUsers();
