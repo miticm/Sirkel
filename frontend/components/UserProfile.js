@@ -54,7 +54,7 @@ class UserProfile extends Component {
       <div>
         <div className={classes.border}>
           <SearchIcon />
-          <InputBase placeholder="search user" onKeyUp={this.handleKeyUp} />
+          <InputBase placeholder="  search user..." onKeyUp={this.handleKeyUp} />
         </div>
         {this.state.filteredUsers.map(user => {
           let currentUserID = localStorage.getItem("userID");
@@ -98,7 +98,7 @@ const styles = theme => ({
     backgroundColor: "#60b0f4"
   },
   border: {
-    border: "1px solid #60b0f4"
+    border: "1px solid #D3D3D3"
   },
   paper: {
     marginTop: 10,
