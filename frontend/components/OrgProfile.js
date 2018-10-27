@@ -10,6 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import Axios from "axios";
 import Switch from "@material-ui/core/Switch";
 import Avatar from "@material-ui/core/Avatar";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
   layout: {
@@ -66,7 +67,8 @@ class OrgProfile extends Component {
       leader: { username: "", id: "" },
       members: [],
       _id: "",
-      avatar: ""
+      avatar: "",
+      chatRoomID: ""
     }
   };
   getOrgByID() {
@@ -74,6 +76,7 @@ class OrgProfile extends Component {
       res => {
         console.log(res.data);
         if (res.data.success) {
+          console.log(res.data.org);
           this.setState({ orgObject: res.data.org });
         } else {
           this.setState({ orgObject: { name: "Organization not found" } });
@@ -147,7 +150,13 @@ class OrgProfile extends Component {
               className={classes.submit}
               style={{ backgroundColor: "#60b0f4", color: "white" }}
             >
-              Chat room
+              <Link
+                to={`/chats/${this.state.orgObject.chatRoomID}`}
+                style={{ textDecoration: "none" }}
+              >
+                {" "}
+                Chat room{" "}
+              </Link>
             </Button>
           </Paper>
         </main>

@@ -70,11 +70,17 @@ class CreateOrg extends Component {
   };
   onSubmit = async e => {
     e.preventDefault();
-    const org = {
-      name: this.state.name,
-      description: this.state.description
-    };
     try {
+      const currentUserID = localStorage.getItem("userID");
+      let groupRes = await axios.post("http://127.0.0.1:5000/chats/group", {
+        receivers: [currentUserID],
+        name: this.state.name
+      });
+      const org = {
+        name: this.state.name,
+        description: this.state.description,
+        chatRoomID: groupRes.data.id
+      };
       let orgsRes = await axios.post("http://127.0.0.1:5000/orgs", { org });
       if (orgsRes.data.success) {
         this.setState({
@@ -83,12 +89,6 @@ class CreateOrg extends Component {
           open: true
         });
         this.props.getOrgList();
-        const currentUserID = localStorage.getItem("userID");
-        let groupRes = await axios.post("http://127.0.0.1:5000/chats/group", {
-          receivers: [currentUserID],
-          name: org.name
-        });
-        console.log(groupRes);
       }
     } catch (err) {
       console.log(err);
