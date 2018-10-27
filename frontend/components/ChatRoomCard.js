@@ -49,7 +49,12 @@ class ChatRoomCard extends React.Component {
         />
         <div className={classes.details}>
           <CardContent className={classes.content}>
-            <Typography>Chat with {this.ChatWith}</Typography>
+            {this.props.chat.name ? (
+              <Typography>Group chat: {this.props.chat.name}</Typography>
+            ) : (
+              <Typography>Chat with {this.ChatWith}</Typography>
+            )}
+
             <Typography color="textSecondary">
               {chat.messages.length > 0
                 ? chat.messages[chat.messages.length - 1].content

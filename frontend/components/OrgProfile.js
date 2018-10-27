@@ -143,6 +143,12 @@ class OrgProfile extends Component {
             >
               Join
             </Button>
+            <Button
+              className={classes.submit}
+              style={{ backgroundColor: "#60b0f4", color: "white" }}
+            >
+              Chat room
+            </Button>
           </Paper>
         </main>
       </React.Fragment>

@@ -40,6 +40,28 @@ router.post(
     });
   }
 );
+router.post(
+  "/group",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let chat = new Chat({
+      name: req.body.name,
+      receivers: req.body.receivers
+    });
+    chat.save((err, newchat) => {
+      if (err) throw err;
+      // successfully saved
+      console.log("new chat");
+      User.findById(req.user._id, (err, user) => {
+        user.chats.push(newchat._id);
+        user.save((err, user) => {
+          if (err) throw err;
+        });
+      });
+      res.send({ id: chat._id, success: true });
+    });
+  }
+);
 
 router.get(
   "/",

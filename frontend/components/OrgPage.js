@@ -11,7 +11,6 @@ export default class OrgPage extends Component {
     axios
       .get("http://127.0.0.1:5000/orgs")
       .then(res => {
-        console.log(res.data);
         this.setState({ OrgList: res.data.orgs });
       })
       .catch(err => console.log(err));
