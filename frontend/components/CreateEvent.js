@@ -10,9 +10,6 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import axios from "axios";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import setAuthToken from "../utils/setAuthToken";
@@ -180,7 +177,6 @@ class CreateEvent extends Component {
                 style={{ backgroundColor: "#60b0f4" }}
                 type="submit"
                 multiple
-                variant="raised"
                 color="primary"
                 className={classes.submit}
               >

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const styles = theme => ({
   layout: {
@@ -43,14 +44,24 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 3
+  },
+  close: {
+    padding: theme.spacing.unit
   }
 });
 
 class Login extends Component {
   state = {
     username: "",
+<<<<<<< HEAD
     password: ""
+=======
+    password: "",
+    open: false,
+    message: ""
+>>>>>>> master
   };
+
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -67,17 +78,31 @@ class Login extends Component {
           const token = res.data.token;
           // Set token to localstorage
           localStorage.setItem("jwtToken", token);
-          localStorage.setItem("isAuth",true);
+          localStorage.setItem("isAuth", true);
           localStorage.setItem("userID", res.data.user.id);
           setAuthToken(token);
           this.props.login();
           this.props.history.push("/dashboard");
         } else {
+<<<<<<< HEAD
           console.log(res.data.msg);
+=======
+          this.setState({
+            message: res.data.msg,
+            open: true,
+            password: "",
+            username: ""
+          });
+>>>>>>> master
         }
       })
       .catch(err => console.log(err));
   };
+
+  handleClose = e => {
+    this.setState({ open: false });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -111,17 +136,32 @@ class Login extends Component {
                 />
               </FormControl>
               <Button
-                style={{ backgroundColor: "#60b0f4" }}
                 type="submit"
                 fullWidth
-                variant="raised"
-                color="primary"
                 className={classes.submit}
+                style={{
+                  backgroundColor: "#60b0f4",
+                  color: "#fff"
+                }}
               >
                 Login
               </Button>
             </form>
           </Paper>
+
+          <Snackbar
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left"
+            }}
+            open={this.state.open}
+            autoHideDuration={2000}
+            onClose={this.handleClose}
+            ContentProps={{
+              "aria-describedby": "message-id"
+            }}
+            message={<span id="message-id">{this.state.message}</span>}
+          />
         </main>
       </React.Fragment>
     );

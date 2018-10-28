@@ -20,8 +20,9 @@ router.post(
     }
 
     const newOrg = req.body.org;
-    newOrg.leader = {};
-    newOrg.leader.id = req.user._id;
+    console.log(newOrg);
+
+    newOrg.leader = { id: req.user._id };
     newOrg.leader.username = req.user.username;
     newOrg.admins = [];
     newOrg.admins.push(newOrg.leader);

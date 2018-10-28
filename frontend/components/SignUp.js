@@ -11,6 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const styles = theme => ({
   layout: {
@@ -50,14 +51,25 @@ class SignUp extends Component {
     username: "",
     email: "",
     password: "",
-    password2: ""
+    password2: "",
+    open: false
+  };
+  handleClose = e => {
+    this.setState({ open: false });
   };
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmit = e => {
     e.preventDefault();
-
+    if (this.state.password2 !== this.state.password) {
+      this.setState({
+        open: true,
+        password: "",
+        password2: ""
+      });
+      return;
+    }
     axios
       .post("http://127.0.0.1:5000/users/register", {
         username: this.state.username,
@@ -123,17 +135,31 @@ class SignUp extends Component {
                 />
               </FormControl>
               <Button
-                style={{ backgroundColor: "#60b0f4" }}
+                style={{
+                  backgroundColor: "#60b0f4",
+                  color: "#fff"
+                }}
                 type="submit"
                 fullWidth
-                variant="raised"
-                color="primary"
                 className={classes.submit}
               >
                 Sign Up
               </Button>
             </form>
           </Paper>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left"
+            }}
+            open={this.state.open}
+            autoHideDuration={2000}
+            onClose={this.handleClose}
+            ContentProps={{
+              "aria-describedby": "message-id"
+            }}
+            message={<span id="message-id">Two passwords don't match</span>}
+          />
         </main>
       </React.Fragment>
     );

@@ -10,6 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import Axios from "axios";
 import Switch from "@material-ui/core/Switch";
 import Avatar from "@material-ui/core/Avatar";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
   layout: {
@@ -66,7 +67,8 @@ class OrgProfile extends Component {
       leader: { username: "", id: "" },
       members: [],
       _id: "",
-      avatar: ""
+      avatar: "",
+      chatRoomID: ""
     }
   };
   getOrgByID() {
@@ -74,6 +76,7 @@ class OrgProfile extends Component {
       res => {
         console.log(res.data);
         if (res.data.success) {
+          console.log(res.data.org);
           this.setState({ orgObject: res.data.org });
         } else {
           this.setState({ orgObject: { name: "Organization not found" } });
@@ -85,13 +88,21 @@ class OrgProfile extends Component {
     this.getOrgByID();
   }
   onClick = e => {
-    Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/join`)
-      .then(res => {
-        if (res.data.success) {
-          this.getOrgByID();
-        }
-      })
-      .catch(err => console.log(err));
+    let currentUserId = localStorage.getItem("userID");
+    let exist = this.state.orgObject.members.find(e => {
+      return e.id === currentUserId;
+    });
+    if (!exist) {
+      Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/join`)
+        .then(res => {
+          if (res.data.success) {
+            this.getOrgByID();
+          }
+        })
+        .catch(err => console.log(err));
+    } else {
+      alert("You are a member of this Org already");
+    }
   };
   render() {
     const { classes } = this.props;
@@ -134,6 +145,18 @@ class OrgProfile extends Component {
               onClick={this.onClick}
             >
               Join
+            </Button>
+            <Button
+              className={classes.submit}
+              style={{ backgroundColor: "#60b0f4", color: "white" }}
+            >
+              <Link
+                to={`/chats/${this.state.orgObject.chatRoomID}`}
+                style={{ textDecoration: "none" }}
+              >
+                {" "}
+                Chat room{" "}
+              </Link>
             </Button>
           </Paper>
         </main>

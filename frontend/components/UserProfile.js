@@ -6,6 +6,10 @@ export default class UserProfile extends Component {
   state = {
     allUsers: []
   };
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
   componentDidMount() {
     this.getAllUsers();
   }
@@ -35,6 +39,7 @@ export default class UserProfile extends Component {
   render() {
     return (
       <div>
+<<<<<<< HEAD
         {this.state.allUsers.map(user => {
           return (
             <Paper key={user._id + Math.random() * 100}>
@@ -61,8 +66,78 @@ export default class UserProfile extends Component {
               </div>
             </Paper>
           );
+=======
+        <div className={classes.border}>
+          <SearchIcon />
+          <InputBase
+            placeholder="  search user..."
+            onKeyUp={this.handleKeyUp}
+          />
+        </div>
+        {this.state.filteredUsers.map(user => {
+          let currentUserID = localStorage.getItem("userID");
+          if (user._id !== currentUserID) {
+            return (
+              <Paper
+                key={user._id + Math.random() * 100}
+                className={classes.paper}
+              >
+                <div>
+                  <h2 className={classes.title}>{user.username}</h2>
+                  <p>{user.email}</p>
+                  <Button
+                    style={{ backgroundColor: "#60b0f4", color: "white" }}
+                    onClick={() => this.onClick(user._id)}
+                  >
+                    connect
+                  </Button>
+
+                  <p>Connected with</p>
+                  <ul>
+                    {user.connections.map(user => {
+                      return (
+                        <p key={(Math.random() * 100) / Math.PI}>
+                          {user.username}
+                        </p>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </Paper>
+            );
+          }
+>>>>>>> master
         })}
       </div>
     );
   }
 }
+<<<<<<< HEAD
+=======
+const styles = theme => ({
+  bgc: {
+    backgroundColor: "#60b0f4"
+  },
+  border: {
+    border: "1px solid #60b0f4"
+  },
+  paper: {
+    marginTop: 10,
+    textAlign: "center",
+    width: "95%",
+    padding: `${theme.spacing.unit * (1 / 100)}px ${theme.spacing.unit}px ${
+      theme.spacing.unit
+    }px`
+  },
+  title: {
+    backgroundColor: "#60b0f4",
+    textAlign: "left",
+    color: "#ffffff",
+    padding: theme.spacing.unit * (1 / 2),
+    marginBottom: 0,
+    width: "99%"
+  }
+});
+
+export default withStyles(styles)(UserProfile);
+>>>>>>> master

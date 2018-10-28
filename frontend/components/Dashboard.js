@@ -29,10 +29,16 @@ export default class Dashboard extends Component {
               case "connections":
                 return <UserProfile />;
               case "chats":
+<<<<<<< HEAD
                 return <p>Under development</p>;
+=======
+                return <ChatRoomList {...this.props} />;
+              case "messages":
+                return <Message {...this.props} />;
+>>>>>>> master
               default:
-                return <h1>Start to find your sirkel !</h1>;
-            }
+                return <ProfilePage {...this.props} />;
+              }
           })()}
         </div>
       </div>

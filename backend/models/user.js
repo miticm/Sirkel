@@ -20,6 +20,14 @@ const UserSchema = new Schema({
     default: Date.now,
     required: true
   },
+<<<<<<< HEAD
+=======
+  avatar: {
+    type: String,
+    default:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png"
+  },
+>>>>>>> master
   orgsAdmin: [
     {
         id: {
@@ -38,10 +46,22 @@ const UserSchema = new Schema({
       username: String,
     }
   ],
+<<<<<<< HEAD
   verified: {
     type: Boolean,
     default: false,
     required: true
+=======
+  chats: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Chat"
+    }
+  ],
+  reputation: {
+    type: Number,
+    default: 0
+>>>>>>> master
   }
 });
 

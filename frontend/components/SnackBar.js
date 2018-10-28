@@ -8,7 +8,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 const styles = theme => ({
   close: {
-    padding: theme.spacing.unit / 2
+    padding: theme.spacing.unit
   }
 });
 
@@ -25,7 +25,6 @@ class SnackBar extends React.Component {
     if (reason === "clickaway") {
       return;
     }
-
     this.setState({ open: false });
   };
 
@@ -36,25 +35,17 @@ class SnackBar extends React.Component {
         <Button onClick={this.handleClick}>Open simple snackbar</Button>
         <Snackbar
           anchorOrigin={{
-            vertical: "bottom",
+            vertical: "top",
             horizontal: "left"
           }}
           open={this.state.open}
-          autoHideDuration={6000}
+          autoHideDuration={1000}
           onClose={this.handleClose}
           ContentProps={{
             "aria-describedby": "message-id"
           }}
-          message={<span id="message-id">Note archived</span>}
+          message={<span id="message-id">Success</span>}
           action={[
-            <Button
-              key="undo"
-              color="secondary"
-              size="small"
-              onClick={this.handleClose}
-            >
-              UNDO
-            </Button>,
             <IconButton
               key="close"
               aria-label="Close"
