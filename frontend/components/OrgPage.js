@@ -33,15 +33,18 @@ export default class OrgPage extends Component {
       this.setState({ filteredOrgs: filtered });
     });
   };
-  
+
   render() {
     return (
       <div>
-        <div>
+        <div style={{ border: "1px solid #60b0f4" }}>
           <SearchIcon />
-          <InputBase placeholder="  search organization..." onKeyUp={this.handleKeyUp} />
+          <InputBase
+            placeholder="  search organization..."
+            onKeyUp={this.handleKeyUp}
+          />
         </div>
-       <CreateOrg getOrgList={this.getOrgList} />
+        <CreateOrg getOrgList={this.getOrgList} />
         {this.state.filteredOrgs.map(org => {
           return (
             <OrgList

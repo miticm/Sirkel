@@ -50,7 +50,7 @@ class Login extends Component {
   state = {
     username: "",
     password: "",
-    passwordFail: "",
+    passwordFail: ""
   };
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -61,7 +61,7 @@ class Login extends Component {
     axios
       .post("http://127.0.0.1:5000/users/authenticate", {
         username: this.state.username,
-        password: this.state.password,
+        password: this.state.password
       })
       .then(res => {
         if (res.data.success) {
@@ -69,14 +69,14 @@ class Login extends Component {
           const token = res.data.token;
           // Set token to localstorage
           localStorage.setItem("jwtToken", token);
-          localStorage.setItem("isAuth",true);
+          localStorage.setItem("isAuth", true);
           localStorage.setItem("userID", res.data.user.id);
           setAuthToken(token);
           this.props.login();
           this.props.history.push("/dashboard");
         } else {
           console.log(res.data.msg);
-          alert(res.data.msg)
+          alert(res.data.msg);
         }
       })
       .catch(err => console.log(err));
@@ -117,12 +117,11 @@ class Login extends Component {
                 style={{ backgroundColor: "#60b0f4" }}
                 type="submit"
                 fullWidth
-                variant="raised"
                 color="primary"
                 className={classes.submit}
               >
                 Login
-              </Button>    
+              </Button>
             </form>
           </Paper>
         </main>

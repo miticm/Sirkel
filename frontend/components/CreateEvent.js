@@ -177,7 +177,6 @@ class CreateEvent extends Component {
                 style={{ backgroundColor: "#60b0f4" }}
                 type="submit"
                 multiple
-                variant="raised"
                 color="primary"
                 className={classes.submit}
               >

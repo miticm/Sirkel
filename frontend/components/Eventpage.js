@@ -37,9 +37,12 @@ export default class Eventpage extends Component {
   render() {
     return (
       <div>
-        <div>
+        <div style={{ border: "1px solid #60b0f4" }}>
           <SearchIcon />
-          <InputBase placeholder="  search event..." onKeyUp={this.handleKeyUp} />
+          <InputBase
+            placeholder="  search event..."
+            onKeyUp={this.handleKeyUp}
+          />
         </div>
         <CreateEvent getEventsList={this.getEventsList} />
         {this.state.filteredEvents.map(e => {

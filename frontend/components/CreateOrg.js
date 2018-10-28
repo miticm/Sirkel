@@ -128,7 +128,6 @@ class CreateOrg extends Component {
                 style={{ backgroundColor: "#60b0f4" }}
                 type="submit"
                 multiple
-                variant="raised"
                 color="primary"
                 className={classes.submit}
               >
@@ -138,7 +137,6 @@ class CreateOrg extends Component {
               <Button
                 style={{ backgroundColor: "#60b0f4", marginLeft: "68%" }}
                 multiple
-                variant="raised"
                 color="primary"
                 href="https://www.purdue.edu/studentregulations/student_organizations/forming.html"
                 target="_blank"

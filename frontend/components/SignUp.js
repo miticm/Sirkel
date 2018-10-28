@@ -126,7 +126,6 @@ class SignUp extends Component {
                 style={{ backgroundColor: "#60b0f4" }}
                 type="submit"
                 fullWidth
-                variant="raised"
                 color="primary"
                 className={classes.submit}
               >
