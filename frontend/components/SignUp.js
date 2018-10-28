@@ -123,10 +123,12 @@ class SignUp extends Component {
                 />
               </FormControl>
               <Button
-                style={{ backgroundColor: "#60b0f4" }}
+                style={{
+                  backgroundColor: "#60b0f4",
+                  color: "#fff"
+                }}
                 type="submit"
                 fullWidth
-                color="primary"
                 className={classes.submit}
               >
                 Sign Up

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const styles = theme => ({
   layout: {
@@ -43,6 +44,9 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 3
+  },
+  close: {
+    padding: theme.spacing.unit
   }
 });
 
@@ -50,8 +54,10 @@ class Login extends Component {
   state = {
     username: "",
     password: "",
-    passwordFail: ""
+    open: false,
+    message: ""
   };
+
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -75,12 +81,21 @@ class Login extends Component {
           this.props.login();
           this.props.history.push("/dashboard");
         } else {
-          console.log(res.data.msg);
-          alert(res.data.msg);
+          this.setState({
+            message: res.data.msg,
+            open: true,
+            password: "",
+            username: ""
+          });
         }
       })
       .catch(err => console.log(err));
   };
+
+  handleClose = e => {
+    this.setState({ open: false });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -114,16 +129,32 @@ class Login extends Component {
                 />
               </FormControl>
               <Button
-                style={{ backgroundColor: "#60b0f4" }}
                 type="submit"
                 fullWidth
-                color="primary"
                 className={classes.submit}
+                style={{
+                  backgroundColor: "#60b0f4",
+                  color: "#fff"
+                }}
               >
                 Login
               </Button>
             </form>
           </Paper>
+
+          <Snackbar
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left"
+            }}
+            open={this.state.open}
+            autoHideDuration={1000}
+            onClose={this.handleClose}
+            ContentProps={{
+              "aria-describedby": "message-id"
+            }}
+            message={<span id="message-id">{this.state.message}</span>}
+          />
         </main>
       </React.Fragment>
     );
