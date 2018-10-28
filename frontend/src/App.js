@@ -158,6 +158,17 @@ export default class App extends Component {
                 )
               }
             />
+            <Route
+              exact
+              path="/survey"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="survey" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
 
             <Route
               render={() => (

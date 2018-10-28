@@ -90,6 +90,15 @@ class ProfilePage extends Component {
 
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}>Take a survey</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Link to="/survey">Click here</Link>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>My Organzations</Typography>
           </ExpansionPanelSummary>
 
