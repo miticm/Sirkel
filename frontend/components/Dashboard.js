@@ -9,6 +9,7 @@ import OrgProfile from "./OrgProfile";
 import UserProfile from "./UserProfile";
 import ChatRoomList from "./ChatRoomList";
 import Message from "./Message";
+import Checkout from "./quiz/Checkout";
 
 export default class Dashboard extends Component {
   render() {
@@ -34,9 +35,11 @@ export default class Dashboard extends Component {
                 return <ChatRoomList {...this.props} />;
               case "messages":
                 return <Message {...this.props} />;
+              case "survey":
+                return <Checkout {...this.props} />;
               default:
                 return <ProfilePage {...this.props} />;
-              }
+            }
           })()}
         </div>
       </div>

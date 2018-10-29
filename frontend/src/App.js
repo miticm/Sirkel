@@ -160,9 +160,19 @@ export default class App extends Component {
             />
             <Route
               exact
+<<<<<<< HEAD
               path="/user/verify/:id"
               render={
                   <Redirect to="/login" />
+=======
+              path="/survey"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="survey" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+>>>>>>> master
               }
             />
 
