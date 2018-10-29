@@ -160,11 +160,13 @@ export default class App extends Component {
             />
             <Route
               exact
-<<<<<<< HEAD
               path="/user/verify/:id"
               render={
                   <Redirect to="/login" />
-=======
+              }
+            />
+            <Route
+              exact
               path="/survey"
               render={props =>
                 this.state.isAuth ? (
@@ -172,7 +174,6 @@ export default class App extends Component {
                 ) : (
                   <Redirect to="/login" />
                 )
->>>>>>> master
               }
             />
 
