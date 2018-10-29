@@ -158,6 +158,13 @@ export default class App extends Component {
                 )
               }
             />
+            <Route
+              exact
+              path="/user/verify/:id"
+              render={
+                  <Redirect to="/login" />
+              }
+            />
 
             <Route
               render={() => (

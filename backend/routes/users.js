@@ -2,8 +2,9 @@ const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-const nodemailer = require('nodemailer')
-const validator = require('email-validator')
+const nodemailer = require('nodemailer');
+const validator = require('email-validator');
+const crypto = require('crypto');
 
 const config = require("../config/database");
 const User = require("../models/user");
