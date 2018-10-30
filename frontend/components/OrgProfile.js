@@ -105,7 +105,7 @@ class OrgProfile extends Component {
       alert("You are a member of this Org already");
     }
   };
-  onClick = f => {
+  clickPay = f => {
     let currentUserId = localStorage.getItem("userID");
     let exist = this.state.orgObject.paidmembers.find(f => {
       return f.id === currentUserId;
@@ -177,7 +177,7 @@ class OrgProfile extends Component {
             <Button
               className={classes.submit}
               style={{ backgroundColor: "#60b0f4", color: "white" }}
-              onClick={this.onClick}
+              onClick={this.clickPay}
             >
               I Paid Dues
             </Button>
