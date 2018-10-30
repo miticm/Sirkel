@@ -40,6 +40,15 @@ const OrgSchema = new Schema({
       username: String
     }
   ],
+  paidmembers: [
+    {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      },
+      username: String
+    }
+  ],
   description: {
     type: String,
     required: true
