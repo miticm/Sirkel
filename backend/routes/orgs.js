@@ -28,6 +28,9 @@ router.post(
     newOrg.admins.push(newOrg.leader);
     newOrg.members = [];
     newOrg.members.push(newOrg.leader);
+    newOrg.paidmembers = [];
+    newOrg.paidmembers.push(newOrg.leader);
+
     new Org(newOrg).save((err, org) => {
       if (err) {
         res.json({
@@ -142,6 +145,39 @@ router.post(
         });
       }
       org.members.push({
+        id: req.user._id,
+        username: req.user.username
+      });
+
+      org
+        .save()
+        .then(product => {
+          res.json({ success: true, product });
+        })
+        .catch(err => {
+          console.log(err);
+          res.json({
+            success: false,
+            msg: err,
+            fromSave: true
+          });
+        });
+    });
+  }
+);
+
+router.post(
+  "/:id/pay",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Org.findById(req.params.id, (err, org) => {
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
+        });
+      }
+      org.paidmembers.push({
         id: req.user._id,
         username: req.user.username
       });
