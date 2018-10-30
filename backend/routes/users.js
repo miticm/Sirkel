@@ -161,4 +161,16 @@ router.post(
   }
 );
 
+router.post(
+  "/survey",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    User.findOne(req.user._id, (err, user) => {
+      user.survey = req.body;
+      user.save();
+      res.send({ success: true });
+    });
+  }
+);
+
 module.exports = router;

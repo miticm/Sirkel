@@ -4,8 +4,27 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from "@material-ui/core/Button";
 
-function ShortQuestions() {
+function ShortQuestions(props) {
+  let data = {
+    q1: "",
+    q2: "",
+    q3: ""
+  };
+  let q1 = e => {
+    data.q1 = e.target.value;
+  };
+  let q2 = e => {
+    data.q2 = e.target.value;
+  };
+  let q3 = e => {
+    data.q3 = e.target.value;
+  };
+  let onclick = e => {
+    props.updateShortQuestions(data);
+    props.handleNext();
+  };
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -19,6 +38,7 @@ function ShortQuestions() {
             label="Who would you want as a dinner guest?"
             fullWidth
             multiline
+            onChange={q1}
           />
         </Grid>
 
@@ -29,6 +49,7 @@ function ShortQuestions() {
             label="What would constitute a perfect day for you?"
             fullWidth
             multiline
+            onChange={q2}
           />
         </Grid>
 
@@ -39,9 +60,21 @@ function ShortQuestions() {
             label="What do you value most in a friendship?"
             fullWidth
             multiline
+            onChange={q3}
           />
         </Grid>
       </Grid>
+      <Button
+        variant="contained"
+        color="primary"
+        style={{
+          marginTop: "30px",
+          marginLeft: "450px"
+        }}
+        onClick={onclick}
+      >
+        Next
+      </Button>
     </React.Fragment>
   );
 }

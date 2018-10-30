@@ -6,15 +6,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
-
-const products = [
-  { name: "question 1", desc: "A good thing", price: "GG" },
-  { name: "question 2", desc: "Another thing", price: "GG" },
-  { name: "question 3", desc: "Something else", price: "GG" },
-  { name: "question 4", desc: "Best thing of all", price: "GG" },
-  { name: "question 5", desc: "sack of things", price: "GG" }
-];
-
+import Button from "@material-ui/core/Button";
+import axios from "axios";
 const styles = theme => ({
   listItem: {
     padding: `${theme.spacing.unit}px 0`
@@ -28,6 +21,34 @@ const styles = theme => ({
 });
 
 function Review(props) {
+  let handleSubmit = e => {
+    axios
+      .post("http://127.0.0.1:5000/users/survey", {
+        basicInfo: props.data.basicInfo,
+        shortQuestions: props.data.shortQuestions
+      })
+      .then(res => {
+        if (res.data.success) {
+          props.handleNext();
+        }
+      });
+  };
+  let products = [
+    { name: "Name", answer: props.data.basicInfo.name },
+    { name: "Age", answer: props.data.basicInfo.age },
+    {
+      name: "Who would you want as a dinner guest?",
+      answer: props.data.shortQuestions.q1
+    },
+    {
+      name: "What would constitute a perfect day for you?",
+      answer: props.data.shortQuestions.q2
+    },
+    {
+      name: "What do you value most in a friendship?",
+      answer: props.data.shortQuestions.q3
+    }
+  ];
   const { classes } = props;
   return (
     <React.Fragment>
@@ -38,11 +59,22 @@ function Review(props) {
       <List disablePadding>
         {products.map(product => (
           <ListItem className={classes.listItem} key={product.name}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
+            <ListItemText primary={product.name} />
+            <Typography variant="body2">{product.answer}</Typography>
           </ListItem>
         ))}
       </List>
+      <Button
+        onClick={handleSubmit}
+        variant="contained"
+        color="primary"
+        style={{
+          marginTop: "30px",
+          marginLeft: "450px"
+        }}
+      >
+        Submit
+      </Button>
     </React.Fragment>
   );
 }
