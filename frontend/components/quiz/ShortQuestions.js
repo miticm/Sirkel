@@ -35,7 +35,7 @@ function ShortQuestions(props) {
           <TextField
             required
             id="q1"
-            label="Who would you want as a dinner guest?"
+            label="Do you like sports? (Y/N)"
             fullWidth
             multiline
             onChange={q1}
@@ -46,7 +46,7 @@ function ShortQuestions(props) {
           <TextField
             required
             id="q2"
-            label="What would constitute a perfect day for you?"
+            label="Do you like listening to music? (Y/N)"
             fullWidth
             multiline
             onChange={q2}
@@ -57,7 +57,7 @@ function ShortQuestions(props) {
           <TextField
             required
             id="q3"
-            label="What do you value most in a friendship?"
+            label="Do you like playing video games? (Y/N)"
             fullWidth
             multiline
             onChange={q3}

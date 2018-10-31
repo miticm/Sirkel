@@ -37,15 +37,15 @@ function Review(props) {
     { name: "Name", answer: props.data.basicInfo.name },
     { name: "Age", answer: props.data.basicInfo.age },
     {
-      name: "Who would you want as a dinner guest?",
+      name: "Do you like sports? (Y/N)",
       answer: props.data.shortQuestions.q1
     },
     {
-      name: "What would constitute a perfect day for you?",
+      name: "Do you like listening to music? (Y/N)",
       answer: props.data.shortQuestions.q2
     },
     {
-      name: "What do you value most in a friendship?",
+      name: "Do you like playing video games? (Y/N)",
       answer: props.data.shortQuestions.q3
     }
   ];
