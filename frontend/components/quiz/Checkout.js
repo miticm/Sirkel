@@ -58,12 +58,13 @@ class Checkout extends React.Component {
     activeStep: 0,
     basicInfo: {
       name: "",
-      age: 0
+      collegeLevel: ""
     },
     shortQuestions: {
-      q1: "",
-      q2: "",
-      q3: ""
+      likesSports: "",
+      likesMusic: "",
+      likesVideoGames: "",
+      tags: ""
     }
   };
   updateBasicInfo = data => {
