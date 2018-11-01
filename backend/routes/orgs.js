@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/database");
 const User = require("../models/user");
 const Org = require("../models/org");
-const rankOrgs = require('../utility/rankOrgs');
+const rankOrgs = require("../utility/rankOrgs");
 
 const router = express.Router();
 
@@ -21,7 +21,6 @@ router.post(
     }
 
     const newOrg = req.body.org;
-    console.log(newOrg);
 
     newOrg.leader = { id: req.user._id };
     newOrg.leader.username = req.user.username;
@@ -90,32 +89,31 @@ router.get(
   "/ranked",
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => {
-    console.log('Made it');
-    console.log(req.user);
-    Org.find({}).lean().exec((err, orgs) => {
-      if (err) {
-        res.json({
-          success: false,
-          msg: err
-        });
-      }
-
-      if (req.user.survey) {
-        const sortedOrgs = rankOrgs(orgs, req.user);
-        console.log(sortedOrgs);
-        if (sortedOrgs) {
+    Org.find({})
+      .lean()
+      .exec((err, orgs) => {
+        if (err) {
           res.json({
-            success: true,
-            orgs: sortedOrgs
+            success: false,
+            msg: err
           });
         }
-      } else {
-        res.json({
-          success: false,
-          msg: "You have not taken the quiz yet!"
-        });
-      }
-    });
+
+        if (req.user.survey) {
+          const sortedOrgs = rankOrgs(orgs, req.user);
+          if (sortedOrgs) {
+            res.json({
+              success: true,
+              orgs: sortedOrgs
+            });
+          }
+        } else {
+          res.json({
+            success: false,
+            msg: "You have not taken the quiz yet!"
+          });
+        }
+      });
   }
 );
 
@@ -189,7 +187,6 @@ router.post(
           res.json({ success: true, product });
         })
         .catch(err => {
-          console.log(err);
           res.json({
             success: false,
             msg: err,
@@ -222,7 +219,6 @@ router.post(
           res.json({ success: true, product });
         })
         .catch(err => {
-          console.log(err);
           res.json({
             success: false,
             msg: err,
