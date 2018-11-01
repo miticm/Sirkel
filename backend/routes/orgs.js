@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/database");
 const User = require("../models/user");
 const Org = require("../models/org");
+const rankOrgs = require('../utility/rankOrgs');
 
 const router = express.Router();
 
@@ -84,6 +85,39 @@ router.get("/", (req, res, next) => {
     }
   });
 });
+
+router.get(
+  "/ranked",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    console.log('Made it');
+    console.log(req.user);
+    Org.find({}).lean().exec((err, orgs) => {
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
+        });
+      }
+
+      if (req.user.survey) {
+        const sortedOrgs = rankOrgs(orgs, req.user);
+        console.log(sortedOrgs);
+        if (sortedOrgs) {
+          res.json({
+            success: true,
+            orgs: sortedOrgs
+          });
+        }
+      } else {
+        res.json({
+          success: false,
+          msg: "You have not taken the quiz yet!"
+        });
+      }
+    });
+  }
+);
 
 router.get("/:id", (req, res, next) => {
   Org.findById(req.params.id, (err, org) => {
