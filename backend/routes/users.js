@@ -8,10 +8,10 @@ const crypto = require('crypto');
 
 const config = require("../config/database");
 const User = require("../models/user");
-
+const vHash = require("../models/vhash");
 const router = express.Router();
 
-const serverURL = '159.65.160.251';
+const serverURL = 'localhost:8080';
 const senderAddr = 'sirkel2018@gmail.com';
 const senderPass = 'CS307FALL2018'
 const transporter = nodemailer.createTransport({
