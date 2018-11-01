@@ -58,6 +58,11 @@ const OrgSchema = new Schema({
     default:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png"
   },
+  primaryAudience: {
+    type: String,
+    default: 'Undergraduate'
+  },
+  tags: String,
   events: [
     {
       id: {
