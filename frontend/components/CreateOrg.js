@@ -58,7 +58,7 @@ const styles = theme => ({
 class CreateOrg extends Component {
   state = {
     name: "",
-    desc: "",
+    description: "",
     primaryAudience: "",
     tags: "",
     open: false,
@@ -72,7 +72,7 @@ class CreateOrg extends Component {
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
-  
+
   onSubmit = async e => {
     e.preventDefault();
     try {
@@ -83,16 +83,16 @@ class CreateOrg extends Component {
       });
       const org = {
         name: this.state.name,
-        description: this.state.desc,
-        primaryAudience: "",
-        tags: "",
+        description: this.state.description,
+        primaryAudience: this.state.primaryAudience,
+        tags: this.state.tags,
         chatRoomID: groupRes.data.id
       };
       let orgsRes = await axios.post("http://127.0.0.1:5000/orgs", { org });
       if (orgsRes.data.success) {
         this.setState({
           name: "",
-          desc: "",
+          description: "",
           primaryAudience: "",
           tags: "",
           open: true
