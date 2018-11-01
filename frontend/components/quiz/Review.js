@@ -35,18 +35,22 @@ function Review(props) {
   };
   let products = [
     { name: "Name", answer: props.data.basicInfo.name },
-    { name: "Age", answer: props.data.basicInfo.age },
+    { name: "College Level", answer: props.data.basicInfo.collegeLevel },
     {
-      name: "Do you like sports? (Y/N)",
-      answer: props.data.shortQuestions.q1
+      name: "Do you like playing sports?",
+      answer: props.data.shortQuestions.likesSports
     },
     {
-      name: "Do you like listening to music? (Y/N)",
-      answer: props.data.shortQuestions.q2
+      name: "Do you like listening to music?",
+      answer: props.data.shortQuestions.likesMusic
     },
     {
-      name: "Do you like playing video games? (Y/N)",
-      answer: props.data.shortQuestions.q3
+      name: "Do you like playing video games?",
+      answer: props.data.shortQuestions.likesVideoGames
+    },
+    {
+      name: "Enter your interests in a comma separated list.",
+      answer: props.data.shortQuestions.tags
     }
   ];
   const { classes } = props;
