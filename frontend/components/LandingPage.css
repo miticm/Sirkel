@@ -35,3 +35,9 @@
 .text {
   border-right: 0.2rem solid #777;
 }
+
+@media only screen and (max-width : 500px) {
+        .typer{
+          font-size: 2rem;
+        }
+}

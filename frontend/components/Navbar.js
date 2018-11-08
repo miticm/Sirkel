@@ -148,9 +148,7 @@ class NavBar extends Component {
             <List>{secondDividerSideBarItems}</List>
           </Drawer>
 
-          <main className={classNames(classes.content, {
-            [classes.contentShift]: this.state.open
-          })} >
+          
             <Switch>
               <Route exact path="/" component={Homepage} />
               <Route exact path="/signup" component={SignUp} />
@@ -160,23 +158,25 @@ class NavBar extends Component {
                 path="/login"
                 render={myprops => <Login {...myprops} login={this.login} />}
               />
+          
               <Route
                 exact
                 path="/dashboard"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} />
+                    <Dashboard open={this.state.open} {...props} />
                   ) : (
                     <Redirect to="/login" />
                   )
                 }
               />
+              
               <Route
                 exact
                 path="/events"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} show="events" />
+                    <Dashboard open={this.state.open} {...props} show="events" />
                   ) : (
                     <Redirect to="/login" />
                   )
@@ -187,7 +187,7 @@ class NavBar extends Component {
                 path="/settings"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} show="settings" />
+                    <Dashboard open={this.state.open} {...props} show="settings" />
                   ) : (
                     <Redirect to="/login" />
                   )
@@ -198,7 +198,7 @@ class NavBar extends Component {
                 path="/profile"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} show="profile" />
+                    <Dashboard open={this.state.open} {...props} show="profile" />
                   ) : (
                     <Redirect to="/login" />
                   )
@@ -209,7 +209,7 @@ class NavBar extends Component {
                 path="/org"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} show="org" />
+                    <Dashboard open={this.state.open} {...props} show="org" />
                   ) : (
                     <Redirect to="/login" />
                   )
@@ -220,7 +220,7 @@ class NavBar extends Component {
                 path="/connections"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} show="connections" />
+                    <Dashboard open={this.state.open} {...props} show="connections" />
                   ) : (
                     <Redirect to="/login" />
                   )
@@ -231,7 +231,7 @@ class NavBar extends Component {
                 path="/org/:id"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} show="orgprofile" />
+                    <Dashboard open={this.state.open} {...props} show="orgprofile" />
                   ) : (
                     <Redirect to="/login" />
                   )
@@ -242,7 +242,7 @@ class NavBar extends Component {
                 path="/chats"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} user={this.state.user} show="chats" />
+                    <Dashboard open={this.state.open} {...props} user={this.state.user} show="chats" />
                   ) : (
                     <Redirect to="/login" />
                   )
@@ -253,7 +253,7 @@ class NavBar extends Component {
                 path="/chats/:id"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} show="messages" />
+                    <Dashboard open={this.state.open} {...props} show="messages" />
                   ) : (
                     <Redirect to="/login" />
                   )
@@ -264,7 +264,7 @@ class NavBar extends Component {
                 path="/survey"
                 render={props =>
                   this.state.isAuth ? (
-                    <Dashboard {...props} show="survey" />
+                    <Dashboard open={this.state.open} {...props} show="survey" />
                   ) : (
                     <Redirect to="/login" />
                   )
@@ -277,8 +277,7 @@ class NavBar extends Component {
                 )}
               />
             </Switch>
-          </main>
-        </div>
+          </div>
       </BrowserRouter>
     );
   }
@@ -316,8 +315,8 @@ const styles = theme => ({
     marginLeft: 0
   },
   menuButton: {
-    marginLeft: 12,
-    marginRight: 20
+    marginLeft: 0,
+    marginRight: 0
   },
   hide: {
     display: "none"
