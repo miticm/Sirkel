@@ -15,7 +15,6 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard">
-        <Sidebar className="dashboard-sidebar" />
         <div className="dashboard-content">
           {(() => {
             switch (this.props.show) {
