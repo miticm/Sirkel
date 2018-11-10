@@ -3,21 +3,6 @@ module.exports = rankOrgs = (orgs, user) => {
   let tags = userSurvey.shortQuestions.tags.split(',');
   tags.map(tag => tag.trim().toLowerCase());
 
-  if (userSurvey.shortQuestions) {
-    if (userSurvey.shortQuestions.likesSports === 'Yes') {
-      tags.push('sports');
-      tags.push('intramural');
-    }
-
-    if (userSurvey.shortQuestions.likesMusic === 'Yes') {
-      tags.push('music');
-    }
-
-    if (userSurvey.shortQuestions.likesVideoGames === 'Yes') {
-      tags.push('video games');
-    }
-  }
-
   orgs.map(org => {
     let score = 0;
     tags.forEach(tag => {
