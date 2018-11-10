@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
 import InputBase from "@material-ui/core/InputBase";
+import { Input, InputLabel, FormControl } from '@material-ui/core';
 
 class UserProfile extends Component {
   state = {
@@ -62,13 +63,15 @@ class UserProfile extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <div className={classes.border}>
-          <SearchIcon />
-          <InputBase
-            placeholder="  search user..."
+        <FormControl margin="normal" fullWidth>
+          <InputLabel>
+            <SearchIcon />
+          </InputLabel>
+          <Input
+            placeholder="dan"
             onKeyUp={this.handleKeyUp}
           />
-        </div>
+        </FormControl>
         <Button
           style={{ backgroundColor: "#60b0f4" }}
           type="submit"

@@ -8,7 +8,7 @@ import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
 import Typography from '@material-ui/core/Typography';
-
+import { Input, FormControl, InputLabel } from "@material-ui/core";
 
 export default class OrgPage extends Component {
   state = {
@@ -89,13 +89,15 @@ export default class OrgPage extends Component {
 
     return (
       <div>
-        <div style={{ border: "1px solid #60b0f4" }}>
-          <SearchIcon />
-          <InputBase
-            placeholder="  search organization..."
+        <FormControl margin="normal" fullWidth>
+          <InputLabel>
+            <SearchIcon />
+          </InputLabel>
+          <Input
+            placeholder="Purdue Hackers"
             onKeyUp={this.handleKeyUp}
           />
-        </div>
+        </FormControl>
         <Button
           style={{ backgroundColor: "#60b0f4" }}
           type="submit"
