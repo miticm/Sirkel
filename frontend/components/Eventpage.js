@@ -4,6 +4,7 @@ import EventPost from "./EventPost";
 import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
 import InputBase from "@material-ui/core/InputBase";
+import { Input, FormControl, InputLabel } from "@material-ui/core";
 
 export default class Eventpage extends Component {
   state = {
@@ -37,13 +38,15 @@ export default class Eventpage extends Component {
   render() {
     return (
       <div>
-        <div style={{ border: "1px solid #60b0f4" }}>
-          <SearchIcon />
-          <InputBase
-            placeholder="  search event..."
+        <FormControl margin="normal" fullWidth>
+          <InputLabel>
+            <SearchIcon />
+          </InputLabel>
+          <Input
+            placeholder="Tianchu Sucks"
             onKeyUp={this.handleKeyUp}
           />
-        </div>
+        </FormControl>
         <CreateEvent getEventsList={this.getEventsList} />
         {this.state.filteredEvents.map(e => {
           return (
