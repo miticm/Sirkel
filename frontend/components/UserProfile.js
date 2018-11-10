@@ -10,7 +10,8 @@ class UserProfile extends Component {
   state = {
     allUsers: [],
     filteredUsers: [],
-    search: ""
+    search: "",
+    ranked: false
   };
 
   componentDidMount() {
@@ -18,7 +19,7 @@ class UserProfile extends Component {
   }
   getAllUsers = () => {
     axios
-      .get("http://127.0.0.1:5000/users/")
+      .get(`http://127.0.0.1:5000/users/${this.state.ranked ? "ranked" : ""}`)
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -29,6 +30,7 @@ class UserProfile extends Component {
       })
       .catch(err => console.log(err));
   };
+
   onClick = id => {
     console.log(id);
     axios
@@ -40,6 +42,7 @@ class UserProfile extends Component {
       })
       .catch(err => console.log(err));
   };
+
   handleKeyUp = e => {
     this.setState({ search: e.target.value }, () => {
       let filtered = this.state.allUsers.filter(user =>
@@ -48,6 +51,13 @@ class UserProfile extends Component {
       this.setState({ filteredUsers: filtered });
     });
   };
+
+  toggleRanked = () => {
+    this.setState({ ranked: !this.state.ranked }, () => {
+      this.getAllUsers();
+    });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -59,6 +69,15 @@ class UserProfile extends Component {
             onKeyUp={this.handleKeyUp}
           />
         </div>
+        <Button
+          style={{ backgroundColor: "#60b0f4" }}
+          type="submit"
+          multiple
+          color="primary"
+          onClick={this.toggleRanked}
+        >
+          Rank
+        </Button>
         {this.state.filteredUsers.map(user => {
           let currentUserID = localStorage.getItem("userID");
           if (user._id !== currentUserID) {
