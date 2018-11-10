@@ -18,9 +18,7 @@ class Dashboard extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classNames(classes.content, {
-        [classes.contentShift]: this.props.open
-        })} >
+      <div>
         <div className="dashboard">
           <div className="dashboard-content">
             {(() => {
@@ -62,7 +60,7 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    marginLeft: -240
+    
   },
   contentShift: {
     transition: theme.transitions.create("margin", {

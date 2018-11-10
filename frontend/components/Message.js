@@ -68,7 +68,7 @@ export default class Message extends Component {
             <TextField
               key={me._id}
               style={{ display: "block" }}
-              label={me.sender}
+              label={me.sender + " -- " + new Date(me.date)}
               value={me.content}
               margin="normal"
               variant="outlined"

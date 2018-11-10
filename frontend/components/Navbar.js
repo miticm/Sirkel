@@ -55,6 +55,7 @@ class NavBar extends Component {
   login = user => {
     this.setState({ isAuth: true, user: user });
   };
+  
   signOut = () => {
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("isAuth");
@@ -62,6 +63,7 @@ class NavBar extends Component {
     setAuthToken("");
     this.setState({ isAuth: false, user: {} });
   };
+
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
@@ -76,9 +78,7 @@ class NavBar extends Component {
       <BrowserRouter>
         <div>
           <AppBar
-            className={classNames(classes.appBar, {
-              [classes.appBarShift]: this.state.open
-            })}
+            className={classes.appBar}
             style={{ backgroundColor: "#60b0f4" }}
           >
             <Toolbar>
