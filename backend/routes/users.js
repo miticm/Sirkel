@@ -209,16 +209,16 @@ router.post(
 
       if (userSurvey.shortQuestions) {
         if (userSurvey.shortQuestions.likesSports === 'Yes') {
-          tags.push('sports');
-          tags.push('intramural');
+          userSurvey.shortQuestions.tags += ', sports';
+          userSurvey.shortQuestions.tags += ', intramural';
         }
     
         if (userSurvey.shortQuestions.likesMusic === 'Yes') {
-          tags.push('music');
+          userSurvey.shortQuestions.tags += ', music';
         }
     
         if (userSurvey.shortQuestions.likesVideoGames === 'Yes') {
-          tags.push('video games');
+          userSurvey.shortQuestions.tags += ', video games';
         }
       }
 
