@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const config = require("../config/database");
 const User = require("../models/user");
+const rankUsers = require("../utility/rankUsers");
 
 const router = express.Router();
 
@@ -104,6 +105,44 @@ router.get(
   }
 );
 
+router.get(
+  "/ranked",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    User.find({})
+      .lean()
+      .exec((err, users) => {
+        if (err) {
+          res.json({
+            success: false,
+            msg: err
+          });
+        }
+
+        if (req.user.survey) {
+          const sortedUsers = rankUsers(users, req.user);
+          if (sortedUsers) {
+            res.json({
+              success: true,
+              users: sortedUsers
+            });
+          }
+          else {
+            res.json({
+              success: false,
+              msg: "Something went wrong!"
+            });
+          }
+        } else {
+          res.json({
+            success: false,
+            msg: "You have not taken the quiz yet!"
+          });
+        }
+      });
+  }
+);
+
 router.post(
   "/:id/add",
   passport.authenticate("jwt", { session: false }),
@@ -166,7 +205,24 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     User.findOne(req.user._id, (err, user) => {
-      user.survey = req.body;
+      const userSurvey = Object.assign({}, req.body);
+
+      if (userSurvey.shortQuestions) {
+        if (userSurvey.shortQuestions.likesSports === 'Yes') {
+          tags.push('sports');
+          tags.push('intramural');
+        }
+    
+        if (userSurvey.shortQuestions.likesMusic === 'Yes') {
+          tags.push('music');
+        }
+    
+        if (userSurvey.shortQuestions.likesVideoGames === 'Yes') {
+          tags.push('video games');
+        }
+      }
+
+      user.survey = userSurvey;
       user.save();
       res.send({ success: true });
     });
