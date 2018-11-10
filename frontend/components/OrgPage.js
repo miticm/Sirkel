@@ -20,7 +20,7 @@ export default class OrgPage extends Component {
     axios
       .get(`http://127.0.0.1:5000/orgs/${this.state.ranked ? "ranked" : ""}`)
       .then(res => {
-        if (!res.success) {
+        if (res.data.success) {
           this.setState({
             OrgList: res.data.orgs,
             filteredOrgs: res.data.orgs,

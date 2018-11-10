@@ -68,7 +68,7 @@ router.post(
 );
 
 router.get("/", (req, res, next) => {
-  Org.find({}, (err, orgs) => {
+  Org.find({}).lean().exec((err, orgs) => {
     if (err) {
       res.json({
         success: false,
@@ -79,7 +79,7 @@ router.get("/", (req, res, next) => {
     if (orgs) {
       res.json({
         success: true,
-        orgs
+        orgs:orgs.slice(0,10)
       });
     }
   });
