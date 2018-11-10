@@ -6,6 +6,9 @@ import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Divider from "@material-ui/core/Divider";
+import Typography from '@material-ui/core/Typography';
+
 
 export default class OrgPage extends Component {
   state = {
@@ -13,12 +16,13 @@ export default class OrgPage extends Component {
     filteredOrgs: [],
     search: "",
     ranked: false,
-    loading: true
+    loading: true,
+    pageNum: 1
   };
   getOrgList = () => {
     this.setState({ loading: true });
     axios
-      .get(`http://127.0.0.1:5000/orgs/${this.state.ranked ? "ranked" : ""}`)
+      .get(`http://127.0.0.1:5000/orgs/${this.state.ranked ? "ranked" : "pageNum/"+this.state.pageNum}`)
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -49,6 +53,16 @@ export default class OrgPage extends Component {
       this.getOrgList();
     });
   };
+  nextPage = () => {
+    this.setState({pageNum : this.state.pageNum + 1});
+    this.getOrgList();
+  }
+  prePage = () => {
+    if(this.state.pageNum > 1){
+      this.setState({pageNum:this.state.pageNum - 1});
+      this.getOrgList();
+    }
+  }
 
   render() {
     let list;
@@ -91,7 +105,23 @@ export default class OrgPage extends Component {
         >
           Rank
         </Button>
+
         <CreateOrg getOrgList={this.getOrgList} />
+
+        <Divider style={{ marginTop: "100px" }} />
+
+        <div style={{height:"4rem",width:"100%"}}>
+          <div id="pageControl" style={{margin:"0 auto",width:"40%",textAlign:"center"}}>
+            <Button variant="contained" color="primary" onClick={this.prePage}>
+              Back 
+            </Button>
+              <span style={{padding:"0 20px 0 20px"}}>Page {this.state.pageNum}</span>
+             <Button variant="contained" color="primary" onClick={this.nextPage}>
+              Next
+            </Button>
+          </div>
+        </div>
+
         {list}
       </div>
     );

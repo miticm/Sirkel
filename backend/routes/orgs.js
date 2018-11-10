@@ -67,7 +67,8 @@ router.post(
   }
 );
 
-router.get("/", (req, res, next) => {
+router.get("/pageNum/:id", (req, res, next) => {
+  let pageNum = req.params.id;
   Org.find({}).lean().exec((err, orgs) => {
     if (err) {
       res.json({
@@ -79,7 +80,7 @@ router.get("/", (req, res, next) => {
     if (orgs) {
       res.json({
         success: true,
-        orgs:orgs.slice(0,10)
+        orgs:orgs.slice(pageNum*10 - 10,pageNum*10)
       });
     }
   });
