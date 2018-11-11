@@ -22,7 +22,7 @@ export default class OrgPage extends Component {
   getOrgList = () => {
     this.setState({ loading: true });
     axios
-      .get(`http://127.0.0.1:5000/orgs/${this.state.ranked ? "ranked" : "pageNum/"+this.state.pageNum}`)
+      .get(`http://127.0.0.1:5000/orgs/${this.state.ranked ? "ranked" : "all"}`)
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -55,12 +55,10 @@ export default class OrgPage extends Component {
   };
   nextPage = () => {
     this.setState({pageNum : this.state.pageNum + 1});
-    this.getOrgList();
   }
   prePage = () => {
     if(this.state.pageNum > 1){
       this.setState({pageNum:this.state.pageNum - 1});
-      this.getOrgList();
     }
   }
 
@@ -74,17 +72,17 @@ export default class OrgPage extends Component {
         />
       );
     } else {
-      list = this.state.filteredOrgs.map(org => {
-        return (
-          <OrgList
-            key={org._id + Math.random() * 100}
-            id={org._id}
-            name={org.name}
-            description={org.description}
-            orgObject={org}
-          />
-        );
-      });
+      list = [];
+      for(let i = this.state.pageNum*10-10; i < this.state.pageNum*10; i++){
+        let org = this.state.filteredOrgs[i];
+        list.push(<OrgList
+          key={org._id + Math.random() * 100}
+          id={org._id}
+          name={org.name}
+          description={org.description}
+          orgObject={org}
+        />)
+      }
     }
 
     return (
