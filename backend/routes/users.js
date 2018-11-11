@@ -8,12 +8,9 @@ const crypto = require('crypto');
 
 const config = require("../config/database");
 const User = require("../models/user");
-<<<<<<< HEAD
 const vHash = require("../models/vhash");
-=======
 const rankUsers = require("../utility/rankUsers");
 
->>>>>>> master
 const router = express.Router();
 
 const serverURL = 'localhost:8080';
