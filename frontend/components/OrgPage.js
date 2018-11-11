@@ -6,6 +6,9 @@ import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Divider from "@material-ui/core/Divider";
+import Typography from '@material-ui/core/Typography';
+import { Input, FormControl, InputLabel } from "@material-ui/core";
 
 export default class OrgPage extends Component {
   state = {
@@ -13,14 +16,15 @@ export default class OrgPage extends Component {
     filteredOrgs: [],
     search: "",
     ranked: false,
-    loading: true
+    loading: true,
+    pageNum: 1
   };
   getOrgList = () => {
     this.setState({ loading: true });
     axios
-      .get(`http://127.0.0.1:5000/orgs/${this.state.ranked ? "ranked" : ""}`)
+      .get(`http://127.0.0.1:5000/orgs/${this.state.ranked ? "ranked" : "all"}`)
       .then(res => {
-        if (!res.success) {
+        if (res.data.success) {
           this.setState({
             OrgList: res.data.orgs,
             filteredOrgs: res.data.orgs,
@@ -49,6 +53,14 @@ export default class OrgPage extends Component {
       this.getOrgList();
     });
   };
+  nextPage = () => {
+    this.setState({pageNum : this.state.pageNum + 1});
+  }
+  prePage = () => {
+    if(this.state.pageNum > 1){
+      this.setState({pageNum:this.state.pageNum - 1});
+    }
+  }
 
   render() {
     let list;
@@ -60,30 +72,32 @@ export default class OrgPage extends Component {
         />
       );
     } else {
-      list = this.state.filteredOrgs.map(org => {
-        return (
-          <OrgList
-            key={org._id + Math.random() * 100}
-            id={org._id}
-            name={org.name}
-            description={org.description}
-            orgObject={org}
-          />
-        );
-      });
+      list = [];
+      for(let i = this.state.pageNum*10-10; i < this.state.pageNum*10; i++){
+        let org = this.state.filteredOrgs[i];
+        list.push(<OrgList
+          key={org._id + Math.random() * 100}
+          id={org._id}
+          name={org.name}
+          description={org.description}
+          orgObject={org}
+        />)
+      }
     }
 
     return (
       <div>
-        <div style={{ border: "1px solid #60b0f4" }}>
-          <SearchIcon />
-          <InputBase
-            placeholder="  search organization..."
+        <FormControl margin="normal" fullWidth>
+          <InputLabel>
+            <SearchIcon />
+          </InputLabel>
+          <Input
+            placeholder="Purdue Hackers"
             onKeyUp={this.handleKeyUp}
           />
-        </div>
+        </FormControl>
         <Button
-          style={{ backgroundColor: "#60b0f4" }}
+          style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
           type="submit"
           multiple
           color="primary"
@@ -91,7 +105,33 @@ export default class OrgPage extends Component {
         >
           Rank
         </Button>
+
         <CreateOrg getOrgList={this.getOrgList} />
+
+        <Divider style={{ marginTop: "100px" }} />
+
+        <div style={{height:"4rem",width:"100%"}}>
+          <div id="pageControl" style={{margin:"0 auto",width:"40%",textAlign:"center"}}>
+            <Button 
+            style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
+            variant="contained" 
+            color="primary" 
+            onClick={this.prePage}
+            >
+              Back 
+            </Button>
+              <span style={{padding:"0 20px 0 20px"}}>Page {this.state.pageNum}</span>
+             <Button 
+             style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
+             variant="contained" 
+             color="primary" 
+             onClick={this.nextPage}
+             >
+              Next
+            </Button>
+          </div>
+        </div>
+
         {list}
       </div>
     );

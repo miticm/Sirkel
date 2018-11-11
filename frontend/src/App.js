@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import NavBar from "../components/Navbar";
+<<<<<<< HEAD
 import Homepage from "../components/Homepage";
 import Dashboard from "../components/Dashboard";
 import SignUp from "../components/SignUp";
@@ -48,8 +48,13 @@ export default class App extends Component {
     setAuthToken("");
     this.setState({ isAuth: false, user: {} });
   };
+=======
+require("../node_modules/normalize.css/normalize.css");
+>>>>>>> master
 
+export default class App extends Component {
   render() {
+<<<<<<< HEAD
     return (
       <BrowserRouter>
         <div>
@@ -196,6 +201,9 @@ export default class App extends Component {
         </div>
       </BrowserRouter>
     );
+=======
+    return <NavBar />;
+>>>>>>> master
   }
 }
 ReactDOM.render(<App />, document.getElementById("app"));

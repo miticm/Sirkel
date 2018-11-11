@@ -5,12 +5,14 @@ import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
 import InputBase from "@material-ui/core/InputBase";
+import { Input, InputLabel, FormControl } from '@material-ui/core';
 
 class UserProfile extends Component {
   state = {
     allUsers: [],
     filteredUsers: [],
-    search: ""
+    search: "",
+    ranked: false
   };
 
   componentDidMount() {
@@ -18,7 +20,7 @@ class UserProfile extends Component {
   }
   getAllUsers = () => {
     axios
-      .get("http://127.0.0.1:5000/users/")
+      .get(`http://127.0.0.1:5000/users/${this.state.ranked ? "ranked" : ""}`)
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -29,6 +31,7 @@ class UserProfile extends Component {
       })
       .catch(err => console.log(err));
   };
+
   onClick = id => {
     console.log(id);
     axios
@@ -40,6 +43,7 @@ class UserProfile extends Component {
       })
       .catch(err => console.log(err));
   };
+
   handleKeyUp = e => {
     this.setState({ search: e.target.value }, () => {
       let filtered = this.state.allUsers.filter(user =>
@@ -48,17 +52,35 @@ class UserProfile extends Component {
       this.setState({ filteredUsers: filtered });
     });
   };
+
+  toggleRanked = () => {
+    this.setState({ ranked: !this.state.ranked }, () => {
+      this.getAllUsers();
+    });
+  };
+
   render() {
     const { classes } = this.props;
     return (
       <div>
-        <div className={classes.border}>
-          <SearchIcon />
-          <InputBase
-            placeholder="  search user..."
+        <FormControl margin="normal" fullWidth>
+          <InputLabel>
+            <SearchIcon />
+          </InputLabel>
+          <Input
+            placeholder="dan"
             onKeyUp={this.handleKeyUp}
           />
-        </div>
+        </FormControl>
+        <Button
+          style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
+          type="submit"
+          multiple
+          color="primary"
+          onClick={this.toggleRanked}
+        >
+          Rank
+        </Button>
         {this.state.filteredUsers.map(user => {
           let currentUserID = localStorage.getItem("userID");
           if (user._id !== currentUserID) {
@@ -114,7 +136,7 @@ const styles = theme => ({
   },
   title: {
     backgroundColor: "#60b0f4",
-    textAlign: "left",
+    textAlign: "center",
     color: "#ffffff",
     padding: theme.spacing.unit * (1 / 2),
     marginBottom: 0,

@@ -163,19 +163,17 @@ class CreateOrg extends Component {
               </FormControl>
 
               <Button
-                style={{ backgroundColor: "#60b0f4" }}
+                style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
                 type="submit"
                 multiple
-                color="primary"
                 className={classes.submit}
               >
                 Create
               </Button>
 
               <Button
-                style={{ backgroundColor: "#60b0f4", marginLeft: "68%" }}
+                style={{ backgroundColor: "#60b0f4", color: "#ffffff", marginLeft: "68%" }}
                 multiple
-                color="primary"
                 href="https://www.purdue.edu/studentregulations/student_organizations/forming.html"
                 target="_blank"
                 className={classes.submit}

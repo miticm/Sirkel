@@ -67,8 +67,9 @@ router.post(
   }
 );
 
-router.get("/", (req, res, next) => {
-  Org.find({}, (err, orgs) => {
+router.get("/all", (req, res, next) => {
+  let pageNum = req.params.id;
+  Org.find({}).lean().exec((err, orgs) => {
     if (err) {
       res.json({
         success: false,

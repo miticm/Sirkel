@@ -8,7 +8,12 @@ const crypto = require('crypto');
 
 const config = require("../config/database");
 const User = require("../models/user");
+<<<<<<< HEAD
 const vHash = require("../models/vhash");
+=======
+const rankUsers = require("../utility/rankUsers");
+
+>>>>>>> master
 const router = express.Router();
 
 const serverURL = 'localhost:8080';
@@ -155,6 +160,44 @@ router.post("/authenticate", (req, res, next) => {
 });
 
 
+router.get(
+  "/ranked",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    User.find({})
+      .lean()
+      .exec((err, users) => {
+        if (err) {
+          res.json({
+            success: false,
+            msg: err
+          });
+        }
+
+        if (req.user.survey) {
+          const sortedUsers = rankUsers(users, req.user);
+          if (sortedUsers) {
+            res.json({
+              success: true,
+              users: sortedUsers
+            });
+          }
+          else {
+            res.json({
+              success: false,
+              msg: "Something went wrong!"
+            });
+          }
+        } else {
+          res.json({
+            success: false,
+            msg: "You have not taken the quiz yet!"
+          });
+        }
+      });
+  }
+);
+
 router.post(
   "/:id/add",
   passport.authenticate("jwt", { session: false }),
@@ -249,7 +292,24 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     User.findOne(req.user._id, (err, user) => {
-      user.survey = req.body;
+      const userSurvey = Object.assign({}, req.body);
+
+      if (userSurvey.shortQuestions) {
+        if (userSurvey.shortQuestions.likesSports === 'Yes') {
+          userSurvey.shortQuestions.tags += ', sports';
+          userSurvey.shortQuestions.tags += ', intramural';
+        }
+    
+        if (userSurvey.shortQuestions.likesMusic === 'Yes') {
+          userSurvey.shortQuestions.tags += ', music';
+        }
+    
+        if (userSurvey.shortQuestions.likesVideoGames === 'Yes') {
+          userSurvey.shortQuestions.tags += ', video games';
+        }
+      }
+
+      user.survey = userSurvey;
       user.save();
       res.send({ success: true });
     });
