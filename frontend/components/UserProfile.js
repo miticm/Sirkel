@@ -73,7 +73,7 @@ class UserProfile extends Component {
           />
         </FormControl>
         <Button
-          style={{ backgroundColor: "#60b0f4" }}
+          style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
           type="submit"
           multiple
           color="primary"
@@ -136,7 +136,7 @@ const styles = theme => ({
   },
   title: {
     backgroundColor: "#60b0f4",
-    textAlign: "left",
+    textAlign: "center",
     color: "#ffffff",
     padding: theme.spacing.unit * (1 / 2),
     marginBottom: 0,

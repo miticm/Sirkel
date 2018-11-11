@@ -174,10 +174,9 @@ class CreateEvent extends Component {
               </FormControl>
 
               <Button
-                style={{ backgroundColor: "#60b0f4" }}
+                style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
                 type="submit"
                 multiple
-                color="primary"
                 className={classes.submit}
               >
                 Post
