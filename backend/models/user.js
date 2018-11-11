@@ -3,6 +3,9 @@ const bcrypt = require("bcryptjs");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+  survey: {
+    type: Object
+  },
   email: {
     type: String,
     required: true

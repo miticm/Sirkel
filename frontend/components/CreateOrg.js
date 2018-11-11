@@ -14,6 +14,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = theme => ({
   layout: {
@@ -56,7 +58,9 @@ const styles = theme => ({
 class CreateOrg extends Component {
   state = {
     name: "",
-    desc: "",
+    description: "",
+    primaryAudience: "",
+    tags: "",
     open: false,
     scroll: "paper"
   };
@@ -68,6 +72,7 @@ class CreateOrg extends Component {
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
   onSubmit = async e => {
     e.preventDefault();
     try {
@@ -79,6 +84,8 @@ class CreateOrg extends Component {
       const org = {
         name: this.state.name,
         description: this.state.description,
+        primaryAudience: this.state.primaryAudience,
+        tags: this.state.tags,
         chatRoomID: groupRes.data.id
       };
       let orgsRes = await axios.post("http://127.0.0.1:5000/orgs", { org });
@@ -86,6 +93,8 @@ class CreateOrg extends Component {
         this.setState({
           name: "",
           description: "",
+          primaryAudience: "",
+          tags: "",
           open: true
         });
         this.props.getOrgList();
@@ -112,6 +121,7 @@ class CreateOrg extends Component {
                   name="name"
                   value={this.state.name}
                   onChange={this.onChange}
+                  required
                 />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
@@ -120,6 +130,34 @@ class CreateOrg extends Component {
                   name="description"
                   multiline
                   value={this.state.description}
+                  onChange={this.onChange}
+                  required
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel>Primary Audience</InputLabel>
+                <Select
+                  value={this.state.primaryAudience}
+                  inputProps={{
+                    name: 'primaryAudience'
+                  }}
+                  onChange={this.onChange}
+                  required
+                >
+                  <MenuItem value="Undergraduate">
+                    Undergraduate
+                  </MenuItem>
+                  <MenuItem value="Graduate">
+                    Graduate
+                  </MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel>Tags (Enter tags relevant to your organization in a comma seperated list)</InputLabel>
+                <Input
+                  name="tags"
+                  multiline
+                  value={this.state.tags}
                   onChange={this.onChange}
                 />
               </FormControl>

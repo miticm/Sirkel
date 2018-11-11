@@ -70,11 +70,12 @@ class UserProfile extends Component {
                 <div>
                   <h2 className={classes.title}>{user.username}</h2>
                   <p>{user.email}</p>
+                  <p>Reputation: {user.reputation}</p>
                   <Button
                     style={{ backgroundColor: "#60b0f4", color: "white" }}
                     onClick={() => this.onClick(user._id)}
                   >
-                    connect
+                    Connect
                   </Button>
 
                   <p>Connected with</p>

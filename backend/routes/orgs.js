@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/database");
 const User = require("../models/user");
 const Org = require("../models/org");
+const rankOrgs = require("../utility/rankOrgs");
 
 const router = express.Router();
 
@@ -20,7 +21,6 @@ router.post(
     }
 
     const newOrg = req.body.org;
-    console.log(newOrg);
 
     newOrg.leader = { id: req.user._id };
     newOrg.leader.username = req.user.username;
@@ -28,6 +28,9 @@ router.post(
     newOrg.admins.push(newOrg.leader);
     newOrg.members = [];
     newOrg.members.push(newOrg.leader);
+    newOrg.paidmembers = [];
+    newOrg.paidmembers.push(newOrg.leader);
+
     new Org(newOrg).save((err, org) => {
       if (err) {
         res.json({
@@ -81,6 +84,38 @@ router.get("/", (req, res, next) => {
     }
   });
 });
+
+router.get(
+  "/ranked",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Org.find({})
+      .lean()
+      .exec((err, orgs) => {
+        if (err) {
+          res.json({
+            success: false,
+            msg: err
+          });
+        }
+
+        if (req.user.survey) {
+          const sortedOrgs = rankOrgs(orgs, req.user);
+          if (sortedOrgs) {
+            res.json({
+              success: true,
+              orgs: sortedOrgs
+            });
+          }
+        } else {
+          res.json({
+            success: false,
+            msg: "You have not taken the quiz yet!"
+          });
+        }
+      });
+  }
+);
 
 router.get("/:id", (req, res, next) => {
   Org.findById(req.params.id, (err, org) => {
@@ -152,7 +187,38 @@ router.post(
           res.json({ success: true, product });
         })
         .catch(err => {
-          console.log(err);
+          res.json({
+            success: false,
+            msg: err,
+            fromSave: true
+          });
+        });
+    });
+  }
+);
+
+router.post(
+  "/:id/pay",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => {
+    Org.findById(req.params.id, (err, org) => {
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
+        });
+      }
+      org.paidmembers.push({
+        id: req.user._id,
+        username: req.user.username
+      });
+
+      org
+        .save()
+        .then(product => {
+          res.json({ success: true, product });
+        })
+        .catch(err => {
           res.json({
             success: false,
             msg: err,

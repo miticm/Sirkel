@@ -66,6 +66,7 @@ class OrgProfile extends Component {
       description: "",
       leader: { username: "", id: "" },
       members: [],
+      paidmembers: [],
       _id: "",
       avatar: "",
       chatRoomID: ""
@@ -104,6 +105,23 @@ class OrgProfile extends Component {
       alert("You are a member of this Org already");
     }
   };
+  clickPay = f => {
+    let currentUserId = localStorage.getItem("userID");
+    let exist = this.state.orgObject.paidmembers.find(f => {
+      return f.id === currentUserId;
+    });
+    if (!exist) {
+      Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/pay`)
+        .then(res => {
+          if (res.data.success) {
+            this.getOrgByID();
+          }
+        })
+        .catch(err => console.log(err));
+    } else {
+      alert("You have already paid your dues");
+    }
+  };
   render() {
     const { classes } = this.props;
     return (
@@ -139,6 +157,30 @@ class OrgProfile extends Component {
                 }
               })}
             </ul>
+            <ul>
+              <p>Already Paid Dues:</p>
+              {this.state.orgObject.paidmembers.map(m => {
+                if (
+                  this.state.orgObject.leader.id ==
+                  localStorage.getItem("userID")
+                ) {
+                  return (
+                    <li key={Math.random() * 100}>
+                      {m.username} <Switch color="primary" />
+                    </li>
+                  );
+                } else {
+                  return <li key={Math.random() * 100}>{m.username}</li>;
+                }
+              })}
+            </ul>
+            <Button
+              className={classes.submit}
+              style={{ backgroundColor: "#60b0f4", color: "white" }}
+              onClick={this.clickPay}
+            >
+              I Paid Dues
+            </Button>
             <Button
               className={classes.submit}
               style={{ backgroundColor: "#60b0f4", color: "white" }}

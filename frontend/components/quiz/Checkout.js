@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import BasicInfo from "./BasicInfo";
 import ShortQuestions from "./ShortQuestions";
 import Review from "./Review";
-
+import { Link } from "react-router-dom";
 const styles = theme => ({
   appBar: {
     position: "relative"
@@ -53,22 +53,48 @@ const styles = theme => ({
 
 const steps = ["Basic info", "Short question", "Review your survey"];
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <BasicInfo />;
-    case 1:
-      return <ShortQuestions />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error("Unknown step");
-  }
-}
-
 class Checkout extends React.Component {
   state = {
-    activeStep: 0
+    activeStep: 0,
+    basicInfo: {
+      name: "",
+      collegeLevel: ""
+    },
+    shortQuestions: {
+      likesSports: "",
+      likesMusic: "",
+      likesVideoGames: "",
+      tags: ""
+    }
+  };
+  updateBasicInfo = data => {
+    this.setState({ basicInfo: data });
+  };
+  updateShortQuestions = data => {
+    this.setState({ shortQuestions: data });
+  };
+
+  getStepContent = step => {
+    switch (step) {
+      case 0:
+        return (
+          <BasicInfo
+            updateBasicInfo={this.updateBasicInfo}
+            handleNext={this.handleNext}
+          />
+        );
+      case 1:
+        return (
+          <ShortQuestions
+            updateShortQuestions={this.updateShortQuestions}
+            handleNext={this.handleNext}
+          />
+        );
+      case 2:
+        return <Review data={this.state} handleNext={this.handleNext} />;
+      default:
+        throw new Error("Unknown step");
+    }
   };
 
   handleNext = () => {
@@ -117,30 +143,18 @@ class Checkout extends React.Component {
                   <Typography variant="subtitle1">
                     Your answer will be used to find your sirkel
                   </Typography>
+                  <Button style={{ background: "#60b0f4", marginTop: "1rem" }}>
+                    <Link
+                      to="/profile"
+                      style={{ textDecoration: "none", color: "white" }}
+                    >
+                      Close
+                    </Link>
+                  </Button>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  {getStepContent(activeStep)}
-                  <div className={classes.buttons}>
-                    {activeStep !== 0 && (
-                      <Button
-                        onClick={this.handleBack}
-                        className={classes.button}
-                      >
-                        Back
-                      </Button>
-                    )}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleNext}
-                      className={classes.button}
-                    >
-                      {activeStep === steps.length - 1
-                        ? "Submit Survey"
-                        : "Next"}
-                    </Button>
-                  </div>
+                  {this.getStepContent(activeStep)}
                 </React.Fragment>
               )}
             </React.Fragment>
