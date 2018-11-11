@@ -212,7 +212,6 @@ router.post(
   }
 );
 
-<<<<<<< HEAD
 
 router.get("/verify/:hsh", (req, res, next) => {
   vHash.findOne({hash: req.params.hsh}, (err,hash) => {
@@ -245,7 +244,6 @@ router.get("/verify/:hsh", (req, res, next) => {
 });
 
 
-=======
 router.post(
   "/survey",
   passport.authenticate("jwt", { session: false }),
@@ -257,6 +255,5 @@ router.post(
     });
   }
 );
->>>>>>> master
 
 module.exports = router;
