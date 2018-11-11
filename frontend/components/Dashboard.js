@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Sidebar from "./Sidebar";
 import Eventpage from "./Eventpage";
 import "./Dashboard.css";
 import Settings from "./Settings";
@@ -14,13 +13,31 @@ import { withStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 
 class Dashboard extends Component {
-  
+  state = {
+    anchorEl: null,
+  };
+
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
   render() {
+    const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
     const { classes } = this.props;
     return (
       <div>
-        <div className="dashboard">
-          <div className="dashboard-content">
+        <div 
+            className="dashboard"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={this.handleClose}
+        >
+          <div className="dashboard-content" onClick={this.handleClose}>
             {(() => {
               switch (this.props.show) {
                 case "events":

@@ -97,7 +97,7 @@ export default class OrgPage extends Component {
           />
         </FormControl>
         <Button
-          style={{ backgroundColor: "#60b0f4" }}
+          style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
           type="submit"
           multiple
           color="primary"
@@ -112,11 +112,21 @@ export default class OrgPage extends Component {
 
         <div style={{height:"4rem",width:"100%"}}>
           <div id="pageControl" style={{margin:"0 auto",width:"40%",textAlign:"center"}}>
-            <Button variant="contained" color="primary" onClick={this.prePage}>
+            <Button 
+            style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
+            variant="contained" 
+            color="primary" 
+            onClick={this.prePage}
+            >
               Back 
             </Button>
               <span style={{padding:"0 20px 0 20px"}}>Page {this.state.pageNum}</span>
-             <Button variant="contained" color="primary" onClick={this.nextPage}>
+             <Button 
+             style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
+             variant="contained" 
+             color="primary" 
+             onClick={this.nextPage}
+             >
               Next
             </Button>
           </div>
