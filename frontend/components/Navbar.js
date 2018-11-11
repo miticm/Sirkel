@@ -24,7 +24,7 @@ import Homepage from "./Homepage";
 import Dashboard from "./Dashboard";
 import SignUp from "./SignUp";
 import Login from "./Login";
-
+import Verify from "./Verify";
 const drawerWidth = 240;
 class NavBar extends Component {
   state = {
@@ -270,6 +270,9 @@ class NavBar extends Component {
                   )
                 }
               />
+            <Route exact path="/users/verify/:id"
+             render={myprops => <Verify {...myprops} />}
+            />
 
               <Route
                 render={() => (
