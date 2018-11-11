@@ -6,9 +6,13 @@ import Homepage from "../components/Homepage";
 import Dashboard from "../components/Dashboard";
 import SignUp from "../components/SignUp";
 import Login from "../components/Login";
+import Verify from "../components/Verify";
 require("../node_modules/normalize.css/normalize.css");
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
+
+
+
 export default class App extends Component {
   state = {
     isAuth: localStorage.getItem("isAuth"),
@@ -53,6 +57,12 @@ export default class App extends Component {
           <Switch>
             <Route exact path="/" component={Homepage} />
             <Route exact path="/signup" component={SignUp} />
+          
+          
+            <Route exact path="/users/verify/:id"
+             render={myprops => <Verify {...myprops} />}
+            />
+        
 
             <Route
               exact
