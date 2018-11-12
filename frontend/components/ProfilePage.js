@@ -16,6 +16,19 @@ const styles = theme => ({
   root: {
     width: "100%"
   },
+
+  paper: {
+    marginTop: theme.spacing.unit * 2,
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px`,
+    
+  },
+
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular
@@ -104,7 +117,7 @@ class ProfilePage extends Component {
 
           {this.state.user.orgsAdmin.map(org => {
             return (
-              <Paper key={Math.random() * 100} style={{ margin: "2rem" }}>
+              <Paper key={Math.random() * 100} className={classes.paper}>
                 <h3>{org.orgname}</h3>
                 <Button
                   className="navButton"
@@ -124,7 +137,7 @@ class ProfilePage extends Component {
 
           {this.state.events.map(e => {
             return (
-              <Paper key={Math.random() * 100} style={{ margin: "2rem" }}>
+              <Paper key={Math.random() * 100} className={classes.paper}>
                 <h3>{e.name.toUpperCase()}</h3>
                 <Button
                   style={{ backgroundColor: "red", color: "white" }}
@@ -143,12 +156,15 @@ class ProfilePage extends Component {
           </ExpansionPanelSummary>
           {this.state.user.connections.map(user => {
             return (
-              <ExpansionPanelDetails key={Math.random() * 100}>
-                <Typography>{user.username}</Typography>
-                <button onClick={() => this.handleMessage(user.id)}>
-                  Message
-                </button>
-              </ExpansionPanelDetails>
+              <Paper key={Math.random() * 100} className={classes.paper}>
+                  <Typography>{user.username}</Typography>
+                  <button onClick={() => this.handleMessage(user.id)} 
+                    className="navButton"
+                    style={{ backgroundColor: "#60b0f4", color: "white" }}
+                  >
+                    Message
+                  </button>
+              </Paper>
             );
           })}
         </ExpansionPanel>
