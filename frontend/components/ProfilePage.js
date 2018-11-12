@@ -156,12 +156,15 @@ class ProfilePage extends Component {
           </ExpansionPanelSummary>
           {this.state.user.connections.map(user => {
             return (
-              <ExpansionPanelDetails key={Math.random() * 100}>
+              <Paper key={Math.random() * 100} className={classes.paper}>
                   <Typography>{user.username}</Typography>
-                  <button onClick={() => this.handleMessage(user.id)}>
+                  <button onClick={() => this.handleMessage(user.id)} 
+                    className="navButton"
+                    style={{ backgroundColor: "#60b0f4", color: "white" }}
+                  >
                     Message
                   </button>
-              </ExpansionPanelDetails>
+              </Paper>
             );
           })}
         </ExpansionPanel>
