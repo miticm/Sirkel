@@ -60,7 +60,18 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
     required: true
+  },
+  passwordResetToken: {
+    type: String,
+    required: false
+  },
+  passwordResetExpires: {
+    type: Date,
+    required: false
   }
+
+
+
 });
 
 const User = (module.exports = mongoose.model("User", UserSchema));
@@ -90,3 +101,24 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
     callback(null, isMatch);
   });
 };
+
+module.exports.getUserByResetToken = function(token, callback) {
+  const query = {passwordResetToken: token };
+  User.findOne(query, callback);
+};
+
+UserSchema.pre('save', function(next) {
+  var user = this;
+
+  if (!user.isModified('password')) return next();
+
+  bcrypt.genSalt(10, function(err, salt) {
+    if (err) return next(err);
+
+    bcrypt.hash(user.password, salt, null, function(err, hash) {
+      if (err) return next(err);
+      user.password = hash;
+      next();
+    });
+  });
+});
