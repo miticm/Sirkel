@@ -103,6 +103,7 @@ router.get(
         if (req.user.survey) {
           const sortedOrgs = rankOrgs(orgs, req.user);
           if (sortedOrgs) {
+            req.io.emit('notification', { open: true });
             res.json({
               success: true,
               orgs: sortedOrgs

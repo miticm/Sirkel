@@ -28,8 +28,7 @@ const server = app.listen(5000, () => {
 const io = socketio(server);
 
 io.on('connection', function (socket) {
-  console.log(socket.id);
-  io.emit('notification', { open: true });
+  console.log("Connected with: " + socket.id);
 });
 
 
@@ -43,6 +42,11 @@ mongoose
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(function(req,res,next){
+  req.io = io;
+  next();
+});
 
 app.use("/users", users);
 app.use("/orgs", orgs);
