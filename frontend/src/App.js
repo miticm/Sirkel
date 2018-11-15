@@ -1,11 +1,64 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import NavBar from "../components/Navbar";
+import io from "socket.io-client";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 require("../node_modules/normalize.css/normalize.css");
 
+
+
 export default class App extends Component {
+  state = {
+    open:false
+  }
+  componentDidMount(){
+    let socket = io.connect('http://127.0.0.1:5000');
+    socket.on("notification",data=>{
+      this.setState({open:data.open})
+    })
+  }
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   render() {
-    return <NavBar />;
+    return (
+    <div>
+      <NavBar />;
+      <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle>{"New Match 👏🏻👏🏻👏🏻"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              There is a new organization that you may like!
+              Go check it out in the organization page.
+              We match the organization with you base on your survey.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary" autoFocus>
+              Nice!
+            </Button>
+          </DialogActions>
+        </Dialog>
+    </div>
+    )
   }
 }
+
+
 ReactDOM.render(<App />, document.getElementById("app"));

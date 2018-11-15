@@ -5,6 +5,7 @@ const passport = require("passport");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const config = require("./config/database");
+const socketio = require("socket.io");
 
 // Import models
 const User = require("./models/user");
@@ -15,14 +16,22 @@ const orgs = require("./routes/orgs");
 const events = require("./routes/events");
 const chats = require("./routes/chats");
 
-const app = express();
+var app = express();
+// Enable All CORS Requests
+app.use(cors());
 
-app.listen(5000, () => {
+
+const server = app.listen(5000, () => {
   console.log("http://localhost:5000");
 });
 
-// Enable All CORS Requests
-app.use(cors());
+const io = socketio(server);
+
+io.on('connection', function (socket) {
+  console.log(socket.id);
+  io.emit('notification', { open: true });
+});
+
 
 mongoose
   .connect(
