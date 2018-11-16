@@ -68,7 +68,7 @@ class UserProfile extends Component {
             <SearchIcon />
           </InputLabel>
           <Input
-            placeholder="dan"
+            placeholder="Search User..."
             onKeyUp={this.handleKeyUp}
           />
         </FormControl>
