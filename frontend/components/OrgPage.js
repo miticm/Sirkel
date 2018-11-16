@@ -74,7 +74,7 @@ export default class OrgPage extends Component {
       );
     } else {
       list = [];
-      for(let i = this.state.pageNum*10-10; i < this.state.pageNum*10; i++){
+      for(let i = this.state.pageNum*10-10; i < this.state.filteredOrgs.length; i++){
         let org = this.state.filteredOrgs[i];
         list.push(<OrgList
           key={org._id + Math.random() * 100}
@@ -93,7 +93,7 @@ export default class OrgPage extends Component {
             <SearchIcon />
           </InputLabel>
           <Input
-            placeholder="Purdue Hackers"
+            placeholder="Search Organization..."
             onKeyUp={this.handleKeyUp}
           />
         </FormControl>
