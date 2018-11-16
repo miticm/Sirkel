@@ -78,6 +78,7 @@ class Login extends Component {
           localStorage.setItem("jwtToken", token);
           localStorage.setItem("isAuth", true);
           localStorage.setItem("userID", res.data.user.id);
+          localStorage.setItem("username", res.data.user.username);
           setAuthToken(token);
           this.props.login();
           this.props.history.push("/dashboard");
