@@ -43,7 +43,7 @@ export default class Eventpage extends Component {
             <SearchIcon />
           </InputLabel>
           <Input
-            placeholder="Tianchu Sucks"
+            placeholder="Search Event..."
             onKeyUp={this.handleKeyUp}
           />
         </FormControl>
