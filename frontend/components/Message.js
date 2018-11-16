@@ -22,7 +22,7 @@ export default class Message extends Component {
     input: "",
     messages: []
   };
-  
+
   timeoutID;
   componentDidMount() {
     const token = localStorage.getItem("jwtToken");
@@ -59,25 +59,35 @@ export default class Message extends Component {
     this.setState({ input: e.target.value });
   };
   render() {
+    const currentLoginUser = localStorage.getItem("username");
     return (
       <Paper
         style={{ padding: "2rem", border: "1px solid black", width: "80%"}}
       >
         {this.state.messages.map(me => {
+          let v;
+          if(currentLoginUser == me.sender){
+            v = "500px"
+          } else{
+            v = "0px"
+          }
           return (
             <TextField
               key={me._id}
-              style={{ display: "block" }}
+              style={{ display: "block", marginLeft:v, marginTop:"16px", marginBottom:"8px"}}
               label={me.sender + " -- " + new Date(me.date)}
               value={me.content}
-              margin="normal"
               variant="outlined"
-              multiline
+              multiline  
             />
           );
         })}
         <div>
-          <Input multiline value={this.state.input} onChange={this.onChange} />
+          <Input 
+            style={{width:"400px"}}
+            multiline value={this.state.input} 
+            onChange={this.onChange}
+          />
           <Button onClick={this.onClick}>Send</Button>
         </div>
       </Paper>
