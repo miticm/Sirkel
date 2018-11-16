@@ -6,7 +6,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
 import InputBase from "@material-ui/core/InputBase";
 import { Input, InputLabel, FormControl } from '@material-ui/core';
-
+import serverAddress from "../utils/serverAddress";
 class UserProfile extends Component {
   state = {
     allUsers: [],
@@ -20,7 +20,7 @@ class UserProfile extends Component {
   }
   getAllUsers = () => {
     axios
-      .get(`http://127.0.0.1:5000/users/${this.state.ranked ? "ranked" : ""}`)
+      .get(`${serverAddress}/users/${this.state.ranked ? "ranked" : ""}`)
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -35,7 +35,7 @@ class UserProfile extends Component {
   onClick = id => {
     console.log(id);
     axios
-      .post(`http://127.0.0.1:5000/users/${id}/add`)
+      .post(`${serverAddress}/users/${id}/add`)
       .then(res => {
         if (res.data.success) {
           this.getAllUsers();
@@ -68,7 +68,7 @@ class UserProfile extends Component {
             <SearchIcon />
           </InputLabel>
           <Input
-            placeholder="dan"
+            placeholder="Search User..."
             onKeyUp={this.handleKeyUp}
           />
         </FormControl>

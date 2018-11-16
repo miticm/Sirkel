@@ -9,7 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 require("../node_modules/normalize.css/normalize.css");
-
+import serverAddress from "../utils/serverAddress";
 
 
 export default class App extends Component {
@@ -17,7 +17,7 @@ export default class App extends Component {
     open:false
   }
   componentDidMount(){
-    let socket = io.connect('http://127.0.0.1:5000');
+    let socket = io.connect(`${serverAddress}`);
     socket.on("notification",data=>{
       this.setState({open:data.open})
     })

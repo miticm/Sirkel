@@ -8,6 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Axios from "axios";
 import Icon from '@material-ui/core/Icon';
 import red from '@material-ui/core/colors/red';
+import serverAddress from "../utils/serverAddress";
 
 const styles = theme => ({
   layout: {
@@ -76,7 +77,7 @@ class EventPost extends Component {
       return e.id === currentUserId;
     });
     if (!exist) {
-      Axios.post(`http://127.0.0.1:5000/events/${this.props.id}/attend`)
+      Axios.post(`${serverAddress}/events/${this.props.id}/attend`)
         .then(res => {
           if (res.data.success) {
             this.props.getEventsList();
@@ -93,7 +94,7 @@ class EventPost extends Component {
     // let exist = this.props.attendees.find(e => {
     //   return e.id === currentUserId;
     // });
-    Axios.post(`http://127.0.0.1:5000/events/${this.props.id}/upvote`)
+    Axios.post(`${serverAddress}/events/${this.props.id}/upvote`)
       .then(res => {
         if (res.data.success) {
           this.props.getEventsList();

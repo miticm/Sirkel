@@ -9,6 +9,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
 import Typography from '@material-ui/core/Typography';
 import { Input, FormControl, InputLabel } from "@material-ui/core";
+import serverAddress from "../utils/serverAddress";
 
 export default class OrgPage extends Component {
   state = {
@@ -22,7 +23,7 @@ export default class OrgPage extends Component {
   getOrgList = () => {
     this.setState({ loading: true });
     axios
-      .get(`http://127.0.0.1:5000/orgs/${this.state.ranked ? "ranked" : "all"}`)
+      .get(`${serverAddress}/orgs/${this.state.ranked ? "ranked" : "all"}`)
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -73,7 +74,7 @@ export default class OrgPage extends Component {
       );
     } else {
       list = [];
-      for(let i = this.state.pageNum*10-10; i < this.state.pageNum*10; i++){
+      for(let i = this.state.pageNum*10-10; i < this.state.filteredOrgs.length; i++){
         let org = this.state.filteredOrgs[i];
         list.push(<OrgList
           key={org._id + Math.random() * 100}
@@ -92,7 +93,7 @@ export default class OrgPage extends Component {
             <SearchIcon />
           </InputLabel>
           <Input
-            placeholder="Purdue Hackers"
+            placeholder="Search Organization..."
             onKeyUp={this.handleKeyUp}
           />
         </FormControl>

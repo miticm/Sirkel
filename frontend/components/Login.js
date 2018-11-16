@@ -13,6 +13,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import Snackbar from "@material-ui/core/Snackbar";
+import serverAddress from "../utils/serverAddress";
 
 const styles = theme => ({
   layout: {
@@ -65,7 +66,7 @@ class Login extends Component {
   onSubmit = e => {
     e.preventDefault();
     axios
-      .post("http://127.0.0.1:5000/users/authenticate", {
+      .post(`${serverAddress}/users/authenticate`, {
         username: this.state.username,
         password: this.state.password
       })
@@ -77,6 +78,7 @@ class Login extends Component {
           localStorage.setItem("jwtToken", token);
           localStorage.setItem("isAuth", true);
           localStorage.setItem("userID", res.data.user.id);
+          localStorage.setItem("username", res.data.user.username);
           setAuthToken(token);
           this.props.login();
           this.props.history.push("/dashboard");

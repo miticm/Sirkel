@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import serverAddress from "../../utils/serverAddress";
 const styles = theme => ({
   listItem: {
     padding: `${theme.spacing.unit}px 0`
@@ -23,7 +24,7 @@ const styles = theme => ({
 function Review(props) {
   let handleSubmit = e => {
     axios
-      .post("http://127.0.0.1:5000/users/survey", {
+      .post(`${serverAddress}/users/survey`, {
         basicInfo: props.data.basicInfo,
         shortQuestions: props.data.shortQuestions
       })

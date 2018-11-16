@@ -16,6 +16,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import serverAddress from "../utils/serverAddress";
 
 const styles = theme => ({
   layout: {
@@ -77,7 +78,7 @@ class CreateOrg extends Component {
     e.preventDefault();
     try {
       const currentUserID = localStorage.getItem("userID");
-      let groupRes = await axios.post("http://127.0.0.1:5000/chats/group", {
+      let groupRes = await axios.post(`${serverAddress}/chats/group`, {
         receivers: [currentUserID],
         name: this.state.name
       });
@@ -88,7 +89,7 @@ class CreateOrg extends Component {
         tags: this.state.tags,
         chatRoomID: groupRes.data.id
       };
-      let orgsRes = await axios.post("http://127.0.0.1:5000/orgs", { org });
+      let orgsRes = await axios.post(`${serverAddress}/orgs`, { org });
       if (orgsRes.data.success) {
         this.setState({
           name: "",

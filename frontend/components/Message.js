@@ -5,7 +5,7 @@ import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import Axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
-
+import serverAddress from "../utils/serverAddress";
 const styles = theme => ({ 
   paper: {
     marginTop: theme.spacing.unit * 4,
@@ -33,7 +33,7 @@ export default class Message extends Component {
     clearTimeout(this.timeoutID);
   }
   getMessage() {
-    Axios.get(`http://127.0.0.1:5000/chats/${this.props.match.params.id}`).then(
+    Axios.get(`${serverAddress}/chats/${this.props.match.params.id}`).then(
       res => {
         if (res.data.success) {
           this.setState({ messages: res.data.messages });
@@ -45,7 +45,7 @@ export default class Message extends Component {
   onClick = e => {
     let message = this.state.input;
     Axios.post(
-      `http://127.0.0.1:5000/chats/addMessage/${this.props.match.params.id}`,
+      `${serverAddress}/chats/addMessage/${this.props.match.params.id}`,
       {
         message
       }

@@ -11,6 +11,7 @@ import Axios from "axios";
 import Switch from "@material-ui/core/Switch";
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
+import serverAddress from "../utils/serverAddress";
 
 const styles = theme => ({
   layout: {
@@ -73,7 +74,7 @@ class OrgProfile extends Component {
     }
   };
   getOrgByID() {
-    Axios.get(`http://127.0.0.1:5000/orgs/${this.props.match.params.id}`).then(
+    Axios.get(`${serverAddress}/orgs/${this.props.match.params.id}`).then(
       res => {
         console.log(res.data);
         if (res.data.success) {
@@ -94,7 +95,7 @@ class OrgProfile extends Component {
       return e.id === currentUserId;
     });
     if (!exist) {
-      Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/join`)
+      Axios.post(`${serverAddress}/orgs/${this.state.orgObject._id}/join`)
         .then(res => {
           if (res.data.success) {
             this.getOrgByID();
@@ -111,7 +112,7 @@ class OrgProfile extends Component {
       return f.id === currentUserId;
     });
     if (!exist) {
-      Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/pay`)
+      Axios.post(`${serverAddress}/orgs/${this.state.orgObject._id}/pay`)
         .then(res => {
           if (res.data.success) {
             this.getOrgByID();

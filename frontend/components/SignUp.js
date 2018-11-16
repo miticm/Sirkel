@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
+import serverAddress from "../utils/serverAddress";
 
 const styles = theme => ({
   layout: {
@@ -71,7 +72,7 @@ class SignUp extends Component {
       return;
     }
     axios
-      .post("http://127.0.0.1:5000/users/register", {
+      .post(`${serverAddress}/users/register`, {
         username: this.state.username,
         email: this.state.email,
         password: this.state.password
