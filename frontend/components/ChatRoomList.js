@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ChatRoomCard from "./ChatRoomCard";
 import setAuthToken from "../utils/setAuthToken";
 import axios from "axios";
+import serverAddress from "../utils/serverAddress";
 
 export default class ChatRoomList extends Component {
   state = {
@@ -10,7 +11,7 @@ export default class ChatRoomList extends Component {
 
   getChatsList = () => {
     axios
-      .get("http://127.0.0.1:5000/chats")
+      .get(`${serverAddress}/chats`)
       .then(res => {
         console.log(res.data);
         this.setState({ chatsList: res.data.chatsList });

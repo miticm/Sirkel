@@ -13,6 +13,7 @@ import axios from "axios";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import setAuthToken from "../utils/setAuthToken";
+import serverAddress from "../utils/serverAddress";
 
 const styles = theme => ({
   layout: {
@@ -82,7 +83,7 @@ class CreateEvent extends Component {
       hostBy: this.state.hostBy
     };
     axios
-      .post("http://127.0.0.1:5000/events", {
+      .post(`${serverAddress}/events`, {
         event
       })
       .then(res => {
@@ -101,7 +102,7 @@ class CreateEvent extends Component {
   };
   getOrgsAdmin() {
     axios
-      .get("http://127.0.0.1:5000/users/checkToken")
+      .get(`${serverAddress}/users/checkToken`)
       .then(res => {
         if (res.data.success) {
           this.setState({ orgsAdmin: res.data.user.orgsAdmin });

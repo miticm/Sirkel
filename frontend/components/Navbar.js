@@ -19,6 +19,7 @@ import {
   firstDividerSideBarItems,
   secondDividerSideBarItems
 } from "./icons/dashboardData";
+import serverAddress from "../utils/serverAddress";
 
 import Homepage from "./Homepage";
 import Dashboard from "./Dashboard";
@@ -41,7 +42,7 @@ class NavBar extends Component {
     const token = localStorage.getItem("jwtToken");
     setAuthToken(token);
     axios
-      .get("http://127.0.0.1:5000/users/checkToken")
+      .get(`${serverAddress}/users/checkToken`)
       .then(res => {
         if (res.data.success) {
           this.login(res.data.user);
