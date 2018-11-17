@@ -14,26 +14,26 @@ import classNames from "classnames";
 
 class Dashboard extends Component {
   state = {
-    anchorEl: null,
+    anchorel: null,
   };
 
   handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
+    this.setState({ anchorel: event.currentTarget });
   };
 
   handleClose = () => {
-    this.setState({ anchorEl: null });
+    this.setState({ anchorel: null });
   };
 
   render() {
-    const { anchorEl } = this.state;
-    const open = Boolean(anchorEl);
+    const { anchorel } = this.state;
+    const open = Boolean(anchorel);
     const { classes } = this.props;
     return (
       <div>
         <div 
             className="dashboard"
-            anchorEl={anchorEl}
+            anchorel={anchorel}
             open={open}
             onClose={this.handleClose}
         >

@@ -70,7 +70,7 @@ class ProfilePage extends Component {
   handleMessage = id => {
     let receivers = [this.state.user._id, id];
     axios
-      .post("${serverAddress}/chats/create", {
+      .post(`${serverAddress}/chats/create`, {
         receivers
       })
       .then(res => {
