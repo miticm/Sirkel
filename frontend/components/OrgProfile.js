@@ -47,7 +47,7 @@ const styles = theme => ({
 
   submit: {
     margin: theme.spacing.unit,
-    marginTop: 0,
+    marginTop: "0.2rem",
     marginLeft: 0,
     marginRight: 0
   },
@@ -106,6 +106,7 @@ class OrgProfile extends Component {
       alert("You are a member of this Org already");
     }
   };
+
   clickPay = f => {
     let currentUserId = localStorage.getItem("userID");
     let exist = this.state.orgObject.paidmembers.find(f => {
@@ -123,6 +124,7 @@ class OrgProfile extends Component {
       alert("You have already paid your dues");
     }
   };
+
   render() {
     const { classes } = this.props;
     return (
@@ -141,64 +143,44 @@ class OrgProfile extends Component {
             <p> {this.state.orgObject.description}</p>
 
             <p>{`Founder: ${this.state.orgObject.leader.username}`}</p>
-            <ul>
-              <p>Members:</p>
-              {this.state.orgObject.members.map(m => {
-                if (
-                  this.state.orgObject.leader.id ==
-                  localStorage.getItem("userID")
-                ) {
+
+            <table>
+              <tr>
+                <th>Members</th>
+                <th>Dues</th>
+                <th>Add dues</th>
+                <th>Send reminder to pay dues</th>
+              </tr>
+              
+                {this.state.orgObject.members.map(m => {
                   return (
-                    <li key={Math.random() * 100}>
-                      {m.username} <Switch color="primary" />
-                    </li>
-                  );
-                } else {
-                  return <li key={Math.random() * 100}>{m.username}</li>;
-                }
-              })}
-            </ul>
-            <ul>
-              <p>Already Paid Dues:</p>
-              {this.state.orgObject.paidmembers.map(m => {
-                if (
-                  this.state.orgObject.leader.id ==
-                  localStorage.getItem("userID")
-                ) {
-                  return (
-                    <li key={Math.random() * 100}>
-                      {m.username} <Switch color="primary" />
-                    </li>
-                  );
-                } else {
-                  return <li key={Math.random() * 100}>{m.username}</li>;
-                }
-              })}
-            </ul>
-            <Button
-              className={classes.submit}
-              style={{ backgroundColor: "#60b0f4", color: "white" }}
-              onClick={this.clickPay}
-            >
-              I Paid Dues
-            </Button>
+                    <tr>
+                      <td>{m.username}</td>
+                      <td>{m.dues}</td>
+                      <td><input type="number"/> <Button>Add</Button><Button>Clear</Button></td>
+                      <td><Button fullWidth color="secondary">Remind</Button></td>
+                    </tr>
+
+                  )
+                })}
+              
+            </table>
+
             <Button
               className={classes.submit}
               style={{ backgroundColor: "#60b0f4", color: "white" }}
               onClick={this.onClick}
+              fullWidth
             >
               Join
             </Button>
             <Button
-              className={classes.submit}
+              fullWidth
               style={{ backgroundColor: "#60b0f4", color: "white" }}
+              className={classes.submit}
             >
-              <Link
-                to={`/chats/${this.state.orgObject.chatRoomID}`}
-                style={{ textDecoration: "none" }}
-              >
-                {" "}
-                Chat room{" "}
+              <Link to={`/chats/${this.state.orgObject.chatRoomID}`}>
+                Chat room
               </Link>
             </Button>
           </Paper>
