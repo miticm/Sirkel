@@ -21,6 +21,7 @@ export default class App extends Component {
     socket.on("notification",data=>{
       this.setState({open:data.open})
     })
+    socket.emit("userID",{userID:localStorage.getItem("userID")});
   }
 
   handleClickOpen = () => {
@@ -34,7 +35,7 @@ export default class App extends Component {
   render() {
     return (
     <div>
-      <NavBar />;
+      <NavBar />
       <Dialog
           open={this.state.open}
           onClose={this.handleClose}

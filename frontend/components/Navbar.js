@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createContext } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
@@ -15,10 +15,7 @@ import Drawer from "@material-ui/core/Drawer";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import List from "@material-ui/core/List";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import {
-  firstDividerSideBarItems,
-  secondDividerSideBarItems
-} from "./icons/dashboardData";
+import {FirstDividerSideBarItems,SecondDividerSideBarItems} from "./icons/dashboardData";
 import serverAddress from "../utils/serverAddress";
 
 import Homepage from "./Homepage";
@@ -27,6 +24,7 @@ import SignUp from "./SignUp";
 import Login from "./Login";
 import Verify from "./Verify";
 const drawerWidth = 240;
+
 class NavBar extends Component {
   state = {
     open: false,
@@ -56,7 +54,7 @@ class NavBar extends Component {
   login = user => {
     this.setState({ isAuth: true, user: user });
   };
-  
+
   signOut = () => {
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("isAuth");
@@ -143,145 +141,156 @@ class NavBar extends Component {
                 <ChevronLeftIcon />
               </IconButton>
             </div>
+
             <Divider />
-            <List>{firstDividerSideBarItems}</List>
+
+            <List>
+              <FirstDividerSideBarItems close={this.handleDrawerClose}/>
+            </List>
+
             <Divider />
-            <List>{secondDividerSideBarItems}</List>
+
+            <List>
+              <SecondDividerSideBarItems close={this.handleDrawerClose}/>
+            </List>
+
           </Drawer>
 
-          
-            <Switch>
-              <Route exact path="/" component={Homepage} />
-              <Route exact path="/signup" component={SignUp} />
+          <Switch>
+            <Route exact path="/" component={Homepage} />
+            <Route exact path="/signup" component={SignUp} />
 
-              <Route
-                exact
-                path="/login"
-                render={myprops => <Login {...myprops} login={this.login} />}
-              />
-          
-              <Route
-                exact
-                path="/dashboard"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              
-              <Route
-                exact
-                path="/events"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} show="events" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/settings"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} show="settings" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/profile"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} show="profile" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/org"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} show="org" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/connections"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} show="connections" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/org/:id"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} show="orgprofile" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/chats"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} user={this.state.user} show="chats" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/chats/:id"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} show="messages" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/survey"
-                render={props =>
-                  this.state.isAuth ? (
-                    <Dashboard open={this.state.open} {...props} show="survey" />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-            <Route exact path="/users/verify/:id"
-             render={myprops => <Verify {...myprops} />}
+            <Route
+              exact
+              path="/login"
+              render={myprops => <Login {...myprops} login={this.login} />}
             />
 
-              <Route
-                render={() => (
-                  <p style={{ marginTop: "100px" }}>Page Not Found!!!!</p>
-                )}
-              />
-            </Switch>
-          </div>
+            <Route
+              exact
+              path="/dashboard"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+
+            <Route
+              exact
+              path="/events"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="events" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/settings"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="settings" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/profile"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="profile" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/org"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="org" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/connections"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="connections" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/org/:id"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="orgprofile" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/chats"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} user={this.state.user} show="chats" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/chats/:id"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="messages" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/survey"
+              render={props =>
+                this.state.isAuth ? (
+                  <Dashboard {...props} show="survey" />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+
+            <Route
+              exact
+              path="/users/verify/:id"
+              render={myprops => <Verify {...myprops} />}
+            />
+
+            <Route
+              render={() => (
+                <p style={{ marginTop: "100px" }}>Page Not Found!!!!</p>
+              )}
+            />
+          </Switch>
+        </div>
       </BrowserRouter>
     );
   }

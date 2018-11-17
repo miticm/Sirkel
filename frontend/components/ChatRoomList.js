@@ -29,7 +29,7 @@ export default class ChatRoomList extends Component {
     return (
       <div className="ChatRoomList">
         {this.state.chatsList.map(chat => (
-          <ChatRoomCard chat={chat} key={chat._id} {...this.props}  />
+          <ChatRoomCard chat={chat} key={chat._id} {...this.props} />
         ))}
       </div>
     );

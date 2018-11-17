@@ -29,7 +29,9 @@ const io = socketio(server);
 
 io.on('connection', function (socket) {
   console.log("Connected with: " + socket.id);
+  socket.on("userID",(data)=>console.log(data))
 });
+
 
 
 mongoose
