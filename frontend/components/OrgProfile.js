@@ -1,18 +1,20 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import TextField from "@material-ui/core/TextField";
-import Divider from "@material-ui/core/Divider";
 import Axios from "axios";
-import Switch from "@material-ui/core/Switch";
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
 import serverAddress from "../utils/serverAddress";
 import { socketContext } from "../utils/socketContext";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+
 
 const styles = theme => ({
   layout: {
@@ -58,6 +60,18 @@ const styles = theme => ({
     padding: theme.spacing.unit * (1 / 2),
     marginBottom: 0,
     width: "100%"
+  },
+  root: {
+    width: '80%',
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 500,
+  },
+  tableFont:{
+    fontSize:"1rem"
   }
 });
 
@@ -74,7 +88,6 @@ class OrgProfile extends Component {
     },
     amount: 0
   };
-  
 
   getOrgByID() {
     Axios.get(`${serverAddress}/orgs/${this.props.match.params.id}`).then(
@@ -113,7 +126,7 @@ class OrgProfile extends Component {
   };
 
   changeDues = (userID, amount) => {
-    if(amount < 0){
+    if (amount < 0) {
       return;
     }
     Axios.post(`${serverAddress}/orgs/${this.props.match.params.id}/dues`, {
@@ -121,21 +134,21 @@ class OrgProfile extends Component {
       userID: userID
     }).then(res => {
       if (res.data.success) {
-        this.setState({amount:0})
+        this.setState({ amount: 0 });
         this.getOrgByID();
       }
     });
   };
 
-  remindDues = (userID,amount) =>{
-    if(amount > 0){
-      this.props.socket.emit("remind",{
+  remindDues = (userID, amount) => {
+    if (amount > 0) {
+      this.props.socket.emit("remind", {
         userID,
         amount,
-        orgName:this.state.orgObject.name
-      })
+        orgName: this.state.orgObject.name
+      });
     }
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -154,54 +167,64 @@ class OrgProfile extends Component {
               style={{ height: 80, width: 80 }}
             />
             <h1> {this.state.orgObject.description}</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Members</th>
-                  <th>Dues</th>
-                  <th>
-                    Add dues{" "}
-                    <input
-                      onChange={this.onChange}
-                      type="number"
-                      value={this.state.amount}
-                    />
-                  </th>
-                  <th>Send reminder to pay dues</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.orgObject.members.map(m => {
-                  return (
-                    <tr key={Math.random() * 100}>
-                      <td>{m.username}</td>
-                      <td>{m.dues}$</td>
-                      <td>
-                        <Button
-                          color="primary"
-                          onClick={() =>
-                            this.changeDues(m.id, this.state.amount)
-                          }
-                        >
-                          Add
-                        </Button>
-                        <Button
-                          color="primary"
-                          onClick={() => this.changeDues(m.id, 0)}
-                        >
-                          Clear
-                        </Button>
-                      </td>
-                      <td>
-                        <Button fullWidth color="secondary" onClick={()=>this.remindDues(m.id,m.dues)}>
-                          Remind
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+
+      
+            <Paper className={classes.root}>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Members</TableCell>
+                    <TableCell>Dues</TableCell>
+                    <TableCell>
+                      Amount
+                      <br />
+                      <input
+                        onChange={this.onChange}
+                        type="number"
+                        value={this.state.amount}
+                        width="20px"
+                      />
+                    </TableCell>
+                    <TableCell>Send reminder</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.orgObject.members.map(m => {
+                    return (
+                      <TableRow key={Math.random() * 100}>
+                        <TableCell>{m.username}</TableCell>
+                        <TableCell>{m.dues}</TableCell>
+                        <TableCell>
+                          <Button
+                            color="primary"
+                            onClick={() =>
+                              this.changeDues(m.id, this.state.amount)
+                            }
+                          >
+                            Add
+                          </Button>
+                          <Button
+                            color="primary"
+                            onClick={() => this.changeDues(m.id, 0)}
+                          >
+                            Clear
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            fullWidth
+                            color="secondary"
+                            onClick={() => this.remindDues(m.id, m.dues)}
+                          >
+                            Remind
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </Paper>
 
             <Button
               className={classes.submit}
@@ -231,6 +254,6 @@ const OrgProfileWithSocket = props => (
   <socketContext.Consumer>
     {socket => <OrgProfile {...props} socket={socket} />}
   </socketContext.Consumer>
-)
+);
 
 export default withStyles(styles)(OrgProfileWithSocket);
