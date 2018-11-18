@@ -10,18 +10,26 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 require("../node_modules/normalize.css/normalize.css");
 import serverAddress from "../utils/serverAddress";
+import { socketContext } from "../utils/socketContext";
 
+const socket = io.connect(`${serverAddress}`);
 
 export default class App extends Component {
   state = {
-    open:false
+    open:false,
+    title:"",
+    content:""
   }
+
   componentDidMount(){
-    let socket = io.connect(`${serverAddress}`);
-    socket.on("notification",data=>{
-      this.setState({open:data.open})
+    socket.on("remindDues",data=>{
+      console.log(data);
+      if(data.userID == localStorage.getItem('userID')){
+        this.setState({title:`You have ${data.amount}$ dues need to pay`,content:`Organization: ${data.orgName}`},()=>{
+          this.setState({open:true})
+        })
+      }
     })
-    socket.emit("userID",{userID:localStorage.getItem("userID")});
   }
 
   handleClickOpen = () => {
@@ -34,7 +42,7 @@ export default class App extends Component {
 
   render() {
     return (
-    <div>
+    <socketContext.Provider value={socket}>
       <NavBar />
       <Dialog
           open={this.state.open}
@@ -42,21 +50,25 @@ export default class App extends Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle>{"New Match 👏🏻👏🏻👏🏻"}</DialogTitle>
+          <DialogTitle>
+            {/* New Match 👏🏻👏🏻👏🏻 */}
+            {this.state.title}
+          </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              There is a new organization that you may like!
+              {this.state.content}
+              {/* There is a new organization that you may like!
               Go check it out in the organization page.
-              We match the organization with you base on your survey.
+              We match the organization with you base on your survey. */}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary" autoFocus>
-              Nice!
+              Got it
             </Button>
           </DialogActions>
         </Dialog>
-    </div>
+    </socketContext.Provider>
     )
   }
 }

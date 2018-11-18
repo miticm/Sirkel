@@ -12,6 +12,7 @@ import Switch from "@material-ui/core/Switch";
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
 import serverAddress from "../utils/serverAddress";
+import { socketContext } from "../utils/socketContext";
 
 const styles = theme => ({
   layout: {
@@ -73,6 +74,7 @@ class OrgProfile extends Component {
     },
     amount: 0
   };
+  
 
   getOrgByID() {
     Axios.get(`${serverAddress}/orgs/${this.props.match.params.id}`).then(
@@ -111,18 +113,33 @@ class OrgProfile extends Component {
   };
 
   changeDues = (userID, amount) => {
+    if(amount < 0){
+      return;
+    }
     Axios.post(`${serverAddress}/orgs/${this.props.match.params.id}/dues`, {
       amount: amount,
       userID: userID
     }).then(res => {
       if (res.data.success) {
+        this.setState({amount:0})
         this.getOrgByID();
       }
     });
   };
-  
+
+  remindDues = (userID,amount) =>{
+    if(amount > 0){
+      this.props.socket.emit("remind",{
+        userID,
+        amount,
+        orgName:this.state.orgObject.name
+      })
+    }
+  }
+
   render() {
     const { classes } = this.props;
+
     return (
       <React.Fragment>
         <CssBaseline />
@@ -153,7 +170,6 @@ class OrgProfile extends Component {
                   <th>Send reminder to pay dues</th>
                 </tr>
               </thead>
-              {console.log(this.state.orgObject.members)}
               <tbody>
                 {this.state.orgObject.members.map(m => {
                   return (
@@ -177,7 +193,7 @@ class OrgProfile extends Component {
                         </Button>
                       </td>
                       <td>
-                        <Button fullWidth color="secondary">
+                        <Button fullWidth color="secondary" onClick={()=>this.remindDues(m.id,m.dues)}>
                           Remind
                         </Button>
                       </td>
@@ -211,8 +227,10 @@ class OrgProfile extends Component {
   }
 }
 
-OrgProfile.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+const OrgProfileWithSocket = props => (
+  <socketContext.Consumer>
+    {socket => <OrgProfile {...props} socket={socket} />}
+  </socketContext.Consumer>
+)
 
-export default withStyles(styles)(OrgProfile);
+export default withStyles(styles)(OrgProfileWithSocket);
