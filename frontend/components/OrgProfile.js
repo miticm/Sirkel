@@ -65,20 +65,19 @@ class OrgProfile extends Component {
     orgObject: {
       name: "",
       description: "",
-      leader: { username: "", id: "" },
+      admins: [],
       members: [],
-      paidmembers: [],
       _id: "",
       avatar: "",
       chatRoomID: ""
-    }
+    },
+    amount: 0
   };
+
   getOrgByID() {
     Axios.get(`${serverAddress}/orgs/${this.props.match.params.id}`).then(
       res => {
-        console.log(res.data);
         if (res.data.success) {
-          console.log(res.data.org);
           this.setState({ orgObject: res.data.org });
         } else {
           this.setState({ orgObject: { name: "Organization not found" } });
@@ -107,24 +106,21 @@ class OrgProfile extends Component {
     }
   };
 
-  clickPay = f => {
-    let currentUserId = localStorage.getItem("userID");
-    let exist = this.state.orgObject.paidmembers.find(f => {
-      return f.id === currentUserId;
-    });
-    if (!exist) {
-      Axios.post(`${serverAddress}/orgs/${this.state.orgObject._id}/pay`)
-        .then(res => {
-          if (res.data.success) {
-            this.getOrgByID();
-          }
-        })
-        .catch(err => console.log(err));
-    } else {
-      alert("You have already paid your dues");
-    }
+  onChange = e => {
+    this.setState({ amount: e.target.value });
   };
 
+  changeDues = (userID, amount) => {
+    Axios.post(`${serverAddress}/orgs/${this.props.match.params.id}/dues`, {
+      amount: amount,
+      userID: userID
+    }).then(res => {
+      if (res.data.success) {
+        this.getOrgByID();
+      }
+    });
+  };
+  
   render() {
     const { classes } = this.props;
     return (
@@ -140,30 +136,55 @@ class OrgProfile extends Component {
               src={this.state.orgObject.avatar}
               style={{ height: 80, width: 80 }}
             />
-            <p> {this.state.orgObject.description}</p>
-
-            <p>{`Founder: ${this.state.orgObject.leader.username}`}</p>
-
+            <h1> {this.state.orgObject.description}</h1>
             <table>
-              <tr>
-                <th>Members</th>
-                <th>Dues</th>
-                <th>Add dues</th>
-                <th>Send reminder to pay dues</th>
-              </tr>
-              
+              <thead>
+                <tr>
+                  <th>Members</th>
+                  <th>Dues</th>
+                  <th>
+                    Add dues{" "}
+                    <input
+                      onChange={this.onChange}
+                      type="number"
+                      value={this.state.amount}
+                    />
+                  </th>
+                  <th>Send reminder to pay dues</th>
+                </tr>
+              </thead>
+              {console.log(this.state.orgObject.members)}
+              <tbody>
                 {this.state.orgObject.members.map(m => {
                   return (
-                    <tr>
+                    <tr key={Math.random() * 100}>
                       <td>{m.username}</td>
-                      <td>{m.dues}</td>
-                      <td><input type="number"/> <Button>Add</Button><Button>Clear</Button></td>
-                      <td><Button fullWidth color="secondary">Remind</Button></td>
+                      <td>{m.dues}$</td>
+                      <td>
+                        <Button
+                          color="primary"
+                          onClick={() =>
+                            this.changeDues(m.id, this.state.amount)
+                          }
+                        >
+                          Add
+                        </Button>
+                        <Button
+                          color="primary"
+                          onClick={() => this.changeDues(m.id, 0)}
+                        >
+                          Clear
+                        </Button>
+                      </td>
+                      <td>
+                        <Button fullWidth color="secondary">
+                          Remind
+                        </Button>
+                      </td>
                     </tr>
-
-                  )
+                  );
                 })}
-              
+              </tbody>
             </table>
 
             <Button

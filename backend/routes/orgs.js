@@ -200,9 +200,11 @@ router.post(
 );
 
 router.post(
-  "/:id/pay",
+  "/:id/dues",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => {
+  (req, res) => {
+    const amount = req.body.amount;
+    const userID = req.body.userID;
     Org.findById(req.params.id, (err, org) => {
       if (err) {
         res.json({
@@ -210,10 +212,12 @@ router.post(
           msg: err
         });
       }
-      org.paidmembers.push({
-        id: req.user._id,
-        username: req.user.username
-      });
+
+      for(let i = 0; i<org.members.length;i++){
+        if(org.members[i].id == userID){
+          org.members[i].dues = amount;
+        }
+      }
 
       org
         .save()
