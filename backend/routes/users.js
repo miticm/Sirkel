@@ -312,5 +312,70 @@ router.post(
     });
   }
 );
+//make forgot and logged in seperate, forgot doesnt require auth TODO
+router.post("/generate/change",
+  passport.authenticate("jwt", { session: false }),
+      (req, res) => { 
+    const username = req.user.username;
+    User.getUserByUsername(username, (err,user) => { //can use user directly, change later
+      if (err) throw err;
+      if (!user) return res.json({ success: false, msg: "user not found" });
 
+      user.passwordResetToken = crypto.randomBytes(30).toString('hex');
+      user.passwordResetExpires = Date.now + 3 * 8.64 * 10^7; //expires in 3 days from generation
+      user.save();
+
+      return res.json({
+        success: true, 
+        link: serverURL + "/users/reset/password/" + user.passwordResetToken
+      });
+  });
+});
+router.post("/generate/forgot",
+      (req, res) => { 
+    const username = req.body.username;
+    User.getUserByUsername(username, (err,user) => {
+      if (err) throw err;
+      if (!user) return res.json({ success: false, msg: "user not found" });
+
+      user.passwordResetToken = crypto.randomBytes(30).toString('hex');
+      user.passwordResetExpires = Date.now + 3 * 8.64 * 10^7; //expires in 3 days from generation
+      user.save();
+
+      //send email if not logged in, otherwise return link in json
+      let mail = {
+        from: senderAddr,
+        to: user.email,
+        subject: 'Sirkel - Password reset!',
+        html: '<p>Hello!\nHello, you may reset your account using the link below:\n</p><a href=\"' 
+        + serverURL + '/users/reset/password/' + user.passwordResetToken +  '\">' 
+        + serverURL + '/users/reset/password/' + user.passwordResetToken + '</a>'
+        + '<p>\n\n- The Sirkel Team</p>'
+      };
+      transporter.sendMail(mail, function (err, dat) {
+        if(err){
+          return res.json({ success: false, msg: "error sending email" });
+        }
+        else {
+          return res.json({success: true });
+        }
+      });
+    });
+});
+
+//password reset
+router.post("/reset/:hsh", (req, res, next) => {
+  User.findOne({passwordResetToken: req.params.hsh}, (err,user) => {
+      if (err) throw err;
+      if (!user) return res.json({success: false, msg: "invalid token"});
+      if (!req.body.password) return res.json({success: false, msg: "undefined password"});
+      if(Date.now > user.passwordResetExpires) {
+        return res.json({success: false, msg: "token expired"});
+      }
+      User.changePassword(user,req.body.password,(err,user) => {
+        if (err) throw err;
+      });
+      return res.json({success: true});
+  });
+});
 module.exports = router;

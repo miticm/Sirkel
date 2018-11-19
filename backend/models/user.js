@@ -107,18 +107,13 @@ module.exports.getUserByResetToken = function(token, callback) {
   User.findOne(query, callback);
 };
 
-UserSchema.pre('save', function(next) {
-  var user = this;
-
-  if (!user.isModified('password')) return next();
-
+module.exports.changePassword = function(user,password,callback) {
+  user.password = password;
   bcrypt.genSalt(10, function(err, salt) {
-    if (err) return next(err);
-
     bcrypt.hash(user.password, salt, null, function(err, hash) {
-      if (err) return next(err);
+      if (err) throw err;
       user.password = hash;
-      next();
+      user.save(callback);
     });
   });
-});
+};
