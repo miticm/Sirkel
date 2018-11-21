@@ -115,7 +115,7 @@ export default class OrgPage extends Component {
               Search
             </Button>
             <Button style={{ color: "#000"}} onClick={this.toggleRanked} fullWidth>
-              Rank
+              List suggested organization
             </Button>
         </form>
       </div>

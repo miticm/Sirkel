@@ -79,7 +79,7 @@ class UserProfile extends Component {
           color="primary"
           onClick={this.toggleRanked}
         >
-          Rank
+          List people with silmar interests
         </Button>
         {this.state.filteredUsers.map(user => {
           let currentUserID = localStorage.getItem("userID");
