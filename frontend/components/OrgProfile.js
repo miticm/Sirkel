@@ -126,38 +126,56 @@ class OrgProfile extends Component {
   };
 
   changeDues = (userID, amount) => {
-    if (amount < 0) {
-      return;
-    }
-    Axios.post(`${serverAddress}/orgs/${this.props.match.params.id}/dues`, {
-      amount: amount,
-      userID: userID
-    }).then(res => {
-      if (res.data.success) {
-        this.setState({ amount: 0 });
-        this.getOrgByID();
+    if(this.isAdmin()){
+
+      if (amount < 0) {
+        return;
       }
-    });
+      Axios.post(`${serverAddress}/orgs/${this.props.match.params.id}/dues`, {
+        amount: amount,
+        userID: userID
+      }).then(res => {
+        if (res.data.success) {
+          this.setState({ amount: 0 });
+          this.getOrgByID();
+        }
+      });
+    }else{
+      alert("not admin")
+    }
   };
 
   remindDues = (userID, amount) => {
-    if (amount > 0) {
-      this.props.socket.emit("remind", {
-        userID,
-        amount,
-        orgName: this.state.orgObject.name
-      });
+    if(this.isAdmin()){
+      if (amount > 0) {
+        this.props.socket.emit("remind", {
+          userID,
+          amount,
+          orgName: this.state.orgObject.name
+        });
+      }
+    }else{
+      alert("not admin")
     }
   };
 
   giveAdmin = (memberID) =>{
-    Axios.post(`${serverAddress}/orgs/giveAdmin`,{
-      memberID,
-      orgID: this.state.orgObject._id
-    }).then(res=>{
-      if(res.data.success){
-        this.getOrgByID();
-      }
+    if(this.isAdmin()){
+      Axios.post(`${serverAddress}/orgs/giveAdmin`,{
+        memberID,
+        orgID: this.state.orgObject._id
+      }).then(res=>{
+        if(res.data.success){
+          this.getOrgByID();
+        }
+      })
+    }else{
+      alert("Not admin")
+    }
+  }
+  isAdmin(){
+    this.state.orgObject.admins.find(admin=>{
+      return localStorage.getItem("userID") === admin.id
     })
   }
 
