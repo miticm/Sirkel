@@ -235,6 +235,28 @@ router.post(
   }
 );
 
+router.post(
+  "/giveAdmin",
+  passport.authenticate("jwt", { session: false }),
+  (req,res)=>{
+    Org.findById(req.body.orgID,(err,org)=>{
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
+        });
+      }
+      let newAdmin = {id:req.body.memberID};
+      org.admins.push(newAdmin);
+      org
+      .save()
+      .then(product => {
+        res.json({ success: true, product });
+      })
+    })
+  }
+)
+
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),

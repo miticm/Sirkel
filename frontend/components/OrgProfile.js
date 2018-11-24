@@ -68,7 +68,7 @@ const styles = theme => ({
     overflowX: 'auto',
   },
   table: {
-    minWidth: 500,
+    minWidth: 400,
   },
   tableFont:{
     fontSize:"1rem"
@@ -150,6 +150,17 @@ class OrgProfile extends Component {
     }
   };
 
+  giveAdmin = (memberID) =>{
+    Axios.post(`${serverAddress}/orgs/giveAdmin`,{
+      memberID,
+      orgID: this.state.orgObject._id
+    }).then(res=>{
+      if(res.data.success){
+        this.getOrgByID();
+      }
+    })
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -186,6 +197,8 @@ class OrgProfile extends Component {
                       />
                     </TableCell>
                     <TableCell>Send reminder</TableCell>
+                    <TableCell>Is admin</TableCell>
+                    <TableCell>Give admin</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -218,6 +231,18 @@ class OrgProfile extends Component {
                           >
                             Remind
                           </Button>
+                        </TableCell>
+                        <TableCell>
+                          {this.state.orgObject.admins.find(admin => {
+                            return admin.id === m.id
+                          }) ? "True" : "False"}
+                        </TableCell>
+                        <TableCell>
+                        {this.state.orgObject.admins.find(admin => {
+                            return admin.id === m.id
+                          }) ? <Button disabled>Give</Button> : this.state.orgObject.admins.find(admin=>{
+                            return localStorage.getItem("userID") === admin.id
+                          }) ? <Button onClick={()=>this.giveAdmin(m.id)}> Give </Button> : "Operator Only"}
                         </TableCell>
                       </TableRow>
                     );
