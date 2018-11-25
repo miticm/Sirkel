@@ -1,17 +1,12 @@
+const scoreOrg = require('./scoreOrg');
+
 module.exports = rankOrgs = (orgs, user) => {
   const userSurvey = Object.assign({}, user.survey);
   let tags = userSurvey.shortQuestions.tags.split(',');
   tags.map(tag => tag.trim().toLowerCase());
 
   orgs.map(org => {
-    let score = 0;
-    tags.forEach(tag => {
-      score += (org.description.toLowerCase().match(new RegExp(tag, "g")) || []).length
-      if (org.tags) {
-        score += (org.tags.toLowerCase().match(new RegExp(tag, "g")) || []).length
-      }
-    });
-    org.score = score;
+    org.score = scoreOrg(org, user, tags);
   });
 
   const newOrgs = orgs.filter((org) => {
