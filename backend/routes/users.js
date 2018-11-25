@@ -83,8 +83,11 @@ router.post("/register", (req, res, next) => {
       + serverURL + '/users/verify/' + verhash.hash +  '\">' + serverURL + '/users/verify/' + verhash.hash + '</a>'
       + '<p>\n\n- The Sirkel Team</p>'
     };
+    console.log(mail);
     transporter.sendMail(mail, function (err, dat) {
       if(err){ //email coulnd't be sent, delete new user and hash
+        console.log(err);
+        console.log(user);
         User.findByIdAndDelete(user._id);
         vHash.findByIdAndDelete(verhash._id);
         res.json({ success: false, msg: "error sending verification email" });
