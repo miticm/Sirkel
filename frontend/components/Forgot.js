@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
@@ -51,10 +52,9 @@ const styles = theme => ({
   }
 });
 
-class Login extends Component {
+class Forgot extends Component {
   state = {
     username: "",
-    password: "",
     open: false,
     message: ""
   };
@@ -64,27 +64,20 @@ class Login extends Component {
   onSubmit = e => {
     e.preventDefault();
     axios
-      .post(`${serverAddress}/users/authenticate`, {
+      .post(`${serverAddress}/users/generate/forgot`, {
         username: this.state.username,
-        password: this.state.password
       })
       .then(res => {
         if (res.data.success) {
-          // Get the token
-          const token = res.data.token;
-          // Set token to localstorage
-          localStorage.setItem("jwtToken", token);
-          localStorage.setItem("isAuth", true);
-          localStorage.setItem("userID", res.data.user.id);
-          localStorage.setItem("username", res.data.user.username);
-          setAuthToken(token);
-          this.props.login();
-          this.props.history.push("/dashboard");
+            this.setState({
+                message: "Check email of account to reset password",
+                open: true,
+                username: ""
+            });
         } else {
           this.setState({
-            message: res.data.msg,
+            message: "error",
             open: true,
-            password: "",
             username: ""
           });
         }
@@ -97,7 +90,9 @@ class Login extends Component {
   };
 
   render() {
-
+    function forgotPass(e){
+      
+    };
     const { classes } = this.props;
     return (
       <React.Fragment>
@@ -110,7 +105,7 @@ class Login extends Component {
             >
               <LockIcon style={{ backgroundColor: "#60b0f4" }} />
             </Avatar>
-            <Typography variant="headline">Welcome</Typography>
+            <Typography variant="headline">Forgot Password</Typography>
             <form className={classes.form} onSubmit={this.onSubmit}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="username">Username</InputLabel>
@@ -118,15 +113,6 @@ class Login extends Component {
                   name="username"
                   onChange={this.onChange}
                   value={this.state.username}
-                />
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input
-                  name="password"
-                  onChange={this.onChange}
-                  value={this.state.password}
-                  type="password"
                 />
               </FormControl>
               <Button
@@ -138,19 +124,8 @@ class Login extends Component {
                   color: "#fff"
                 }}
               >
-                Login
+                Reset Password
               </Button>
-              <Button
-                fullWidth
-                onClick={() => {this.props.history.push("/forgot");}}
-                style={{
-                  backgroundColor: "#fff",
-                  color: "#60b0f4"
-                }}
-              >
-                Forgot Password
-              </Button>
-
             </form>
           </Paper>
 
@@ -173,8 +148,8 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
+Forgot.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(Forgot);
