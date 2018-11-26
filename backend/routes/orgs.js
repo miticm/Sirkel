@@ -100,13 +100,43 @@ router.get(
           });
         }
 
-        if (req.user.survey) {
-          const sortedOrgs = rankOrgs(orgs, req.user);
-          if (sortedOrgs) {
-            req.io.emit('notification', { open: true });
+        if (req.user.orgMatches && req.user.orgMatches.length != 0) {
+          console.log('Here 1');
+          User.findById(req.user._id).populate('orgMatches.$.org').exec((err, popUser) => {
+            if (err) {
+              res.json({
+                success: false,
+                msg: err
+              });
+            }
+
+            console.log(popUser.orgMatches);
+
             res.json({
               success: true,
-              orgs: sortedOrgs
+              orgs: popUser.orgMatches
+            });
+          });
+        }
+        else if (req.user.survey) {
+          console.log('Here 2');
+          const sortedOrgs = rankOrgs(orgs, req.user);
+          if (sortedOrgs) {
+            req.user.orgMatches = sortedOrgs;
+            req.user.save((err, user) => {
+              if (err) {
+                res.json({
+                  success: false,
+                  msg: err
+                });
+              }
+
+              req.io.emit('notification', { open: true });
+
+              res.json({
+                success: true,
+                orgs: sortedOrgs
+              });
             });
           }
         } else {
