@@ -13,6 +13,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import Snackbar from "@material-ui/core/Snackbar";
+import serverAddress from "../utils/serverAddress";
 
 const styles = theme => ({
   layout: {
@@ -70,7 +71,7 @@ class ChangePassword extends Component {
       return;
     }
     axios
-      .post('http://127.0.0.1:5000/users/reset/' + this.props.match.params.id, {
+      .post(`${serverAddress}/users/reset/` + this.props.match.params.id, {
         password: this.state.password
       })
       .then(res => {
