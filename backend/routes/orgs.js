@@ -103,6 +103,7 @@ router.get(
         if (req.user.survey) {
           const sortedOrgs = rankOrgs(orgs, req.user);
           if (sortedOrgs) {
+            req.io.emit('notification', { open: true });
             res.json({
               success: true,
               orgs: sortedOrgs
@@ -199,9 +200,11 @@ router.post(
 );
 
 router.post(
-  "/:id/pay",
+  "/:id/dues",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => {
+  (req, res) => {
+    const amount = req.body.amount;
+    const userID = req.body.userID;
     Org.findById(req.params.id, (err, org) => {
       if (err) {
         res.json({
@@ -209,10 +212,12 @@ router.post(
           msg: err
         });
       }
-      org.paidmembers.push({
-        id: req.user._id,
-        username: req.user.username
-      });
+
+      for(let i = 0; i<org.members.length;i++){
+        if(org.members[i].id == userID){
+          org.members[i].dues = amount;
+        }
+      }
 
       org
         .save()
@@ -229,6 +234,28 @@ router.post(
     });
   }
 );
+
+router.post(
+  "/giveAdmin",
+  passport.authenticate("jwt", { session: false }),
+  (req,res)=>{
+    Org.findById(req.body.orgID,(err,org)=>{
+      if (err) {
+        res.json({
+          success: false,
+          msg: err
+        });
+      }
+      let newAdmin = {id:req.body.memberID};
+      org.admins.push(newAdmin);
+      org
+      .save()
+      .then(product => {
+        res.json({ success: true, product });
+      })
+    })
+  }
+)
 
 router.delete(
   "/:id",

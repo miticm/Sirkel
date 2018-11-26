@@ -11,6 +11,7 @@ import setAuthToken from "../utils/setAuthToken";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import serverAddress from "../utils/serverAddress";
 
 const styles = theme => ({
   root: {
@@ -46,21 +47,21 @@ class ProfilePage extends Component {
   async getProfileData() {
     const token = localStorage.getItem("jwtToken");
     setAuthToken(token);
-    const profileRes = await axios.get("http://127.0.0.1:5000/users/profile");
+    const profileRes = await axios.get(`${serverAddress}/users/profile`);
     this.setState({
       user: profileRes.data.user,
     });
     this.getEventData();
   }
   async getEventData() {
-    const eventRes = await axios.get("http://127.0.0.1:5000/events");
+    const eventRes = await axios.get(`${serverAddress}/events`);
     let posterEvents = eventRes.data.events.filter(e => {
       return e.poster.id == this.state.user._id;
     });
     this.setState({ events: posterEvents });
   }
   deleteEvent = id => {
-    axios.delete(`http://127.0.0.1:5000/events/${id}`).then(res => {
+    axios.delete(`${serverAddress}/events/${id}`).then(res => {
       if (res.data.success) {
         this.getEventData();
       }
@@ -69,7 +70,7 @@ class ProfilePage extends Component {
   handleMessage = id => {
     let receivers = [this.state.user._id, id];
     axios
-      .post("http://127.0.0.1:5000/chats/create", {
+      .post(`${serverAddress}/chats/create`, {
         receivers
       })
       .then(res => {

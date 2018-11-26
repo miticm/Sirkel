@@ -7,8 +7,9 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 import { Input, FormControl, InputLabel } from "@material-ui/core";
+import serverAddress from "../utils/serverAddress";
 
 export default class OrgPage extends Component {
   state = {
@@ -22,7 +23,7 @@ export default class OrgPage extends Component {
   getOrgList = () => {
     this.setState({ loading: true });
     axios
-      .get(`http://127.0.0.1:5000/orgs/${this.state.ranked ? "ranked" : "all"}`)
+      .get(`${serverAddress}/orgs/${this.state.ranked ? "ranked" : "all"}`)
       .then(res => {
         if (res.data.success) {
           this.setState({
@@ -39,14 +40,18 @@ export default class OrgPage extends Component {
   componentDidMount() {
     this.getOrgList();
   }
-  handleKeyUp = e => {
-    this.setState({ search: e.target.value }, () => {
-      let filtered = this.state.OrgList.filter(org =>
-        org.name.toLowerCase().includes(this.state.search.toLowerCase())
-      );
-      this.setState({ filteredOrgs: filtered });
-    });
+
+  search = e => {
+    e.preventDefault();
+    let filtered = this.state.OrgList.filter(org =>
+      org.name.toLowerCase().includes(this.state.search.toLowerCase())
+    );
+    this.setState({ filteredOrgs: filtered });
   };
+
+  keyup = e => {
+    this.setState({search:e.target.value})
+  }
 
   toggleRanked = () => {
     this.setState({ ranked: !this.state.ranked }, () => {
@@ -54,13 +59,13 @@ export default class OrgPage extends Component {
     });
   };
   nextPage = () => {
-    this.setState({pageNum : this.state.pageNum + 1});
-  }
+    this.setState({ pageNum: this.state.pageNum + 1 });
+  };
   prePage = () => {
-    if(this.state.pageNum > 1){
-      this.setState({pageNum:this.state.pageNum - 1});
+    if (this.state.pageNum > 1) {
+      this.setState({ pageNum: this.state.pageNum - 1 });
     }
-  }
+  };
 
   render() {
     let list;
@@ -72,61 +77,71 @@ export default class OrgPage extends Component {
         />
       );
     } else {
-      list = [];
-      for(let i = this.state.pageNum*10-10; i < this.state.pageNum*10; i++){
-        let org = this.state.filteredOrgs[i];
-        list.push(<OrgList
-          key={org._id + Math.random() * 100}
-          id={org._id}
-          name={org.name}
-          description={org.description}
-          orgObject={org}
-        />)
+      if(this.state.filteredOrgs.length > 0){
+        list = [];
+        for (let i = this.state.pageNum * 10 - 10; i < this.state.pageNum * 10;i++) {
+            if(i < this.state.filteredOrgs.length){
+
+              let org = this.state.filteredOrgs[i];
+              list.push(
+                <OrgList
+                  key={org._id + Math.random() * 100}
+                  id={org._id}
+                  name={org.name}
+                  description={org.description}
+                  orgObject={org}
+                />
+              );
+            }
+           
+        }
+      }else{
+        list = (<h1>Didn't find anything</h1>)
       }
+
     }
 
     return (
       <div>
-        <FormControl margin="normal" fullWidth>
-          <InputLabel>
-            <SearchIcon />
-          </InputLabel>
-          <Input
-            placeholder="Purdue Hackers"
-            onKeyUp={this.handleKeyUp}
-          />
-        </FormControl>
-        <Button
-          style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
-          type="submit"
-          multiple
-          color="primary"
-          onClick={this.toggleRanked}
-        >
-          Rank
-        </Button>
-
         <CreateOrg getOrgList={this.getOrgList} />
 
         <Divider style={{ marginTop: "100px" }} />
 
-        <div style={{height:"4rem",width:"100%"}}>
-          <div id="pageControl" style={{margin:"0 auto",width:"40%",textAlign:"center"}}>
-            <Button 
-            style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
-            variant="contained" 
-            color="primary" 
-            onClick={this.prePage}
-            >
-              Back 
+
+      <div style={{width: "100%",marginTop:"2rem" }}>
+        <form onSubmit={this.search} style={{margin:"0 auto", width:"50%",textAlign:"center"}}>
+            <Input placeholder="Search Organization..." onKeyUp={this.keyup} style={{display:"block"}} />
+            <Button style={{ color: "#000"}} type="submit" fullWidth>
+              Search
             </Button>
-              <span style={{padding:"0 20px 0 20px"}}>Page {this.state.pageNum}</span>
-             <Button 
-             style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
-             variant="contained" 
-             color="primary" 
-             onClick={this.nextPage}
-             >
+            <Button style={{ color: "#000"}} onClick={this.toggleRanked} fullWidth>
+              List suggested organization
+            </Button>
+        </form>
+      </div>
+
+        <div style={{ height: "4rem", width: "100%" , marginTop:"2rem"}}>
+          <div
+            id="pageControl"
+            style={{ margin: "0 auto", width: "40%", textAlign: "center" }}
+          >
+            <Button
+              style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
+              variant="contained"
+              color="primary"
+              onClick={this.prePage}
+            >
+              Back
+            </Button>
+            <span style={{ padding: "0 20px 0 20px" }}>
+              Page {this.state.pageNum}
+            </span>
+            <Button
+              style={{ backgroundColor: "#60b0f4", color: "#ffffff" }}
+              variant="contained"
+              color="primary"
+              onClick={this.nextPage}
+            >
               Next
             </Button>
           </div>

@@ -5,6 +5,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
 import InputBase from "@material-ui/core/InputBase";
 import { Input, FormControl, InputLabel } from "@material-ui/core";
+import serverAddress from "../utils/serverAddress";
 
 export default class Eventpage extends Component {
   state = {
@@ -14,7 +15,7 @@ export default class Eventpage extends Component {
   };
   getEventsList = () => {
     axios
-      .get("http://127.0.0.1:5000/events")
+      .get(`${serverAddress}/events`)
       .then(res => {
         console.log(res.data);
         this.setState({
@@ -43,7 +44,7 @@ export default class Eventpage extends Component {
             <SearchIcon />
           </InputLabel>
           <Input
-            placeholder="Tianchu Sucks"
+            placeholder="Search Event..."
             onKeyUp={this.handleKeyUp}
           />
         </FormControl>

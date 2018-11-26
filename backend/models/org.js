@@ -27,8 +27,7 @@ const OrgSchema = new Schema({
       id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-      },
-      username: String
+      }
     }
   ],
   members: [
@@ -37,16 +36,11 @@ const OrgSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
       },
-      username: String
-    }
-  ],
-  paidmembers: [
-    {
-      id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-      },
-      username: String
+      username: String,
+      dues: {
+        type:Number,
+        default:0
+      }
     }
   ],
   description: {

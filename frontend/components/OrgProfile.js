@@ -1,16 +1,20 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import TextField from "@material-ui/core/TextField";
-import Divider from "@material-ui/core/Divider";
 import Axios from "axios";
-import Switch from "@material-ui/core/Switch";
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
+import serverAddress from "../utils/serverAddress";
+import { socketContext } from "../utils/socketContext";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+
 
 const styles = theme => ({
   layout: {
@@ -46,7 +50,7 @@ const styles = theme => ({
 
   submit: {
     margin: theme.spacing.unit,
-    marginTop: 0,
+    marginTop: "0.2rem",
     marginLeft: 0,
     marginRight: 0
   },
@@ -56,6 +60,18 @@ const styles = theme => ({
     padding: theme.spacing.unit * (1 / 2),
     marginBottom: 0,
     width: "100%"
+  },
+  root: {
+    width: '80%',
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 400,
+  },
+  tableFont:{
+    fontSize:"1rem"
   }
 });
 
@@ -64,20 +80,19 @@ class OrgProfile extends Component {
     orgObject: {
       name: "",
       description: "",
-      leader: { username: "", id: "" },
+      admins: [],
       members: [],
-      paidmembers: [],
       _id: "",
       avatar: "",
       chatRoomID: ""
-    }
+    },
+    amount: 0
   };
+
   getOrgByID() {
-    Axios.get(`http://127.0.0.1:5000/orgs/${this.props.match.params.id}`).then(
+    Axios.get(`${serverAddress}/orgs/${this.props.match.params.id}`).then(
       res => {
-        console.log(res.data);
         if (res.data.success) {
-          console.log(res.data.org);
           this.setState({ orgObject: res.data.org });
         } else {
           this.setState({ orgObject: { name: "Organization not found" } });
@@ -94,7 +109,7 @@ class OrgProfile extends Component {
       return e.id === currentUserId;
     });
     if (!exist) {
-      Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/join`)
+      Axios.post(`${serverAddress}/orgs/${this.state.orgObject._id}/join`)
         .then(res => {
           if (res.data.success) {
             this.getOrgByID();
@@ -105,25 +120,68 @@ class OrgProfile extends Component {
       alert("You are a member of this Org already");
     }
   };
-  clickPay = f => {
-    let currentUserId = localStorage.getItem("userID");
-    let exist = this.state.orgObject.paidmembers.find(f => {
-      return f.id === currentUserId;
-    });
-    if (!exist) {
-      Axios.post(`http://127.0.0.1:5000/orgs/${this.state.orgObject._id}/pay`)
-        .then(res => {
-          if (res.data.success) {
-            this.getOrgByID();
-          }
-        })
-        .catch(err => console.log(err));
-    } else {
-      alert("You have already paid your dues");
+
+  onChange = e => {
+    this.setState({ amount: e.target.value });
+  };
+
+  changeDues = (userID, amount) => {
+    if(this.isAdmin()){
+
+      if (amount < 0) {
+        return;
+      }
+      Axios.post(`${serverAddress}/orgs/${this.props.match.params.id}/dues`, {
+        amount: amount,
+        userID: userID
+      }).then(res => {
+        if (res.data.success) {
+          this.setState({ amount: 0 });
+          this.getOrgByID();
+        }
+      });
+    }else{
+      alert("not admin")
     }
   };
+
+  remindDues = (userID, amount) => {
+    if(this.isAdmin()){
+      if (amount > 0) {
+        this.props.socket.emit("remind", {
+          userID,
+          amount,
+          orgName: this.state.orgObject.name
+        });
+      }
+    }else{
+      alert("not admin")
+    }
+  };
+
+  giveAdmin = (memberID) =>{
+    if(this.isAdmin()){
+      Axios.post(`${serverAddress}/orgs/giveAdmin`,{
+        memberID,
+        orgID: this.state.orgObject._id
+      }).then(res=>{
+        if(res.data.success){
+          this.getOrgByID();
+        }
+      })
+    }else{
+      alert("Not admin")
+    }
+  }
+  isAdmin(){
+    this.state.orgObject.admins.find(admin=>{
+      return localStorage.getItem("userID") === admin.id
+    })
+  }
+
   render() {
     const { classes } = this.props;
+
     return (
       <React.Fragment>
         <CssBaseline />
@@ -137,67 +195,95 @@ class OrgProfile extends Component {
               src={this.state.orgObject.avatar}
               style={{ height: 80, width: 80 }}
             />
-            <p> {this.state.orgObject.description}</p>
+            <h1> {this.state.orgObject.description}</h1>
 
-            <p>{`Founder: ${this.state.orgObject.leader.username}`}</p>
-            <ul>
-              <p>Members:</p>
-              {this.state.orgObject.members.map(m => {
-                if (
-                  this.state.orgObject.leader.id ==
-                  localStorage.getItem("userID")
-                ) {
-                  return (
-                    <li key={Math.random() * 100}>
-                      {m.username} <Switch color="primary" />
-                    </li>
-                  );
-                } else {
-                  return <li key={Math.random() * 100}>{m.username}</li>;
-                }
-              })}
-            </ul>
-            <ul>
-              <p>Already Paid Dues:</p>
-              {this.state.orgObject.paidmembers.map(m => {
-                if (
-                  this.state.orgObject.leader.id ==
-                  localStorage.getItem("userID")
-                ) {
-                  return (
-                    <li key={Math.random() * 100}>
-                      {m.username} <Switch color="primary" />
-                    </li>
-                  );
-                } else {
-                  return <li key={Math.random() * 100}>{m.username}</li>;
-                }
-              })}
-            </ul>
-            <Button
-              className={classes.submit}
-              style={{ backgroundColor: "#60b0f4", color: "white" }}
-              onClick={this.clickPay}
-            >
-              I Paid Dues
-            </Button>
+      
+            <Paper className={classes.root}>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Members</TableCell>
+                    <TableCell>Dues</TableCell>
+                    <TableCell>
+                      Amount
+                      <br />
+                      <input
+                        onChange={this.onChange}
+                        type="number"
+                        value={this.state.amount}
+                        width="20px"
+                      />
+                    </TableCell>
+                    <TableCell>Send reminder</TableCell>
+                    <TableCell>Is admin</TableCell>
+                    <TableCell>Give admin</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {this.state.orgObject.members.map(m => {
+                    return (
+                      <TableRow key={Math.random() * 100}>
+                        <TableCell>{m.username}</TableCell>
+                        <TableCell>{m.dues}</TableCell>
+                        <TableCell>
+                          <Button
+                            color="primary"
+                            onClick={() =>
+                              this.changeDues(m.id, this.state.amount)
+                            }
+                          >
+                            Add
+                          </Button>
+                          <Button
+                            color="primary"
+                            onClick={() => this.changeDues(m.id, 0)}
+                          >
+                            Clear
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            fullWidth
+                            color="secondary"
+                            onClick={() => this.remindDues(m.id, m.dues)}
+                          >
+                            Remind
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          {this.state.orgObject.admins.find(admin => {
+                            return admin.id === m.id
+                          }) ? "True" : "False"}
+                        </TableCell>
+                        <TableCell>
+                        {this.state.orgObject.admins.find(admin => {
+                            return admin.id === m.id
+                          }) ? <Button disabled>Give</Button> : this.state.orgObject.admins.find(admin=>{
+                            return localStorage.getItem("userID") === admin.id
+                          }) ? <Button onClick={()=>this.giveAdmin(m.id)}> Give </Button> : "Operator Only"}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </Paper>
+
             <Button
               className={classes.submit}
               style={{ backgroundColor: "#60b0f4", color: "white" }}
               onClick={this.onClick}
+              fullWidth
             >
               Join
             </Button>
             <Button
-              className={classes.submit}
+              fullWidth
               style={{ backgroundColor: "#60b0f4", color: "white" }}
+              className={classes.submit}
             >
-              <Link
-                to={`/chats/${this.state.orgObject.chatRoomID}`}
-                style={{ textDecoration: "none" }}
-              >
-                {" "}
-                Chat room{" "}
+              <Link to={`/chats/${this.state.orgObject.chatRoomID}`}>
+                Chat room
               </Link>
             </Button>
           </Paper>
@@ -207,8 +293,10 @@ class OrgProfile extends Component {
   }
 }
 
-OrgProfile.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+const OrgProfileWithSocket = props => (
+  <socketContext.Consumer>
+    {socket => <OrgProfile {...props} socket={socket} />}
+  </socketContext.Consumer>
+);
 
-export default withStyles(styles)(OrgProfile);
+export default withStyles(styles)(OrgProfileWithSocket);
