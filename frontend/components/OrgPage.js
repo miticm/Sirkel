@@ -111,10 +111,10 @@ export default class OrgPage extends Component {
       <div style={{width: "100%",marginTop:"2rem" }}>
         <form onSubmit={this.search} style={{margin:"0 auto", width:"50%",textAlign:"center"}}>
             <Input placeholder="Search Organization..." onKeyUp={this.keyup} style={{display:"block"}} />
-            <Button style={{ color: "#000"}} type="submit" fullWidth>
+            <Button style={{ backgroundColor: "#60b0f4", color: "#ffffff", marginTop: "5px"}} type="submit" fullWidth>
               Search
             </Button>
-            <Button style={{ color: "#000"}} onClick={this.toggleRanked} fullWidth>
+            <Button style={{ backgroundColor: "#60b0f4", color: "#ffffff", marginTop: "5px"}} onClick={this.toggleRanked} fullWidth>
               List suggested organization
             </Button>
         </form>

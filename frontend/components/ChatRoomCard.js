@@ -9,7 +9,9 @@ import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   card: {
-    display: "flex"
+    display: "flex",
+    marginTop: "10px",
+    padding: "4px"
   },
   details: {
     display: "flex",
@@ -19,12 +21,13 @@ const styles = theme => ({
     flex: "1 0 auto"
   },
   cover: {
-    width: 151
+    width: 151,
   },
   btn: {
     padding: "0",
-    width: "60%"
-  }
+    width: "60%",
+    marginLeft: "10%"
+    }
 });
 
 class ChatRoomCard extends React.Component {
