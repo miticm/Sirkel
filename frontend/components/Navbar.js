@@ -23,6 +23,8 @@ import Dashboard from "./Dashboard";
 import SignUp from "./SignUp";
 import Login from "./Login";
 import Verify from "./Verify";
+import Forgot from "./Forgot";
+import ChangePassword from "./ChangePassword";
 const drawerWidth = 240;
 
 class NavBar extends Component {
@@ -156,14 +158,19 @@ class NavBar extends Component {
 
           </Drawer>
 
-          <Switch>
-            <Route exact path="/" component={Homepage} />
-            <Route exact path="/signup" component={SignUp} />
+          
+            <Switch>
+              <Route exact path="/" component={Homepage} />
+              <Route exact path="/signup" component={SignUp} />
+              <Route exact path="/forgot" component={Forgot} />
 
             <Route
               exact
               path="/login"
               render={myprops => <Login {...myprops} login={this.login} />}
+            />
+            <Route exact path="/users/reset/:id"
+             render={myprops => <ChangePassword {...myprops} />}
             />
 
             <Route

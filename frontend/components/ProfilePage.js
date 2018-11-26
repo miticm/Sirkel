@@ -39,7 +39,7 @@ const styles = theme => ({
 class ProfilePage extends Component {
   state = {
     user: { orgsAdmin: [], connections: [] },
-    events: []
+    events: [],
   };
   componentDidMount() {
     this.getProfileData();
@@ -49,7 +49,7 @@ class ProfilePage extends Component {
     setAuthToken(token);
     const profileRes = await axios.get(`${serverAddress}/users/profile`);
     this.setState({
-      user: profileRes.data.user
+      user: profileRes.data.user,
     });
     this.getEventData();
   }
@@ -82,6 +82,7 @@ class ProfilePage extends Component {
 
   render() {
     const { classes } = this.props;
+
     return (
       <div className={classes.root}>
         <ExpansionPanel>
@@ -169,6 +170,28 @@ class ProfilePage extends Component {
             );
           })}
         </ExpansionPanel>
+        <Button
+          fullWidth
+          onClick={() =>{
+            if(!this.state) return;
+            axios
+            .post(`${serverAddress}/users/generate/change`, {
+              username: this.state.user.username,
+            })
+            .then(res => {
+              if (res.data.success) {
+                this.props.history.push("/users/reset/"+res.data.link);
+              }
+            })
+            .catch(err => console.log(err));
+          }}
+          style={{
+          backgroundColor: "#fff",
+          color: "#60b0f4"
+          }}
+        >
+          Change Password
+        </Button>
       </div>
     );
   }
