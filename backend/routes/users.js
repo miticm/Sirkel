@@ -67,7 +67,7 @@ router.post("/register", (req, res, next) => {
   });
 
   User.addUser(newUser, (err, user) => {
-    if (err) return res.json({ success: false, msg: "Failed to register user" });
+    if (err) return res.json({ success: false, msg: err });
     let verhash = new vHash({
       hash: crypto.randomBytes(20).toString('hex'),
       userid: user._id
