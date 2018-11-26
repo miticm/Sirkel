@@ -108,12 +108,11 @@ module.exports.getUserByResetToken = function(token, callback) {
 };
 
 module.exports.changePassword = function(user,password,callback) {
-  user.password = password;
-  bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, (err, hash) => {
       if (err) throw err;
       user.password = hash;
       user.save(callback);
     });
   });
-};
+}

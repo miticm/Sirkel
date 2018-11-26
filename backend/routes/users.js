@@ -327,7 +327,7 @@ router.post("/generate/change",
 
       return res.json({
         success: true, 
-        link: serverURL + "/users/reset/password/" + user.passwordResetToken
+        link: user.passwordResetToken
       });
   });
 });
@@ -348,8 +348,8 @@ router.post("/generate/forgot",
         to: user.email,
         subject: 'Sirkel - Password reset!',
         html: '<p>Hello!\nHello, you may reset your account using the link below:\n</p><a href=\"' 
-        + serverURL + '/users/reset/password/' + user.passwordResetToken +  '\">' 
-        + serverURL + '/users/reset/password/' + user.passwordResetToken + '</a>'
+        + serverURL + '/users/reset/' + user.passwordResetToken +  '\">' 
+        + serverURL + '/users/reset/' + user.passwordResetToken + '</a>'
         + '<p>\n\n- The Sirkel Team</p>'
       };
       transporter.sendMail(mail, function (err, dat) {
@@ -370,10 +370,12 @@ router.post("/reset/:hsh", (req, res, next) => {
       if (!user) return res.json({success: false, msg: "invalid token"});
       if (!req.body.password) return res.json({success: false, msg: "undefined password"});
       if(Date.now > user.passwordResetExpires) {
-        return res.json({success: false, msg: "token expired"});
+        return res.json({success: false, msg: "token expired, generate a new one"});
       }
-      User.changePassword(user,req.body.password,(err,user) => {
-        if (err) throw err;
+      User.changePassword(user,req.body.password,(err) => {
+        if (err){
+          return res.json({success: false});
+        }
       });
       return res.json({success: true});
   });

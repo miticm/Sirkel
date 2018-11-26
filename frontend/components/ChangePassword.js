@@ -50,10 +50,10 @@ const styles = theme => ({
   }
 });
 
-class Login extends Component {
+class ChangePassword extends Component {
   state = {
-    username: "",
     password: "",
+    password2: "",
     open: false,
     message: ""
   };
@@ -62,28 +62,26 @@ class Login extends Component {
   };
   onSubmit = e => {
     e.preventDefault();
+    if (this.state.password2 !== this.state.password) {
+      this.setState({
+        open: true,
+        message: "passwords are not the same"
+      });
+      return;
+    }
     axios
-      .post("http://127.0.0.1:5000/users/authenticate", {
-        username: this.state.username,
+      .post('http://127.0.0.1:5000/users/reset/' + this.props.match.params.id, {
         password: this.state.password
       })
       .then(res => {
         if (res.data.success) {
-          // Get the token
-          const token = res.data.token;
-          // Set token to localstorage
-          localStorage.setItem("jwtToken", token);
-          localStorage.setItem("isAuth", true);
-          localStorage.setItem("userID", res.data.user.id);
-          setAuthToken(token);
-          this.props.login();
           this.props.history.push("/dashboard");
         } else {
           this.setState({
             message: res.data.msg,
             open: true,
             password: "",
-            username: ""
+            password2: ""
           });
         }
       })
@@ -108,22 +106,23 @@ class Login extends Component {
             >
               <LockIcon style={{ backgroundColor: "#60b0f4" }} />
             </Avatar>
-            <Typography variant="headline">Welcome</Typography>
+            <Typography variant="headline">Change Password</Typography>
             <form className={classes.form} onSubmit={this.onSubmit}>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="username">Username</InputLabel>
-                <Input
-                  name="username"
-                  onChange={this.onChange}
-                  value={this.state.username}
-                />
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Password</InputLabel>
+                <InputLabel htmlFor="password">New Password</InputLabel>
                 <Input
                   name="password"
                   onChange={this.onChange}
-                  value={this.state.password}
+                  value={this.state.username}
+                  type="password"
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Confirm Password</InputLabel>
+                <Input
+                  name="password2"
+                  onChange={this.onChange}
+                  value={this.state.password2}
                   type="password"
                 />
               </FormControl>
@@ -136,17 +135,7 @@ class Login extends Component {
                   color: "#fff"
                 }}
               >
-                Login
-              </Button>
-              <Button
-                fullWidth
-                onClick={() => {this.props.history.push("/forgot");}}
-                style={{
-                  backgroundColor: "#fff",
-                  color: "#60b0f4"
-                }}
-              >
-                Forgot Password
+                Change Password
               </Button>
 
             </form>
@@ -171,8 +160,8 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
+ChangePassword.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(ChangePassword);
