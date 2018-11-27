@@ -56,9 +56,43 @@ router.post(
           }
 
           if (updatedUser && org) {
-            res.json({
-              success: true,
-              org
+
+            User.find({}).exec((err, allUsers) => {
+              if (err) {
+                res.json({
+                  success: false,
+                  msg: err
+                });
+              }
+              console.log(allUsers);
+              const notifyUsers = [];
+
+              allUsers.forEach(unqUser => {
+                let userScore = scoreOrg(org, unqUser, []);
+                console.log(userScore);
+                if (userScore > unqUser.orgScores[unqUser.orgScores.length - 1]) {
+                  for (let i = 0; i < unqUser.orgScores.length; i++) {
+                    if (unqUser.orgScores[i] < userScore) {
+                      notifyUsers.push(unqUser);
+                      unqUser.orgScores.splice(i, 0, userScore);
+                      unqUser.orgMatches.splice(i, 0, org);
+                      break;
+                    }
+                  }
+
+                  if (unqUser.orgScores.length > 10) {
+                    unqUser.orgScores.pop();
+                    unqUser.orgMatches.pop();
+                  }
+                }
+
+                unqUser.save();
+              });
+
+              res.json({
+                success: true,
+                org
+              });
             });
           }
         });
@@ -100,13 +134,49 @@ router.get(
           });
         }
 
-        if (req.user.survey) {
-          const sortedOrgs = rankOrgs(orgs, req.user);
-          if (sortedOrgs) {
-            req.io.emit('notification', { open: true });
+        if (req.user.orgMatches && req.user.orgMatches.length != 0) {
+          console.log('Here 1');
+          User.findById(req.user._id).populate('orgMatches').exec((err, popUser) => {
+            if (err) {
+              res.json({
+                success: false,
+                msg: err
+              });
+            }
+
+            console.log(popUser.orgScores);
+
             res.json({
               success: true,
-              orgs: sortedOrgs
+              orgs: popUser.orgMatches
+            });
+          });
+        }
+        else if (req.user.survey) {
+          const sortedOrgs = rankOrgs(orgs, req.user);
+          if (sortedOrgs) {
+            req.user.orgMatches = sortedOrgs;
+
+            const sortedRank = [];
+            sortedOrgs.forEach(sortedOrg => {
+              sortedRank.push(sortedOrg.score);
+            });
+            req.user.orgScores = sortedRank;
+
+            req.user.save((err, user) => {
+              if (err) {
+                res.json({
+                  success: false,
+                  msg: err
+                });
+              }
+
+              req.io.emit('notification', { open: true });
+
+              res.json({
+                success: true,
+                orgs: sortedOrgs
+              });
             });
           }
         } else {

@@ -56,6 +56,20 @@ const UserSchema = new Schema({
     type: Number,
     default: 0
   },
+  userMatches: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    } 
+  ],
+  userScores: [Number],
+  orgMatches: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Org"
+    }
+  ],
+  orgScores: [Number],
   verified: {
     type: Boolean,
     default: false,
