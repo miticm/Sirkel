@@ -86,7 +86,7 @@ class OrgProfile extends Component {
       avatar: "",
       chatRoomID: ""
     },
-    amount: 0
+    amount: 0,
   };
 
   getOrgByID() {
@@ -103,6 +103,17 @@ class OrgProfile extends Component {
   componentDidMount() {
     this.getOrgByID();
   }
+
+  isAdmin(){
+    let f = false;
+    this.state.orgObject.admins.forEach(admin=>{
+      if(admin.id === localStorage.getItem("userID")){
+        f = true;
+      }
+    })
+    return f;
+  }
+
   onClick = e => {
     let currentUserId = localStorage.getItem("userID");
     let exist = this.state.orgObject.members.find(e => {
@@ -173,11 +184,7 @@ class OrgProfile extends Component {
       alert("Not admin")
     }
   }
-  isAdmin(){
-    this.state.orgObject.admins.find(admin=>{
-      return localStorage.getItem("userID") === admin.id
-    })
-  }
+
 
   render() {
     const { classes } = this.props;
