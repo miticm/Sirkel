@@ -10,6 +10,7 @@ const config = require("../config/database");
 const User = require("../models/user");
 const vHash = require("../models/vhash");
 const rankUsers = require("../utility/rankUsers");
+const rankOrgs = require("../utility/rankOrgs");
 
 const router = express.Router();
 
@@ -310,8 +311,42 @@ router.post(
       }
 
       user.survey = userSurvey;
-      user.save();
-      res.send({ success: true });
+      user.save((err, newUser) => {
+        if (err) {
+          res.send({
+            success: false
+          })
+        }
+
+        const sortedOrgs = rankOrgs(orgs, req.user);
+        if (sortedOrgs) {
+          req.user.orgMatches = sortedOrgs;
+
+          const sortedRank = [];
+          sortedOrgs.forEach(sortedOrg => {
+            sortedRank.push(sortedOrg.score);
+          });
+          req.user.orgScores = sortedRank;
+
+          req.user.save((err, user) => {
+            if (err) {
+              res.json({
+                success: false,
+                msg: err
+              });
+            }
+
+            req.io.emit('notification', { open: true });
+
+            res.json({
+              success: true,
+              orgs: sortedOrgs
+            });
+          });
+        }
+
+        res.send({ success: true });
+      });
     });
   }
 );
