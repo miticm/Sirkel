@@ -318,17 +318,17 @@ router.post(
           })
         }
 
-        const sortedOrgs = rankOrgs(orgs, req.user);
+        const sortedOrgs = rankOrgs(orgs, newUser);
         if (sortedOrgs) {
-          req.user.orgMatches = sortedOrgs;
+          newUser.orgMatches = sortedOrgs;
 
           const sortedRank = [];
           sortedOrgs.forEach(sortedOrg => {
             sortedRank.push(sortedOrg.score);
           });
-          req.user.orgScores = sortedRank;
+          newUser.orgScores = sortedRank;
 
-          req.user.save((err, user) => {
+          newUser.save((err, rankedUser) => {
             if (err) {
               res.json({
                 success: false,
