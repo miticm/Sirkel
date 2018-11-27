@@ -1,8 +1,12 @@
 module.exports = scoreOrg = (org, currentUser, tags) => {
-  if (tags === null || !tags) {
+  if ((tags === null || !tags || tags.length === 0) 
+    && currentUser.survey !== undefined
+    && currentUser.survey.shortQuestions
+    && currentUser.survey.shortQuestions.tags !== undefined) {
     const userSurvey = Object.assign({}, currentUser.survey);
     tags = userSurvey.shortQuestions.tags.split(',');
-    tags.map(tag => tag.trim().toLowerCase());
+    tags = tags.map(tag => tag = tag.trim().toLowerCase());
+    tags = tags.filter(tag => tag !== '');
   }
 
   let score = 0;
