@@ -51,11 +51,11 @@ export const SecondDividerSideBarItems = (props) => (
       <ListItemText primary="My profile" />
     </ListItem>
 
-    <ListItem component={Link} to="/settings" button onClick={props.close}>
+    {/* <ListItem component={Link} to="/settings" button onClick={props.close}>
       <ListItemIcon>
         <SettingsIcon />
       </ListItemIcon>
       <ListItemText primary="Settings" />
-    </ListItem>
+    </ListItem> */}
   </div>
 );
