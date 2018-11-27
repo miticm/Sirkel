@@ -10,6 +10,7 @@ const config = require("../config/database");
 const User = require("../models/user");
 const vHash = require("../models/vhash");
 const rankUsers = require("../utility/rankUsers");
+const rankOrgs = require("../utility/rankOrgs");
 
 const router = express.Router();
 
@@ -83,8 +84,11 @@ router.post("/register", (req, res, next) => {
       + serverURL + '/users/verify/' + verhash.hash +  '\">' + serverURL + '/users/verify/' + verhash.hash + '</a>'
       + '<p>\n\n- The Sirkel Team</p>'
     };
+    console.log(mail);
     transporter.sendMail(mail, function (err, dat) {
       if(err){ //email coulnd't be sent, delete new user and hash
+        console.log(err);
+        console.log(user);
         User.findByIdAndDelete(user._id);
         vHash.findByIdAndDelete(verhash._id);
         res.json({ success: false, msg: "error sending verification email" });
@@ -307,8 +311,42 @@ router.post(
       }
 
       user.survey = userSurvey;
-      user.save();
-      res.send({ success: true });
+      user.save((err, newUser) => {
+        if (err) {
+          res.send({
+            success: false
+          })
+        }
+
+        const sortedOrgs = rankOrgs(orgs, newUser);
+        if (sortedOrgs) {
+          newUser.orgMatches = sortedOrgs;
+
+          const sortedRank = [];
+          sortedOrgs.forEach(sortedOrg => {
+            sortedRank.push(sortedOrg.score);
+          });
+          newUser.orgScores = sortedRank;
+
+          newUser.save((err, rankedUser) => {
+            if (err) {
+              res.json({
+                success: false,
+                msg: err
+              });
+            }
+
+            req.io.emit('notification', { open: true });
+
+            res.json({
+              success: true,
+              orgs: sortedOrgs
+            });
+          });
+        }
+
+        res.send({ success: true });
+      });
     });
   }
 );
