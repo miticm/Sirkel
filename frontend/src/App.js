@@ -25,7 +25,7 @@ export default class App extends Component {
     socket.on("remindDues",data=>{
       console.log(data);
       if(data.userID == localStorage.getItem('userID')){
-        this.setState({title:`You have ${data.amount}$ dues need to pay`,content:`Organization: ${data.orgName}`},()=>{
+        this.setState({title:`You have $ ${data.amount} dues need to pay`,content:`Organization: ${data.orgName}`},()=>{
           this.setState({open:true})
         })
       }
