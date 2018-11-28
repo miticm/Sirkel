@@ -23,12 +23,21 @@ export default class App extends Component {
 
   componentDidMount(){
     socket.on("remindDues",data=>{
-      console.log(data);
       if(data.userID == localStorage.getItem('userID')){
         this.setState({title:`You have $ ${data.amount} dues need to pay`,content:`Organization: ${data.orgName}`},()=>{
           this.setState({open:true})
         })
       }
+    })
+    socket.on("match",data=>{
+      data.users.forEach(d => {
+        if(d == localStorage.getItem("userID")){
+          this.setState({title:`There is a new organization you may like !`,
+            content:`Go check it out on the organzation page`},()=>{
+            this.setState({open:true})
+          })
+        }
+      })
     })
   }
 

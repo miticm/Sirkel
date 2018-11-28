@@ -64,12 +64,12 @@ router.post(
                   msg: err
                 });
               }
-              console.log(allUsers);
+              // console.log(allUsers);
               const notifyUsers = [];
 
               allUsers.forEach(unqUser => {
                 let userScore = scoreOrg(org, unqUser, []);
-                console.log(userScore);
+                // console.log(userScore);
                 if (userScore > unqUser.orgScores[unqUser.orgScores.length - 1]) {
                   for (let i = 0; i < unqUser.orgScores.length; i++) {
                     if (unqUser.orgScores[i] < userScore) {
@@ -85,9 +85,13 @@ router.post(
                     unqUser.orgMatches.pop();
                   }
                 }
-
                 unqUser.save();
               });
+              let userIDs = notifyUsers.map(u => {
+                return u._id
+              })
+              req.io.sockets.emit('match', {users:userIDs});
+
 
               res.json({
                 success: true,
@@ -135,7 +139,7 @@ router.get(
         }
 
         if (req.user.orgMatches && req.user.orgMatches.length != 0) {
-          console.log('Here 1');
+          // console.log('Here 1');
           User.findById(req.user._id).populate('orgMatches').exec((err, popUser) => {
             if (err) {
               res.json({
@@ -144,7 +148,7 @@ router.get(
               });
             }
 
-            console.log(popUser.orgScores);
+            // console.log(popUser.orgScores);
 
             res.json({
               success: true,
@@ -170,9 +174,6 @@ router.get(
                   msg: err
                 });
               }
-
-              req.io.emit('notification', { open: true });
-
               res.json({
                 success: true,
                 orgs: sortedOrgs

@@ -319,6 +319,7 @@ router.post(
         }
 
         const sortedOrgs = rankOrgs(orgs, newUser);
+        
         if (sortedOrgs) {
           newUser.orgMatches = sortedOrgs;
 
@@ -335,9 +336,6 @@ router.post(
                 msg: err
               });
             }
-
-            req.io.emit('notification', { open: true });
-
             res.json({
               success: true,
               orgs: sortedOrgs
