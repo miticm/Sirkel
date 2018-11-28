@@ -8,6 +8,7 @@ const crypto = require('crypto');
 
 const config = require("../config/database");
 const User = require("../models/user");
+const Org = require("../models/org");
 const vHash = require("../models/vhash");
 const rankUsers = require("../utility/rankUsers");
 const rankOrgs = require("../utility/rankOrgs");
@@ -315,35 +316,40 @@ router.post(
         if (err) {
           res.send({
             success: false
-          })
+          });
         }
 
-        const sortedOrgs = rankOrgs(orgs, newUser);
-        
-        if (sortedOrgs) {
-          newUser.orgMatches = sortedOrgs;
-
-          const sortedRank = [];
-          sortedOrgs.forEach(sortedOrg => {
-            sortedRank.push(sortedOrg.score);
-          });
-          newUser.orgScores = sortedRank;
-
-          newUser.save((err, rankedUser) => {
-            if (err) {
-              res.json({
-                success: false,
-                msg: err
-              });
-            }
-            res.json({
-              success: true,
-              orgs: sortedOrgs
+        Org.find({}).lean().exec((err, orgs) => {
+          if (err) {
+            res.send({
+              success: false
             });
-          });
-        }
+          }
 
-        res.send({ success: true });
+          const sortedOrgs = rankOrgs(orgs, newUser);
+          if (sortedOrgs) {
+            newUser.orgMatches = sortedOrgs;
+
+            const sortedRank = [];
+            sortedOrgs.forEach(sortedOrg => {
+              sortedRank.push(sortedOrg.score);
+            });
+            newUser.orgScores = sortedRank;
+
+            newUser.save((err, rankedUser) => {
+              if (err) {
+                res.json({
+                  success: false,
+                  msg: err
+                });
+              }
+
+              req.io.emit('notification', { open: true });
+
+              res.send({ success: true });
+            });
+          }
+        });
       });
     });
   }
